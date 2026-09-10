@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using TapRunner.App.Models;
 using TapRunner.Protocol;
 
@@ -13,46 +12,36 @@ namespace TapRunner.App.Services
     /// <summary>Reads external parameters from a TapPlan and launches "tap.exe" to run/edit it.</summary>
     public class TapPlanService
     {
-        // Matches lines like:  "  Parameters \ Count = 4"   (as printed by "tap run --list-external-parameters")
-        static readonly Regex ParameterLineRegex = new(@"^\s*Parameters \\ (?<name>.+?) = (?<value>.*)$", RegexOptions.Compiled);
-
         /// <summary>
-        /// Reads the external (test plan) parameters and their default values by shelling out to
-        /// "tap.exe run &lt;plan&gt; --list-external-parameters". Throws on failure to start the process;
-        /// returns an empty list if the plan has no external parameters.
+        /// Reads the external (test plan) parameters and their default values, in alphabetical
+        /// order, by parsing the TapPlan's XML directly rather than shelling out to "tap.exe" -
+        /// a TapPlan file already stores each external parameter's current value as
+        /// Parameter="&lt;name&gt;" on the step property it belongs to (that's exactly what
+        /// "tap run --list-external-parameters" itself reads). Parsing the file directly is
+        /// near-instant and, unlike running the plan file through tap.exe, never touches any
+        /// instruments/DUTs the plan's steps reference just to open it.
         /// </summary>
-        public async Task<List<ParameterEntry>> ReadExternalParametersAsync(AppConfig config, string planPath)
-        {
-            var psi = BuildBaseStartInfo(config);
-            psi.ArgumentList.Add("run");
-            psi.ArgumentList.Add(planPath);
-            psi.ArgumentList.Add("--list-external-parameters");
-            psi.ArgumentList.Add("--non-interactive");
+        public Task<List<ParameterEntry>> ReadExternalParametersAsync(string planPath)
+            => Task.Run(() => ReadExternalParametersFromXml(planPath));
 
-            var output = await RunAndCaptureAsync(psi).ConfigureAwait(false);
-            return ParseExternalParameters(output);
-        }
-
-        internal static List<ParameterEntry> ParseExternalParameters(string output)
+        internal static List<ParameterEntry> ReadExternalParametersFromXml(string planPath)
         {
+            var doc = XDocument.Load(planPath, LoadOptions.None);
+            var seenNames = new HashSet<string>(StringComparer.Ordinal);
             var result = new List<ParameterEntry>();
-            using var reader = new StringReader(output);
-            string line;
-            bool inList = false;
-            while ((line = reader.ReadLine()) != null)
+
+            foreach (var element in doc.Descendants())
             {
-                var match = ParameterLineRegex.Match(line);
-                if (match.Success)
-                {
-                    inList = true;
-                    result.Add(new ParameterEntry(match.Groups["name"].Value, match.Groups["value"].Value));
-                }
-                else if (inList)
-                {
-                    // First non-matching line after the parameter block ends the list.
-                    break;
-                }
+                var name = (string)element.Attribute("Parameter");
+                // A parameter merged across multiple steps carries the same name on each of their
+                // elements; only the first (they're supposed to share one value) is kept.
+                if (string.IsNullOrEmpty(name) || !seenNames.Add(name))
+                    continue;
+
+                result.Add(new ParameterEntry(name, element.Value));
             }
+
+            result.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
             return result;
         }
 
@@ -84,7 +73,7 @@ namespace TapRunner.App.Services
                 foreach (var p in parameters)
                 {
                     psi.ArgumentList.Add("-e");
-                    psi.ArgumentList.Add($"{p.Name}={p.Value}");
+                    psi.ArgumentList.Add($"{p.FullName}={p.Value}");
                 }
             }
 
@@ -108,24 +97,6 @@ namespace TapRunner.App.Services
                 psi.WorkingDirectory = config.WorkingDirectory;
 
             return psi;
-        }
-
-        async Task<string> RunAndCaptureAsync(ProcessStartInfo psi)
-        {
-            using var process = new Process { StartInfo = psi };
-            var sb = new StringBuilder();
-            var sync = new object();
-
-            process.OutputDataReceived += (_, e) => { if (e.Data != null) lock (sync) sb.AppendLine(e.Data); };
-            process.ErrorDataReceived += (_, e) => { if (e.Data != null) lock (sync) sb.AppendLine(e.Data); };
-
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            await process.WaitForExitAsync().ConfigureAwait(false);
-
-            lock (sync)
-                return sb.ToString();
         }
     }
 }

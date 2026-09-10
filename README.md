@@ -24,9 +24,13 @@ Runtime alongside the one OpenTAP already needs.
 
 ## How it fits together
 
-1. `TapRunner.App` shells out to `tap.exe run <plan> --list-external-parameters` to read a
-   TapPlan's external (test plan) parameters and their default values, and displays them in a
-   dialog for the operator to review/edit.
+1. `TapRunner.App` reads a TapPlan's external (test plan) parameters and their default values by
+   parsing the `.TapPlan` XML directly (every external parameter is stored right on the file as
+   `Parameter="<name>"` on the property it belongs to - the same thing `tap.exe run
+   --list-external-parameters` itself reads) and displays them, sorted alphabetically by name, in
+   a dialog for the operator to review/edit. This is near-instant and - unlike running the plan
+   through `tap.exe` just to open it - never touches any instruments/DUTs the plan's steps
+   reference.
 2. When **Run** is pressed, it launches `tap.exe run <plan> -e Name=Value ... --non-interactive`
    (or `tap.exe tui <plan>` if "Run with TUI" is checked), passing a unique named pipe name to the
    child process via the `TAPRUNNER_PIPE` environment variable.
@@ -106,20 +110,29 @@ original open license with no such prompt, and has everything this installer nee
 - `DefaultParameterValues` - name → value overrides, edited via **Settings → Default parameter values**.
   A blank/missing entry falls back to the TapPlan's own default. These are only changed
   deliberately in Settings - a value typed into the dialog for one run is never silently saved
-  as the new default.
+  as the new default. Use the same short name shown in the main window (e.g. `PowerOn`), not
+  OpenTAP's full internal name (`Parameters \ PowerOn`) - see below.
 - `StatusColors` - per-status `{ Color, Flash }` (hex color + whether it flashes when fully lit),
   editable under **Settings → Status Colors**. Defaults: Ready = blue, Running = flashing green,
   Passed = green, Failed = orange, Error = red, Aborted = dark red.
 
 ## Assumptions / known limitations (please confirm these are what you want)
 
-- **Serial number field**: any parameter whose name contains "serial" (case-insensitive) is
-  treated as the serial number - it's always left blank (never prefilled from saved defaults) and
-  gets keyboard focus when a plan loads, so the operator can scan/type it immediately.
-- **Parameter editors are plain text boxes.** Reading parameters via
-  `--list-external-parameters` (your choice, vs. embedding OpenTap.dll) gives names and default
-  values as text but not their real type, so there's no dropdown for enum/`AvailableValues`
-  parameters or a checkbox for booleans - just a text box, same as you'd type after `-e Name=`.
+- **Serial number field**: any parameter whose (displayed, see below) name contains "serial"
+  (case-insensitive) is treated as the serial number - it's always left blank (never prefilled
+  from saved defaults) and gets keyboard focus when a plan loads, so the operator can scan/type it
+  immediately.
+- **Redundant "Parameters \ " prefix stripped from display only.** Every external parameter in
+  your plans lives under one "Parameters" group, so that prefix is shown nowhere in the UI or in
+  Settings - just the meaningful part (e.g. `PowerOn`, or `Input \ Value` for a nested one). OpenTAP
+  still needs the real, full name to run the plan (`-e Parameters \ PowerOn=0`), so that full name
+  is kept internally and used automatically - you never have to type it. If the same external
+  parameter name is ever attached to more than one step (a merged parameter), only the first one
+  found in the file is used.
+- **Parameter editors are plain text boxes.** Reading parameters straight from the plan XML (your
+  original choice, vs. embedding OpenTap.dll) gives names and default values as text but not their
+  real type, so there's no dropdown for enum/`AvailableValues` parameters or a checkbox for
+  booleans - just a text box, same as you'd type after `-e Name=`.
 - **TUI mode has no parameter pass-through.** OpenTAP's `tap.exe tui` CLI action doesn't accept
   `-e` overrides, so values entered in TapRunner's dialog are *not* carried into a TUI session -
   the operator sets/reviews them inside the TUI itself. Live status circles still work there.

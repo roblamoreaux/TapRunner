@@ -156,7 +156,7 @@ namespace TapRunner.App
 
             try
             {
-                var planParameters = await tapPlanService.ReadExternalParametersAsync(config, path);
+                var planParameters = await tapPlanService.ReadExternalParametersAsync(path);
 
                 foreach (var p in planParameters)
                 {
