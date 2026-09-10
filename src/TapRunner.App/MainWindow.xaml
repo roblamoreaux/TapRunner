@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Test plan selection -->
@@ -61,11 +62,16 @@
             </ScrollViewer>
         </GroupBox>
 
+        <!-- Last step executed -->
+        <Border Grid.Row="3" Grid.Column="0" Margin="0,0,0,10" Padding="6,4" BorderBrush="#FFBBBBBB" BorderThickness="1" Background="#FFF5F5F5">
+            <TextBlock x:Name="LastStepText" Text="No steps run yet." FontFamily="Consolas" FontSize="12" TextTrimming="CharacterEllipsis"/>
+        </Border>
+
         <!-- TUI option -->
-        <CheckBox x:Name="UseTuiCheckBox" Grid.Row="3" Grid.Column="0" Content="Run with TUI (text-based interface)" Margin="0,0,0,10"/>
+        <CheckBox x:Name="UseTuiCheckBox" Grid.Row="4" Grid.Column="0" Content="Run with TUI (text-based interface)" Margin="0,0,0,10"/>
 
         <!-- Run / Stop / Abort / Exit -->
-        <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,6">
+        <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,6">
             <Button x:Name="RunButton" Content="Run" Width="90" Height="32" Margin="0,0,8,0" Click="RunButton_Click"/>
             <Button x:Name="StopButton" Content="Stop" Width="90" Height="32" Margin="0,0,8,0" Click="StopButton_Click" IsEnabled="False"/>
             <Button x:Name="AbortButton" Content="Abort" Width="90" Height="32" Margin="0,0,8,0" Click="AbortButton_Click" IsEnabled="False"/>
@@ -74,10 +80,10 @@
         </StackPanel>
 
         <!-- Status line -->
-        <TextBlock x:Name="StatusMessageText" Grid.Row="5" Grid.Column="0" Foreground="DimGray" TextWrapping="Wrap"/>
+        <TextBlock x:Name="StatusMessageText" Grid.Row="6" Grid.Column="0" Foreground="DimGray" TextWrapping="Wrap"/>
 
         <!-- Status circles -->
-        <GroupBox Header="Status" Grid.Row="0" Grid.RowSpan="5" Grid.Column="1">
+        <GroupBox Header="Status" Grid.Row="0" Grid.RowSpan="6" Grid.Column="1">
             <StackPanel Margin="6" VerticalAlignment="Top">
                 <controls:StatusCircle x:Name="ReadyCircle" Label="Ready" Margin="0,4"/>
                 <controls:StatusCircle x:Name="RunningCircle" Label="Running" Margin="0,4"/>

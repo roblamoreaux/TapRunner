@@ -93,9 +93,11 @@ and the app tells you so and returns the circles to Ready rather than guessing a
 - **Pending vs. final Fail/Error**: the spec called out the Failed circle going half-lit on a step
   failure mid-run; I applied the same "pending" treatment to the Error circle for a step `Error`
   verdict, for symmetry. Only the circle matching the plan's *final* verdict goes fully lit.
-- **No status received when a run ends** (plugin not enabled, or TUI closed without running
-  anything): rather than guess Pass/Fail, the app just returns to Ready and shows a message
-  explaining why - so a missing status listener can never look like a false Pass or Fail.
+- **No status received when a run ends** (plugin not enabled/connected, a licensing error, a
+  crash, or - with TUI - the operator closing it without running anything): the app never guesses
+  Pass/Fail, but it does light the **Error** circle (and always turns Running off) with a message
+  explaining why, rather than quietly returning to Ready - a real failure should never look like
+  nothing happened.
 - Config file lives under `%ProgramData%` (shared by all operators on this station), not next to
   the .exe or under a per-user profile - easy to change if you'd rather have it per-user.
 

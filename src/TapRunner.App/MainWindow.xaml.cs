@@ -245,6 +245,8 @@ namespace TapRunner.App
             runningProcess.Exited += RunningProcess_Exited;
             SetRunningState();
             StatusMessageText.Text = "Running...";
+            LastStepText.Text = "No steps run yet.";
+            LastStepText.ToolTip = null;
 
             await Task.CompletedTask;
         }
@@ -253,6 +255,16 @@ namespace TapRunner.App
         {
             Dispatcher.Invoke(() =>
             {
+                if (StepStatusMessage.TryParse(message, out var step))
+                {
+                    var text = $"Last step: {step.Name} — {step.Verdict}";
+                    if (!string.IsNullOrWhiteSpace(step.Outputs))
+                        text += $"   {step.Outputs}";
+                    LastStepText.Text = text;
+                    LastStepText.ToolTip = text;
+                    return;
+                }
+
                 switch (message)
                 {
                     case StatusProtocol.StatusRunning:
@@ -304,14 +316,26 @@ namespace TapRunner.App
                     pipeServer = null;
                 }
 
+                // The process is no longer running, full stop - Running must never be left lit/flashing
+                // past this point, regardless of what (if anything) was reported.
+                RunningCircle.State = CircleState.Off;
+
                 if (!userInitiatedAbort && !receivedTerminalStatus)
                 {
-                    // The process ended but no status was ever reported - most likely the
-                    // "TapRunner Status" result listener isn't enabled in Results settings,
-                    // or (with TUI) the operator closed the TUI without running the plan.
-                    // Never guess a verdict here - just go back to Ready.
-                    StatusMessageText.Text = "Process exited. No run status was reported " +
-                        "(enable \"TapRunner Status\" under Settings > Results in OpenTAP, or no plan was run).";
+                    // The process ended without ever reporting a final verdict - e.g. a licensing
+                    // error, a crash, or the "TapRunner Status" listener isn't enabled/connected.
+                    // Surface this as an error rather than quietly going back to Ready, so a real
+                    // failure can never look like nothing happened.
+                    PassedCircle.State = CircleState.Off;
+                    FailedCircle.State = CircleState.Off;
+                    AbortedCircle.State = CircleState.Off;
+                    ErrorCircle.State = CircleState.Full;
+
+                    var exitCode = TryGetExitCode(runningProcess);
+                    StatusMessageText.Text = "Process exited without reporting a result" +
+                        (exitCode is int code ? $" (exit code {code})" : "") +
+                        " - check for a licensing error or other startup failure, and confirm " +
+                        "\"TapRunner Status\" is enabled under Settings > Results in OpenTAP.";
                 }
 
                 ReadyCircle.State = CircleState.Full;
@@ -368,6 +392,12 @@ namespace TapRunner.App
             {
                 // already exiting/exited
             }
+        }
+
+        static int? TryGetExitCode(Process process)
+        {
+            try { return process?.ExitCode; }
+            catch { return null; }
         }
 
         void ExitButton_Click(object sender, RoutedEventArgs e) => Close();

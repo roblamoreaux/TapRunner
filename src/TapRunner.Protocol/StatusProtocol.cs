@@ -45,6 +45,12 @@ namespace TapRunner.Protocol
         /// <summary>The test plan run completed with an Aborted verdict.</summary>
         public const string StatusAborted = "STATUS|ABORTED";
 
+        /// <summary>
+        /// Prefix for a step-status line (see <see cref="StepStatusMessage"/>): reports the name,
+        /// verdict and a short summary of any results published by the most recently completed step.
+        /// </summary>
+        public const string StepPrefix = "STEP|";
+
         // ----- App -> Plugin: command messages -----
 
         /// <summary>Request a graceful/cooperative abort of the currently running test plan.</summary>

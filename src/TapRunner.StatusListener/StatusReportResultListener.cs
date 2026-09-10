@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using OpenTap;
@@ -32,6 +35,15 @@ namespace TapRunner.StatusListener
         bool sawFailedStep;
         bool sawErrorStep;
 
+        // Per-step-run bookkeeping so the "last step executed" summary can include its published
+        // outputs. Only ResultListener callbacks touch these, and OpenTAP guarantees those are
+        // called sequentially (never in parallel), so no locking is needed here.
+        readonly Dictionary<Guid, string> stepNames = new Dictionary<Guid, string>();
+        readonly Dictionary<Guid, List<string>> stepOutputs = new Dictionary<Guid, List<string>>();
+
+        /// <summary>Cap on the "outputs" summary sent per step, so one chatty step can't flood the pipe/UI.</summary>
+        const int MaxOutputsLength = 300;
+
         public StatusReportResultListener()
         {
             Name = "TapRunner Status";
@@ -41,6 +53,8 @@ namespace TapRunner.StatusListener
         {
             sawFailedStep = false;
             sawErrorStep = false;
+            stepNames.Clear();
+            stepOutputs.Clear();
 
             var pipeName = Environment.GetEnvironmentVariable(StatusProtocol.PipeNameEnvironmentVariable);
             if (string.IsNullOrEmpty(pipeName))
@@ -96,6 +110,36 @@ namespace TapRunner.StatusListener
             }
         }
 
+        public override void OnTestStepRunStart(TestStepRun stepRun)
+        {
+            stepNames[stepRun.Id] = stepRun.TestStepName;
+            stepOutputs[stepRun.Id] = new List<string>();
+        }
+
+        public override void OnResultPublished(Guid stepRunId, ResultTable result)
+        {
+            if (!stepOutputs.TryGetValue(stepRunId, out var list))
+            {
+                list = new List<string>();
+                stepOutputs[stepRunId] = list;
+            }
+
+            var columns = result.Columns
+                .Where(c => c.Data != null && c.Data.Length > 0)
+                .Select(c => $"{c.Name}={FormatValue(c.Data.GetValue(c.Data.Length - 1))}")
+                .ToList();
+
+            if (columns.Count > 0)
+                list.Add($"{result.Name}: {string.Join(", ", columns)}");
+        }
+
+        static string FormatValue(object value)
+        {
+            if (value is double d) return d.ToString("G6", CultureInfo.InvariantCulture);
+            if (value is float f) return f.ToString("G6", CultureInfo.InvariantCulture);
+            return Convert.ToString(value, CultureInfo.InvariantCulture) ?? "";
+        }
+
         public override void OnTestStepRunCompleted(TestStepRun stepRun)
         {
             if (stepRun.Verdict == Verdict.Fail && !sawFailedStep)
@@ -108,6 +152,23 @@ namespace TapRunner.StatusListener
                 sawErrorStep = true;
                 Send(StatusProtocol.StatusStepErrorPending);
             }
+
+            stepNames.TryGetValue(stepRun.Id, out var name);
+            stepOutputs.TryGetValue(stepRun.Id, out var outputsList);
+            var outputs = outputsList != null ? string.Join("; ", outputsList) : "";
+            if (outputs.Length > MaxOutputsLength)
+                outputs = outputs.Substring(0, MaxOutputsLength) + "...";
+
+            var stepStatus = new StepStatusMessage
+            {
+                Name = name ?? stepRun.TestStepName,
+                Verdict = stepRun.Verdict.ToString(),
+                Outputs = outputs,
+            };
+            Send(stepStatus.ToLine());
+
+            stepNames.Remove(stepRun.Id);
+            stepOutputs.Remove(stepRun.Id);
         }
 
         public override void OnTestPlanRunCompleted(TestPlanRun planRun, Stream logStream)
