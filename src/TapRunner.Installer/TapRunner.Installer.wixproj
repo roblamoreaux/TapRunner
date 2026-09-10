@@ -1,0 +1,22 @@
+<Project Sdk="WixToolset.Sdk/5.0.2">
+
+  <PropertyGroup>
+    <OutputName>TapRunnerSetup</OutputName>
+    <!-- The installer always packages Release bits, regardless of which configuration it is itself
+         built in - an installer built from Debug binaries isn't something we want to hand out. -->
+    <DefineConstants>PluginPackagePath=..\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.0.0.TapPackage</DefineConstants>
+    <SuppressPdbOutput>true</SuppressPdbOutput>
+    <Platform>x64</Platform>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="5.0.2" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TapRunner.App\TapRunner.App.csproj" AdditionalProperties="Configuration=Release" />
+    <ProjectReference Include="..\TapRunner.StatusListener\TapRunner.StatusListener.csproj" AdditionalProperties="Configuration=Release" />
+  </ItemGroup>
+
+</Project>

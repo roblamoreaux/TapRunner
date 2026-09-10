@@ -2,7 +2,10 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <!-- Matches the .NET Desktop runtime OpenTAP 9.33's own WPF-based tools (Editor, WPF Controls,
+         Results Viewer) already require, so a machine that can run those needs no new runtime
+         install just for TapRunner. -->
+    <TargetFramework>net9.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>

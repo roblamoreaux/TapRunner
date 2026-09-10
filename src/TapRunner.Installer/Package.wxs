@@ -1,0 +1,72 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+
+  <Package Name="TapRunner"
+           Manufacturer="New Eagle"
+           Version="1.0.0.0"
+           UpgradeCode="F6A46D88-35A5-4A92-B4AC-BC77526584E6"
+           Scope="perMachine">
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="TapRunner">
+        <Directory Id="PLUGINFOLDER" Name="Plugin" />
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="TapRunner" />
+    </StandardDirectory>
+
+    <!-- Application files, harvested from the TapRunner.App build output. -->
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.TapRunner.App.TargetDir)**" />
+    </ComponentGroup>
+
+    <!-- The OpenTAP StatusListener plugin package, dropped alongside the app for reference/manual install. -->
+    <Component Id="PluginPackageFile" Directory="PLUGINFOLDER" Guid="7B6C6F7A-6C7B-4E2A-9C3B-2B7B6B7A6C7B">
+      <File Id="PluginTapPackage" Source="$(var.PluginPackagePath)" KeyPath="yes" />
+    </Component>
+
+    <!-- Start Menu shortcut -->
+    <Component Id="ApplicationShortcut" Directory="ApplicationProgramsFolder" Guid="2A7B6B7A-6C7B-4E2A-9C3B-2B7B6B7A6C7C">
+      <Shortcut Id="ApplicationStartMenuShortcut"
+                Name="TapRunner"
+                Target="[INSTALLFOLDER]TapRunner.exe"
+                WorkingDirectory="INSTALLFOLDER" />
+      <RemoveFolder Id="CleanUpShortcut" Directory="ApplicationProgramsFolder" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\NewEagle\TapRunner" Name="Installed" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <!-- Best-effort install of the StatusListener plugin into OpenTAP (relies on tap.exe being on PATH,
+         which the OpenTAP installer sets up). Never blocks/fails the TapRunner install if OpenTAP or
+         tap.exe isn't found - the plugin is still available under <install dir>\Plugin for a manual
+         "tap package install" later. -->
+    <SetProperty Id="InstallPlugin"
+                 Value="&quot;cmd.exe&quot; /c tap.exe package install &quot;[PLUGINFOLDER]TapRunner.StatusListener.1.0.0.TapPackage&quot; --non-interactive -y --overwrite"
+                 Before="InstallPlugin"
+                 Sequence="execute" />
+    <CustomAction Id="InstallPlugin"
+                  DllEntry="WixQuietExec"
+                  BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+                  Execute="deferred"
+                  Return="ignore"
+                  Impersonate="no" />
+
+    <InstallExecuteSequence>
+      <Custom Action="InstallPlugin" After="InstallFiles" Condition="NOT Installed" />
+    </InstallExecuteSequence>
+
+    <Feature Id="Main" Title="TapRunner" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="PluginPackageFile" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+
+    <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+
+  </Package>
+</Wix>

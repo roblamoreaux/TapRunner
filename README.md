@@ -11,10 +11,16 @@ Built and verified against the OpenTAP install on this machine: **`C:\OpenTAP`, 
 TapRunner.sln
 Directory.Build.props          # pins the plugin's OpenTAP package version to 9.33.0
 src/
-  TapRunner.App/                # WPF app (net8.0-windows) - the operator-facing dialog
+  TapRunner.App/                # WPF app (net9.0-windows) - the operator-facing dialog
   TapRunner.StatusListener/     # OpenTAP ResultListener plugin (net9.0) - builds a .TapPackage
   TapRunner.Protocol/           # tiny shared library: the named-pipe wire protocol used by both
+  TapRunner.Installer/          # WiX v5 project - builds TapRunnerSetup.msi
 ```
+
+`TapRunner.App` targets net9.0-windows (not net8) specifically so it needs no .NET runtime beyond
+what OpenTAP 9.33's own WPF-based tools (Editor, WPF Controls, Results Viewer) already require on
+this machine - installing TapRunner shouldn't mean installing a second, different .NET Desktop
+Runtime alongside the one OpenTAP already needs.
 
 ## How it fits together
 
@@ -36,32 +42,59 @@ src/
 
 ## Building
 
-Requires the .NET 8+ SDK (already installed: `dotnet 10.0.400`).
+Requires the .NET 8+ SDK (already installed: `dotnet 10.0.400`). The installer project needs the
+WiX v5 build tooling, which restores from NuGet the first time you build it (same as the `OpenTAP`
+NuGet package used by the plugin) - nothing to install by hand.
 
 ```
 dotnet build TapRunner.sln -c Release
 ```
 
-Or open `TapRunner.sln` in Visual Studio and Build Solution. This produces:
+Or open `TapRunner.sln` in Visual Studio (with the [WiX Toolset Visual Studio
+extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToolsetVisualStudioExtension2022)
+installed, so it recognizes the `.wixproj`) and Build Solution. This produces:
 
-- `src\TapRunner.App\bin\Release\net8.0-windows\TapRunner.exe` - the app.
+- `src\TapRunner.App\bin\Release\net9.0-windows\TapRunner.exe` - the app, if you just want to run it as-is.
 - `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.0.0.TapPackage` - the plugin package.
+- `src\TapRunner.Installer\bin\x64\Release\TapRunnerSetup.msi` - the installer (see below).
 
-## One-time setup (per machine)
+## Installing with TapRunnerSetup.msi
 
-1. **Install the plugin package** into your OpenTAP installation:
-   ```
-   "C:\OpenTAP\tap.exe" package install "<repo>\src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.0.0.TapPackage"
-   ```
-2. **Enable it as a Result Listener**: open the OpenTAP Editor (`tap.exe editor`) or TUI, go to
-   *Settings → Results*, add **"TapRunner Status"** to the configured result listeners, and make
-   sure it's enabled (alongside whatever other listeners you already use, e.g. SQLite/CSV - they
-   all run together; TapRunner does not disable your other listeners).
-3. In `TapRunner.exe`, click **Settings...** and set the `tap.exe` path (defaults to
-   `C:\OpenTAP\tap.exe`) and the working directory you want the OpenTAP process run in.
+Double-click `TapRunnerSetup.msi` (or `msiexec /i TapRunnerSetup.msi` for a silent
+`/quiet` install). It:
 
-If step 2 is skipped, TapRunner still runs the plan - it just won't get any live status messages,
-and the app tells you so and returns the circles to Ready rather than guessing a verdict.
+1. Installs the app to `Program Files\TapRunner` and adds a Start Menu shortcut.
+2. Drops the plugin's `.TapPackage` under `Program Files\TapRunner\Plugin` for reference/manual reinstall.
+3. Best-effort runs `tap.exe package install ...--overwrite` on that file, using whatever `tap.exe`
+   is first on `PATH` (which is how the OpenTAP installer itself makes `tap` runnable from anywhere).
+   If OpenTAP isn't installed, or `tap` isn't on `PATH`, this step silently does nothing - it never
+   fails or blocks the TapRunner install itself, since machine setups vary.
+
+Uninstalling TapRunner (Windows Settings → Apps, or the same .msi again) removes the app and Start
+Menu shortcut, but does **not** uninstall the plugin package from OpenTAP - a live, working
+OpenTAP install isn't something an app uninstaller should touch. Remove it yourself with
+`tap package uninstall "TapRunner.StatusListener"` if you ever need to.
+
+**Either way**, one manual step remains after installing (can't be automated - it's a one-time
+choice in the OpenTAP bench settings, not a file the installer can just drop in place):
+
+- **Enable "TapRunner Status" as a Result Listener**: open the OpenTAP Editor (`tap.exe editor`) or
+  TUI, go to *Settings → Results*, add **"TapRunner Status"** to the configured result listeners
+  (it was installed in the step above), and make sure it's enabled - alongside whatever other
+  listeners you already use (SQLite/CSV etc.); they all run together, TapRunner doesn't disable them.
+- In `TapRunner.exe`, click **Settings...** and confirm the `tap.exe` path (defaults to
+  `C:\OpenTAP\tap.exe`) and the working directory you want the OpenTAP process run in.
+
+If the Result Listener step is skipped, TapRunner still runs the plan - it just won't get any live
+status messages, and the app tells you so and lights the Error circle rather than guessing a verdict.
+
+### Why WiX v5, not the current v7
+
+The installer project pins `WixToolset.Sdk/5.0.2` (and matching v5.0.2 extensions) rather than the
+latest WiX Toolset (v7). Starting with v6, the `wix` CLI requires accepting a new "Open Source
+Maintenance Fee" EULA before it will do anything - that's a licensing decision for New Eagle to
+make deliberately, not one to accept on your behalf while building this. WiX v5 remains under the
+original open license with no such prompt, and has everything this installer needs.
 
 ## Configuration file
 
@@ -103,6 +136,10 @@ and the app tells you so and returns the circles to Ready rather than guessing a
 
 ## Not yet done
 
-- No installer/publish profile - this is source only, built with `dotnet build`/Visual Studio.
-- The plugin package is not installed into `C:\OpenTAP` automatically - that's a deliberate
-  choice (installing into your live OpenTAP setup should be your call), see "One-time setup" above.
+- The installer is unsigned - Windows SmartScreen/UAC will show an "Unknown publisher" warning.
+  Code-signing would need a New Eagle code-signing certificate, which isn't something to set up
+  without asking.
+- No auto-update - each machine needs `TapRunnerSetup.msi` re-run to pick up a new version (the
+  `MajorUpgrade` element in `Package.wxs` handles clean upgrades/downgrade-blocking when you do).
+- Enabling "TapRunner Status" under Settings → Results in OpenTAP is still a manual, one-time step
+  per machine (see above) - it's a bench-settings choice, not a file the installer can drop in place.
