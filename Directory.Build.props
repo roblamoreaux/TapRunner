@@ -1,0 +1,8 @@
+<Project>
+  <!-- Keep the StatusListener plugin built against the exact OpenTAP version
+       that is installed on this machine (C:\OpenTAP), so the built .TapPackage
+       is guaranteed compatible with the "tap.exe" the app shells out to. -->
+  <PropertyGroup>
+    <OpenTapVersion>9.33.0</OpenTapVersion>
+  </PropertyGroup>
+</Project>
