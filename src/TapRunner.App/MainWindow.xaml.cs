@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
 using System.Windows.Media;
 using Microsoft.Win32;
 using TapRunner.App.Models;
@@ -27,6 +29,10 @@ namespace TapRunner.App
         StatusPipeServer pipeServer;
         bool receivedTerminalStatus;
         bool userInitiatedAbort;
+
+        // Oldest first, newest last; capped at MaxStepHistoryLines so older ones roll off the top.
+        readonly List<string> stepHistory = new();
+        const int MaxStepHistoryLines = 1000;
 
         public MainWindow()
         {
@@ -245,10 +251,34 @@ namespace TapRunner.App
             runningProcess.Exited += RunningProcess_Exited;
             SetRunningState();
             StatusMessageText.Text = "Running...";
-            LastStepText.Text = "No steps run yet.";
-            LastStepText.ToolTip = null;
+            stepHistory.Clear();
+            UpdateStepHistoryDisplay();
 
-            await Task.CompletedTask;
+            // tap.exe opens its own console window (headless run or TUI), which can grab the
+            // foreground as it appears. Give it a moment to actually show up, then reclaim focus
+            // so the operator lands back on TapRunner's status circles rather than the console.
+            await Task.Delay(400);
+            BringToFront();
+        }
+
+        void BringToFront()
+        {
+            if (WindowState == WindowState.Minimized)
+                WindowState = WindowState.Normal;
+
+            Show();
+            Activate();
+
+            var hwnd = new WindowInteropHelper(this).Handle;
+            if (hwnd != IntPtr.Zero)
+                NativeMethods.SetForegroundWindow(hwnd);
+        }
+
+        void UseTuiCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            // TUI opens the plan in OpenTAP's interactive text UI rather than running it headless,
+            // so "Run" is misleading while it's checked - the operator is going there to edit/view it.
+            RunButton.Content = UseTuiCheckBox.IsChecked == true ? "Edit" : "Run";
         }
 
         void OnStatusReceived(string message)
@@ -257,11 +287,15 @@ namespace TapRunner.App
             {
                 if (StepStatusMessage.TryParse(message, out var step))
                 {
-                    var text = $"Last step: {step.Name} — {step.Verdict}";
+                    var summary = $"{step.Name} — {step.Verdict}";
                     if (!string.IsNullOrWhiteSpace(step.Outputs))
-                        text += $"   {step.Outputs}";
-                    LastStepText.Text = text;
-                    LastStepText.ToolTip = text;
+                        summary += $"   {step.Outputs}";
+
+                    stepHistory.Add(summary);
+                    if (stepHistory.Count > MaxStepHistoryLines)
+                        stepHistory.RemoveAt(0);
+
+                    UpdateStepHistoryDisplay();
                     return;
                 }
 
@@ -290,6 +324,24 @@ namespace TapRunner.App
                         break;
                 }
             });
+        }
+
+        void UpdateStepHistoryDisplay()
+        {
+            if (stepHistory.Count == 0)
+            {
+                StepHistoryText.Text = "No steps run yet.";
+                return;
+            }
+
+            // Only follow new lines to the bottom if the operator hasn't scrolled up to review
+            // history - otherwise appending text would keep yanking them back down.
+            bool wasAtBottom = StepHistoryText.VerticalOffset >= StepHistoryText.ExtentHeight - StepHistoryText.ViewportHeight - 1.0;
+
+            StepHistoryText.Text = string.Join(Environment.NewLine, stepHistory);
+
+            if (wasAtBottom)
+                StepHistoryText.ScrollToEnd();
         }
 
         void FinishRun(Controls.StatusCircle verdictCircle)
@@ -426,5 +478,12 @@ namespace TapRunner.App
             config.OperatorName = OperatorNameText.Text;
             config.UseTui = UseTuiCheckBox.IsChecked == true;
         }
+    }
+
+    static class NativeMethods
+    {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
     }
 }

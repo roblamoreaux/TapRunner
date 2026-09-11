@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:TapRunner.App.Controls"
         Title="TapRunner" Height="620" Width="760" MinHeight="480" MinWidth="620"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Icon="Assets/TapRunner.ico">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -62,16 +62,12 @@
             </ScrollViewer>
         </GroupBox>
 
-        <!-- Last step executed -->
-        <Border Grid.Row="3" Grid.Column="0" Margin="0,0,0,10" Padding="6,4" BorderBrush="#FFBBBBBB" BorderThickness="1" Background="#FFF5F5F5">
-            <TextBlock x:Name="LastStepText" Text="No steps run yet." FontFamily="Consolas" FontSize="12" TextTrimming="CharacterEllipsis"/>
-        </Border>
-
         <!-- TUI option -->
-        <CheckBox x:Name="UseTuiCheckBox" Grid.Row="4" Grid.Column="0" Content="Run with TUI (text-based interface)" Margin="0,0,0,10"/>
+        <CheckBox x:Name="UseTuiCheckBox" Grid.Row="3" Grid.Column="0" Content="Edit with TUI (text-based interface)" Margin="0,0,0,10"
+                  Checked="UseTuiCheckBox_CheckedChanged" Unchecked="UseTuiCheckBox_CheckedChanged"/>
 
         <!-- Run / Stop / Abort / Exit -->
-        <StackPanel Grid.Row="5" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,6">
+        <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,6">
             <Button x:Name="RunButton" Content="Run" Width="90" Height="32" Margin="0,0,8,0" Click="RunButton_Click"/>
             <Button x:Name="StopButton" Content="Stop" Width="90" Height="32" Margin="0,0,8,0" Click="StopButton_Click" IsEnabled="False"/>
             <Button x:Name="AbortButton" Content="Abort" Width="90" Height="32" Margin="0,0,8,0" Click="AbortButton_Click" IsEnabled="False"/>
@@ -79,11 +75,22 @@
             <Button x:Name="SettingsButton" Content="Settings..." Width="90" Height="32" Click="SettingsButton_Click"/>
         </StackPanel>
 
+        <!-- Step history: last 1000 completed steps, one per line, scrollable so the operator can
+             review past steps without losing the running display. -->
+        <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,10" BorderBrush="#FFBBBBBB" BorderThickness="1">
+            <TextBox x:Name="StepHistoryText" Text="No steps run yet."
+                     IsReadOnly="True" IsReadOnlyCaretVisible="False"
+                     FontFamily="Consolas" FontSize="12"
+                     TextWrapping="NoWrap" Height="80"
+                     VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                     BorderThickness="0" Background="#FFF5F5F5"/>
+        </Border>
+
         <!-- Status line -->
         <TextBlock x:Name="StatusMessageText" Grid.Row="6" Grid.Column="0" Foreground="DimGray" TextWrapping="Wrap"/>
 
         <!-- Status circles -->
-        <GroupBox Header="Status" Grid.Row="0" Grid.RowSpan="6" Grid.Column="1">
+        <GroupBox Header="Status" Grid.Row="0" Grid.RowSpan="5" Grid.Column="1">
             <StackPanel Margin="6" VerticalAlignment="Top">
                 <controls:StatusCircle x:Name="ReadyCircle" Label="Ready" Margin="0,4"/>
                 <controls:StatusCircle x:Name="RunningCircle" Label="Running" Margin="0,4"/>
@@ -91,6 +98,7 @@
                 <controls:StatusCircle x:Name="FailedCircle" Label="Failed" Margin="0,4"/>
                 <controls:StatusCircle x:Name="ErrorCircle" Label="Error" Margin="0,4"/>
                 <controls:StatusCircle x:Name="AbortedCircle" Label="Aborted" Margin="0,4"/>
+                <Image Source="Assets/TapRunner.png" Width="130" Margin="0,20,0,4" Stretch="Uniform" HorizontalAlignment="Center"/>
             </StackPanel>
         </GroupBox>
     </Grid>

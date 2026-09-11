@@ -11,11 +11,22 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>TapRunner</AssemblyName>
     <RootNamespace>TapRunner.App</RootNamespace>
-    <ApplicationIcon></ApplicationIcon>
+    <ApplicationIcon>Assets\TapRunner.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TapRunner.Protocol\TapRunner.Protocol.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- TapRunner.ico (generated from TapRunner.png at 16/24/32/48/64/128/256px) is both the exe
+         icon (ApplicationIcon above) and the runtime window/taskbar icon (MainWindow.xaml). -->
+    <Resource Include="Assets\TapRunner.ico" />
+    <!-- TapRunner.png: SplashScreen embeds it as a resource AND makes WPF show it automatically,
+         with no code needed, as soon as the exe launches, fading out once the main window is
+         ready. That same embedded resource is also what MainWindow.xaml's logo Image references -
+         it can't also be listed as a plain Resource item, or the two collide on the same key. -->
+    <SplashScreen Include="Assets\TapRunner.png" />
   </ItemGroup>
 
 </Project>
