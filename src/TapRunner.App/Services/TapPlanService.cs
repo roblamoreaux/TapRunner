@@ -70,6 +70,11 @@ namespace TapRunner.App.Services
                 psi.ArgumentList.Add("run");
                 psi.ArgumentList.Add(planPath);
                 psi.ArgumentList.Add("--non-interactive");
+                if (!string.IsNullOrWhiteSpace(config.OpenTapProfile))
+                {
+                    psi.ArgumentList.Add("--settings");
+                    psi.ArgumentList.Add(config.OpenTapProfile);
+                }
                 foreach (var p in parameters)
                 {
                     psi.ArgumentList.Add("-e");

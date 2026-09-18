@@ -37,6 +37,14 @@ namespace TapRunner.App.Models
         public string TapExecutablePath { get; set; } = @"C:\OpenTAP\tap.exe";
 
         /// <summary>
+        /// Name of the OpenTAP bench settings profile to run with - a subdirectory of
+        /// &lt;OpenTAP install dir&gt;\Settings\Bench, passed as "tap run --settings &lt;name&gt;".
+        /// Blank means don't pass --settings at all, so OpenTAP uses its own default ("Default").
+        /// Only applies to a headless run - the "tui" CLI action has no --settings option.
+        /// </summary>
+        public string OpenTapProfile { get; set; } = "";
+
+        /// <summary>
         /// Test station name. Defaults to the Windows device name the first time TapRunner ever
         /// runs on a machine (i.e. there's no config.json yet - right after installing, typically);
         /// once saved, that value (blank or not) is what's loaded from then on, so a deliberately

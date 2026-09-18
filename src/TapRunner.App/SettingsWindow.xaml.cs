@@ -34,6 +34,8 @@ namespace TapRunner.App
             this.currentParameters = currentParameters?.ToList() ?? new List<ParameterEntry>();
 
             TapExecutablePathText.Text = workingConfig.TapExecutablePath;
+            PopulateProfileList();
+            ProfileComboBox.Text = workingConfig.OpenTapProfile;
             WorkingDirectoryText.Text = workingConfig.WorkingDirectory;
             StationNameText.Text = workingConfig.StationName;
             LogFilePathText.Text = workingConfig.LogFilePath;
@@ -44,6 +46,34 @@ namespace TapRunner.App
             DefaultParametersGrid.ItemsSource = defaultParameterRows;
 
             BuildColorRows();
+        }
+
+        /// <summary>
+        /// Fills the profile dropdown with the subdirectory names under
+        /// "&lt;OpenTAP install dir&gt;\Settings\Bench" (each one is a bench settings profile) -
+        /// derived from the current Tap executable path. Missing/inaccessible just means an empty
+        /// list; the combo box is still editable, so a profile name can always be typed manually.
+        /// </summary>
+        void PopulateProfileList()
+        {
+            ProfileComboBox.Items.Clear();
+            try
+            {
+                var tapDir = System.IO.Path.GetDirectoryName(TapExecutablePathText.Text);
+                if (string.IsNullOrWhiteSpace(tapDir))
+                    return;
+
+                var benchDir = System.IO.Path.Combine(tapDir, "Settings", "Bench");
+                if (!System.IO.Directory.Exists(benchDir))
+                    return;
+
+                foreach (var dir in System.IO.Directory.GetDirectories(benchDir).OrderBy(d => d, StringComparer.OrdinalIgnoreCase))
+                    ProfileComboBox.Items.Add(System.IO.Path.GetFileName(dir));
+            }
+            catch
+            {
+                // Best-effort only - an empty list just means typing the profile name manually.
+            }
         }
 
         void CopyFromCurrentPlanButton_Click(object sender, RoutedEventArgs e)
@@ -159,6 +189,7 @@ namespace TapRunner.App
         void OkButton_Click(object sender, RoutedEventArgs e)
         {
             workingConfig.TapExecutablePath = TapExecutablePathText.Text.Trim();
+            workingConfig.OpenTapProfile = ProfileComboBox.Text.Trim();
             workingConfig.WorkingDirectory = WorkingDirectoryText.Text.Trim();
             workingConfig.StationName = StationNameText.Text.Trim();
             workingConfig.LogFilePath = LogFilePathText.Text.Trim();
@@ -204,6 +235,7 @@ namespace TapRunner.App
                 LastTapPlanPath = source.LastTapPlanPath,
                 WorkingDirectory = source.WorkingDirectory,
                 TapExecutablePath = source.TapExecutablePath,
+                OpenTapProfile = source.OpenTapProfile,
                 StationName = source.StationName,
                 LogFilePath = source.LogFilePath,
                 ClearFailureLogOnRun = source.ClearFailureLogOnRun,

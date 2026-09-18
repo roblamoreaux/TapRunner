@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using TapRunner.App.Models;
 using TapRunner.App.Services;
@@ -35,9 +36,16 @@ namespace TapRunner.App
         readonly List<string> stepHistory = new();
         const int MaxStepHistoryLines = 1000;
 
+        // Runtime display under the logo: starts the instant the process is spawned, stops (and
+        // freezes on the final value) the instant the run ends, however it ends.
+        readonly Stopwatch runStopwatch = new();
+        readonly DispatcherTimer runtimeTimer = new() { Interval = TimeSpan.FromSeconds(1) };
+
         public MainWindow()
         {
             InitializeComponent();
+
+            runtimeTimer.Tick += (_, _) => UpdateRuntimeDisplay();
 
             config = configService.Load();
             ParametersList.ItemsSource = parameters;
@@ -47,6 +55,7 @@ namespace TapRunner.App
 
             OperatorNameText.Text = config.OperatorName;
             StationNameText.Text = string.IsNullOrWhiteSpace(config.StationName) ? "" : $"Station: {config.StationName}";
+            ProfileNameText.Text = string.IsNullOrWhiteSpace(config.OpenTapProfile) ? "" : $"Profile: {config.OpenTapProfile}";
             UseTuiCheckBox.IsChecked = config.UseTui;
 
             ApplyStatusColorsFromConfig();
@@ -290,6 +299,7 @@ namespace TapRunner.App
             SetStatusMessage("Running...");
             stepHistory.Clear();
             UpdateStepHistoryDisplay();
+            StartRuntimeTimer();
 
             // tap.exe opens its own console window (headless run or TUI), which can grab the
             // foreground as it appears. Give it a moment to actually show up, then reclaim focus
@@ -406,9 +416,32 @@ namespace TapRunner.App
                 StepHistoryText.ScrollToEnd();
         }
 
+        void StartRuntimeTimer()
+        {
+            runStopwatch.Restart();
+            UpdateRuntimeDisplay();
+            runtimeTimer.Start();
+        }
+
+        /// <summary>Idempotent - safe to call from every "the run just ended" path, however it ended.</summary>
+        void StopRuntimeTimer()
+        {
+            if (!runtimeTimer.IsEnabled)
+                return;
+            runtimeTimer.Stop();
+            UpdateRuntimeDisplay(); // one last update so the frozen value is exact, not off by up to a second
+        }
+
+        void UpdateRuntimeDisplay()
+        {
+            var elapsed = runStopwatch.Elapsed;
+            RuntimeText.Text = $"{(int)elapsed.TotalHours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}";
+        }
+
         void FinishRun(Controls.StatusCircle verdictCircle)
         {
             receivedTerminalStatus = true;
+            StopRuntimeTimer();
             PassedCircle.State = CircleState.Off;
             FailedCircle.State = CircleState.Off;
             ErrorCircle.State = CircleState.Off;
@@ -431,8 +464,10 @@ namespace TapRunner.App
                 }
 
                 // The process is no longer running, full stop - Running must never be left lit/flashing
-                // past this point, regardless of what (if anything) was reported.
+                // past this point, regardless of what (if anything) was reported. Same for the runtime
+                // timer - if FinishRun already stopped it, this is a harmless no-op.
                 RunningCircle.State = CircleState.Off;
+                StopRuntimeTimer();
 
                 if (!userInitiatedAbort && !receivedTerminalStatus)
                 {
@@ -487,6 +522,7 @@ namespace TapRunner.App
 
             userInitiatedAbort = true;
             KillRunningProcess();
+            StopRuntimeTimer();
 
             RunningCircle.State = CircleState.Off;
             PassedCircle.State = CircleState.Off;
@@ -527,6 +563,7 @@ namespace TapRunner.App
                 config = settingsWindow.Result;
                 configService.Save(config);
                 StationNameText.Text = string.IsNullOrWhiteSpace(config.StationName) ? "" : $"Station: {config.StationName}";
+                ProfileNameText.Text = string.IsNullOrWhiteSpace(config.OpenTapProfile) ? "" : $"Profile: {config.OpenTapProfile}";
                 ApplyStatusColorsFromConfig();
                 logService.SetLogFilePath(config.LogFilePath);
                 logService.EnsureLogFilesExist();

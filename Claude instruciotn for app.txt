@@ -18,6 +18,8 @@ Include a status line showing the last step executed and its verdict and outputs
 When the script exits without a status such as when there is a licensing error the running circle should turn off and indicate this was an error
 change the status bar to be four lines tall with a history of 1000 line and scrollbar when needed. show the last four steps without "Last step:" at the beginning. also make the status bar full width
 
+When installing or at first run set the Station name in settings to the windows device name
+The fail log should include the TapPlan name and timestamp at the beginning and there should be a button in settings to make the Fail log persistent across runs or cleared at the beginning of each run
 
 also create a WiX MSI installer
 
@@ -27,6 +29,15 @@ Make sure the setting that override the Testplan configured parameters are shown
 
  Save test steps that have a verdict of Fail or Error to an additional log. This log should be as many lines as possible, and when a Failed button is pressed it should be opened in a separate window for the user to scroll through.
  Make sure all steps are shown whether they return a results or not. This can be by showing what step is running in the bottom status line then putting it in the status log box
+
+When I put the parameter Serial Number in the setting dialog and load a TapPLan such as PowerOn.TapPlan the value in settings is not overriding the value in the TapPlan.  Operator Name is working though. Please fix this so anything in settings overrides the tapplan.
+
+IN the settings include a button to copy all of the current Testplan parameters to the settings and bump the minor version
+
+Add in the settings area the OpenTap Profile to use with a dropdown box to select any of the profiles in the OpenTap/Setting/Bench directory. The profile should be displayed in the operator box like the station name is
+include a runtime  timer under the TapRunner logo that starts when the test is spawned and ends when the test completes so the use can see how long the test is taking.
+
+
 
 Update the version number by a minor level.
 

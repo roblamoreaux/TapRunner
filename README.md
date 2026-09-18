@@ -42,11 +42,15 @@ Runtime alongside the one OpenTAP already needs.
    (before its verdict/outputs are known), which the app shows as "Running: &lt;step name&gt;..."
    in the status line - so a step that never publishes a result (many simple/flow-control steps
    don't) is still visibly executing, not just silent until (or unless) it finishes.
-4. **Stop** sends a "please stop" message back down the same pipe; the plugin calls
+4. A runtime clock under the logo (`hh:mm:ss`, counting actual hours past 24 rather than wrapping)
+   starts the instant the `tap.exe` process is spawned and stops - freezing on the final value -
+   the instant the run ends, however it ends (normal finish, Abort, or an unreported process exit),
+   so the operator can see how long the current or most recent run has taken.
+5. **Stop** sends a "please stop" message back down the same pipe; the plugin calls
    `TestPlanRun.MainThread.Abort()`, which is OpenTAP's normal cooperative abort (finishes the
    current step, runs cleanup/post-plan-run steps, then ends - verdict is normally `Aborted`).
    **Abort** bypasses the plugin entirely and kills the `tap.exe` process tree immediately.
-5. Every status-line message and every completed step is also appended to a running session log
+6. Every status-line message and every completed step is also appended to a running session log
    (**Open Log**), and any step that finishes Fail/Error additionally gets a fuller, multi-line
    entry in a second, uncapped log (**Failed**) - see "Logging" below.
 
@@ -123,6 +127,14 @@ original open license with no such prompt, and has everything this installer nee
 
 - `LastTapPlanPath` - auto-updated; reopened and its parameters reloaded on startup if the file still exists.
 - `WorkingDirectory`, `TapExecutablePath` - where/what to run.
+- `OpenTapProfile` - which OpenTAP bench settings profile to run with, edited via **Settings →
+  OpenTAP profile**. The dropdown lists every subdirectory of `<TapExecutablePath's folder>\Settings\Bench`
+  (each one is a profile OpenTAP itself created) - it's also a plain editable text box, so a
+  profile name can be typed in directly if it's not in the list (or doesn't exist yet). Blank (the
+  default) means don't pass `--settings` at all, so OpenTAP uses its own default ("Default"). Shown
+  in the main window next to Station as "Profile: &lt;name&gt;" when set. **Only applies to a
+  headless run** - like external parameters, the `tui` CLI action has no `--settings` option, so
+  TUI mode always uses whatever profile OpenTAP itself currently has selected.
 - `StationName`, `OperatorName` - free text; OperatorName is also editable directly in the main window.
   StationName defaults to the Windows device name the first time TapRunner runs on a machine (i.e.
   there's no `config.json` yet - typically right after installing); after that, whatever's saved is
@@ -187,9 +199,11 @@ original open license with no such prompt, and has everything this installer nee
   original choice, vs. embedding OpenTap.dll) gives names and default values as text but not their
   real type, so there's no dropdown for enum/`AvailableValues` parameters or a checkbox for
   booleans - just a text box, same as you'd type after `-e Name=`.
-- **TUI mode has no parameter pass-through.** OpenTAP's `tap.exe tui` CLI action doesn't accept
-  `-e` overrides, so values entered in TapRunner's dialog are *not* carried into a TUI session -
-  the operator sets/reviews them inside the TUI itself. Live status circles still work there.
+- **TUI mode has no parameter or profile pass-through.** OpenTAP's `tap.exe tui` CLI action doesn't
+  accept `-e` overrides or `--settings`, so neither the parameter values entered in TapRunner's
+  dialog nor the selected OpenTAP profile are carried into a TUI session - the operator sets/
+  reviews parameters inside the TUI itself, and it runs with whatever profile OpenTAP already has
+  selected there. Live status circles still work there.
 - **Pending vs. final Fail/Error**: the spec called out the Failed circle going half-lit on a step
   failure mid-run; I applied the same "pending" treatment to the Error circle for a step `Error`
   verdict, for symmetry. Only the circle matching the plan's *final* verdict goes fully lit.

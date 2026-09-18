@@ -18,6 +18,9 @@
                         <TextBox x:Name="TapExecutablePathText" VerticalContentAlignment="Center"/>
                     </DockPanel>
 
+                    <TextBlock Text="OpenTAP profile (blank = OpenTAP's own default; TUI mode ignores this - it has no --settings option):" Margin="0,10,0,2" TextWrapping="Wrap"/>
+                    <ComboBox x:Name="ProfileComboBox" IsEditable="True" VerticalContentAlignment="Center"/>
+
                     <TextBlock Text="Working directory (directory to run OpenTAP in):" Margin="0,10,0,2"/>
                     <DockPanel>
                         <Button Content="Browse..." Width="80" DockPanel.Dock="Right" Margin="6,0,0,0" Click="BrowseWorkingDirectory_Click"/>

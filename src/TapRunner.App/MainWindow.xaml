@@ -34,10 +34,12 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="Operator:" VerticalAlignment="Center" Margin="0,0,6,0"/>
                 <TextBox x:Name="OperatorNameText" Grid.Column="1" VerticalContentAlignment="Center"/>
                 <TextBlock x:Name="StationNameText" Grid.Column="2" VerticalAlignment="Center" Margin="12,0,0,0" FontStyle="Italic"/>
+                <TextBlock x:Name="ProfileNameText" Grid.Column="3" VerticalAlignment="Center" Margin="12,0,0,0" FontStyle="Italic"/>
             </Grid>
         </GroupBox>
 
@@ -111,6 +113,9 @@
                 <controls:StatusCircle x:Name="ErrorCircle" Label="Error" Margin="0,4"/>
                 <controls:StatusCircle x:Name="AbortedCircle" Label="Aborted" Margin="0,4"/>
                 <Image Source="Assets/TapRunner.png" Width="130" Margin="0,20,0,4" Stretch="Uniform" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="RuntimeText" Text="00:00:00" HorizontalAlignment="Center"
+                           FontFamily="Consolas" FontSize="16" Margin="0,2,0,0"
+                           ToolTip="How long the current (or most recent) run has taken."/>
             </StackPanel>
         </GroupBox>
     </Grid>
