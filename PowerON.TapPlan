@@ -1,0 +1,3606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <OpenTap.Mixins>
+    <CheckVersion type="OpenTap.BooleanMixinBuilder">
+      <Name>CheckVersion</Name>
+      <Options>Output</Options>
+    </CheckVersion>
+  </OpenTap.Mixins>
+  <Steps>
+    <TestStep type="OpenTap.Plugins.BasicSteps.LogStep" Id="52cf167d-b743-4b59-ab48-ed8b654d7361">
+      <OpenTap.Mixins>
+        <PlatformMajor type="OpenTap.NumberMixinBuilder">
+          <Name>PlatformMajor</Name>
+          <Options>Output</Options>
+          <Unit>s</Unit>
+        </PlatformMajor>
+        <AppSub type="OpenTap.NumberMixinBuilder">
+          <Name>AppSub</Name>
+          <Options>Output</Options>
+          <Unit>s</Unit>
+        </AppSub>
+        <AppMajor type="OpenTap.NumberMixinBuilder">
+          <Name>AppMajor</Name>
+          <Options>Output</Options>
+          <Unit>s</Unit>
+        </AppMajor>
+        <AppMinor type="OpenTap.NumberMixinBuilder">
+          <Name>AppMinor</Name>
+          <Options>Output</Options>
+          <Unit>s</Unit>
+        </AppMinor>
+        <OC-Check type="OpenTap.NumberMixinBuilder">
+          <Name>OC-Check</Name>
+          <Options>Result, Output</Options>
+          <Unit>s</Unit>
+        </OC-Check>
+        <PlatformSub type="OpenTap.NumberMixinBuilder">
+          <Name>PlatformSub</Name>
+          <Options>Output</Options>
+          <Unit>s</Unit>
+        </PlatformSub>
+        <PlatformMinor type="OpenTap.NumberMixinBuilder">
+          <Name>PlatformMinor</Name>
+          <Options>Output</Options>
+          <Unit>s</Unit>
+        </PlatformMinor>
+      </OpenTap.Mixins>
+      <LogMessage>Starting Power On</LogMessage>
+      <Severity>Info</Severity>
+      <Name Metadata="Step Name">Start Power On Script</Name>
+      <ChildTestSteps />
+      <PlatformMajor Parameter="Parameters \ PlatformMajor">4</PlatformMajor>
+      <AppSub Parameter="Parameters \ AppSub">0</AppSub>
+      <AppMajor Parameter="Parameters \ AppMajor">5</AppMajor>
+      <AppMinor Parameter="Parameters \ AppMinor">0</AppMinor>
+      <OC-Check Parameter="Parameters \ OC-Check">0</OC-Check>
+      <PlatformSub Parameter="Parameters \ PlatformSub">0</PlatformSub>
+      <PlatformMinor Parameter="Parameters \ PlatformMinor">7</PlatformMinor>
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteStep" Id="d97717fe-e539-4a34-9a89-b116e02885b8">
+      <RSMAddress>127</RSMAddress>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Value>170</Value>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">RSM Write Byte by Address Step</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.OperatorPanelLite.OperatorInputsReceiver" Id="e5bbb56a-40a9-4dd2-9596-4fede2769de5">
+      <OperatorName Parameter="Parameters \ Operator Name">RDL</OperatorName>
+      <TestName Parameter="Parameters \ Test Name">Roush 00G EOLT</TestName>
+      <SerialNumber Parameter="Parameters \ Serial Number">2403000100459</SerialNumber>
+      <PartNumber Parameter="Parameters \ Part Number">01T-0700412-03M00</PartNumber>
+      <TestNotes Parameter="Parameters \ Test Notes">Testing Roush 00G Option Control units</TestNotes>
+      <OptionControl />
+      <OCCode>0</OCCode>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Operator Inputs Receiver</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixReset" Id="5fbfb8cc-973d-4e3a-b3a2-c03a9a404cbc">
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Name Metadata="Step Name">RSM Reset Step</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="55d72374-9d07-49fb-ad3d-f630b568c0cd">
+      <DelaySecs>1</DelaySecs>
+      <Name Metadata="Step Name">Delay (4)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="LabJackProject.LabjackWriteNameStep" Id="f429cd05-67bf-4d41-ba8f-628afb4d94ee">
+      <LBName>AIN_ALL_RANGE</LBName>
+      <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+      <Value>10</Value>
+      <Name Metadata="Step Name">LabjackSet AIN Range</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="LabJackProject.LabjackReadNameStep" Id="2871328e-fa1b-44f1-b8fe-8bb52ac11948">
+      <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+      <LBName>SERIAL_NUMBER</LBName>
+      <LimitCheckEnabled>false</LimitCheckEnabled>
+      <MaxLimit>9999999</MaxLimit>
+      <MinLimit>-9999999</MinLimit>
+      <Name Metadata="Step Name">Labjack Serial Number</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="e411b16d-e2dd-4cd8-a481-c0dbe5dacbbd">
+      <ListOfAvailableValues>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>bpo</Filter>
+      <RSMChannelName>BPOS.CTRLBYTE</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Name Metadata="Step Name">Clear BPOS bits</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="862310c0-af9a-42d3-a89d-0f87cbeb1de3">
+      <ListOfAvailableValues>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>bneg</Filter>
+      <RSMChannelName>BNEG.CTRLBYTE</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Name Metadata="Step Name">Clear BNEG bits</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="7cf0dc9f-c02c-4b5a-9c04-42da77a43d88">
+      <ListOfAvailableValues>
+        <String>HBR1.MEAS</String>
+        <String>HBR1.LMEAS</String>
+        <String>HBR1.SRC1</String>
+        <String>HBR1.SRC2</String>
+        <String>HBR1.DUTA</String>
+        <String>HBR1.DUTB</String>
+        <String>HBR1.LDUTA</String>
+        <String>HBR2.MEAS</String>
+        <String>HBR2.LMEAS</String>
+        <String>HBR2.SRC1</String>
+        <String>HBR2.SRC2</String>
+        <String>HBR2.DUTA</String>
+        <String>HBR2.DUTB</String>
+        <String>HBR2.LDUTA</String>
+        <String>HBR3.MEAS</String>
+        <String>HBR3.LMEAS</String>
+        <String>HBR3.SRC1</String>
+        <String>HBR3.SRC2</String>
+        <String>HBR3.DUTA</String>
+        <String>HBR3.DUTB</String>
+        <String>HBR3.LDUTA</String>
+        <String>HBR4.MEAS</String>
+        <String>HBR4.LMEAS</String>
+        <String>HBR4.SRC1</String>
+        <String>HBR4.SRC2</String>
+        <String>HBR4.DUTA</String>
+        <String>HBR4.DUTB</String>
+        <String>HBR4.LDUTA</String>
+        <String>HBR4A.BPOS</String>
+        <String>HBR4B.BNEG</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>HBR</Filter>
+      <RSMChannelName>HBR4B.BNEG</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Turn on HBR4B.BNEG</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="6bc55ff2-99d7-405b-b30c-38b6be7da988">
+      <DelaySecs>0.25</DelaySecs>
+      <Name Metadata="Step Name">Delay (1) (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="5386a59e-f18b-43de-a593-3b816a0931b4">
+      <ListOfAvailableValues>
+        <String>HBR1.MEAS</String>
+        <String>HBR1.LMEAS</String>
+        <String>HBR1.SRC1</String>
+        <String>HBR1.SRC2</String>
+        <String>HBR1.DUTA</String>
+        <String>HBR1.DUTB</String>
+        <String>HBR1.LDUTA</String>
+        <String>HBR2.MEAS</String>
+        <String>HBR2.LMEAS</String>
+        <String>HBR2.SRC1</String>
+        <String>HBR2.SRC2</String>
+        <String>HBR2.DUTA</String>
+        <String>HBR2.DUTB</String>
+        <String>HBR2.LDUTA</String>
+        <String>HBR3.MEAS</String>
+        <String>HBR3.LMEAS</String>
+        <String>HBR3.SRC1</String>
+        <String>HBR3.SRC2</String>
+        <String>HBR3.DUTA</String>
+        <String>HBR3.DUTB</String>
+        <String>HBR3.LDUTA</String>
+        <String>HBR4.MEAS</String>
+        <String>HBR4.LMEAS</String>
+        <String>HBR4.SRC1</String>
+        <String>HBR4.SRC2</String>
+        <String>HBR4.DUTA</String>
+        <String>HBR4.DUTB</String>
+        <String>HBR4.LDUTA</String>
+        <String>HBR4A.BPOS</String>
+        <String>HBR4B.BNEG</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>HBR</Filter>
+      <RSMChannelName>HBR4A.BPOS</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Turn on HBR4A.BPOS</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="8cdaadff-940c-455b-818d-574e665d6a54">
+      <DelaySecs>0.25</DelaySecs>
+      <Name Metadata="Step Name">Delay (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="d8e90b1b-11a8-4479-b46c-79b1287c9463">
+      <ListOfAvailableValues>
+        <String>HBR4A.BPOS</String>
+        <String>BPOS.VTEST</String>
+        <String>BPOS.GND</String>
+        <String>BPOS.MEAS</String>
+        <String>BPOS.RST</String>
+        <String>BPOS.OC</String>
+        <String>IGN.BPOS</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>BP</Filter>
+      <RSMChannelName>BPOS.VTEST</RSMChannelName>
+      <OnOff>false</OnOff>
+      <Name Metadata="Step Name">disConnect BPOS to VTEST</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="28c1af6b-45c8-4bf1-a668-42e8c5ad47f7">
+      <DelaySecs>0.25</DelaySecs>
+      <Name Metadata="Step Name">Delay (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="d530cebc-c6ac-4946-b3cc-3ab63cd7cd0b">
+      <ListOfAvailableValues>
+        <String>VREFA.LLBNEG</String>
+        <String>VREFB.LLBNEG</String>
+        <String>HBR4B.BNEG</String>
+        <String>BNEG.VTEST</String>
+        <String>BNEG.GND</String>
+        <String>BNEG.MEAS</String>
+        <String>BNEG.RST</String>
+        <String>BNEG.OC</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>Bn</Filter>
+      <RSMChannelName>BNEG.GND</RSMChannelName>
+      <OnOff>false</OnOff>
+      <Name Metadata="Step Name">disConnect BNEG to GND</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="cf5efc0d-34e8-4e78-8cce-c6870816b366">
+      <DelaySecs>0.25</DelaySecs>
+      <Name Metadata="Step Name">Delay</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteWord" Id="a117eeb0-6174-4ede-befc-24d75e63f839">
+      <ListOfAvailableValues>
+        <String>BNEG.CTHRESH-FREQ</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>bneg</Filter>
+      <RSMChannelName>BNEG.CTHRESH-FREQ</RSMChannelName>
+      <WordValue>8</WordValue>
+      <Name Metadata="Step Name">RSM Write Word Step</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteWord" Id="fbf3399d-7745-4365-9ad4-c9343a0636fe">
+      <ListOfAvailableValues>
+        <String>BPOS.CTHRESH-FREQ</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>bpos</Filter>
+      <RSMChannelName>BPOS.CTHRESH-FREQ</RSMChannelName>
+      <WordValue>8</WordValue>
+      <Name Metadata="Step Name">RSM Write Word Step (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="cfef08a2-2cf6-49c8-a808-76a5d2e28e14">
+      <ListOfAvailableValues>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>cthre</Filter>
+      <RSMChannelName>BPOS.CTHRESH-DC</RSMChannelName>
+      <ByteValue>255</ByteValue>
+      <Name Metadata="Step Name">Set BPOS.CTHRESH-DC to full on</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="597b2f41-a1aa-467d-ad55-1b0eb6dce00a">
+      <ListOfAvailableValues>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>cthre</Filter>
+      <RSMChannelName>BNEG.CTHRESH-DC</RSMChannelName>
+      <ByteValue>255</ByteValue>
+      <Name Metadata="Step Name">
+        <Base64>U2V0IEJORUcuQ1RIUkVTSC1EQyB0byBmdWxsIG9uIA==</Base64>
+      </Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="7f2dabac-f29f-4a29-a817-d531ec23733b">
+      <ListOfAvailableValues>
+        <String>HBR4A.BPOS</String>
+        <String>BPOS.VTEST</String>
+        <String>BPOS.GND</String>
+        <String>BPOS.MEAS</String>
+        <String>BPOS.RST</String>
+        <String>BPOS.OC</String>
+        <String>IGN.BPOS</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>BP</Filter>
+      <RSMChannelName>BPOS.RST</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">Reset BPOS Current Threshold - high</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="a48371a9-1824-4c51-9cbd-d1d9b812cc4e">
+      <ListOfAvailableValues>
+        <String>HBR4A.BPOS</String>
+        <String>BPOS.VTEST</String>
+        <String>BPOS.GND</String>
+        <String>BPOS.MEAS</String>
+        <String>BPOS.RST</String>
+        <String>BPOS.OC</String>
+        <String>IGN.BPOS</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>BP</Filter>
+      <RSMChannelName>BPOS.RST</RSMChannelName>
+      <OnOff>false</OnOff>
+      <Name Metadata="Step Name">Reset BPOS Current Threshold - then low</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="e9865aa0-73d0-4e31-8752-c589982a619e">
+      <ListOfAvailableValues>
+        <String>VREFA.LLBNEG</String>
+        <String>VREFB.LLBNEG</String>
+        <String>HBR4B.BNEG</String>
+        <String>BNEG.VTEST</String>
+        <String>BNEG.GND</String>
+        <String>BNEG.MEAS</String>
+        <String>BNEG.RST</String>
+        <String>BNEG.OC</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>Bn</Filter>
+      <RSMChannelName>BNEG.RST</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">Reset BNEG Current Threshold - high</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="e81890b3-a6c7-4912-831f-869717d4ebd0">
+      <ListOfAvailableValues>
+        <String>VREFA.LLBNEG</String>
+        <String>VREFB.LLBNEG</String>
+        <String>HBR4B.BNEG</String>
+        <String>BNEG.VTEST</String>
+        <String>BNEG.GND</String>
+        <String>BNEG.MEAS</String>
+        <String>BNEG.RST</String>
+        <String>BNEG.OC</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>Bn</Filter>
+      <RSMChannelName>BNEG.RST</RSMChannelName>
+      <OnOff>false</OnOff>
+      <Name Metadata="Step Name">Reset BNEG Current Threshold - then low</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="f59c7d3c-e1d8-4ead-9fc0-61ec86f05fc0">
+      <ListOfAvailableValues>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>test</Filter>
+      <RSMChannelName>TESTP.CTRLBYTE1</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Clear Testpctrlbyte1</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="80ff690c-0cc5-4b41-b337-b1d220903261">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC1</RSMChannelName>
+      <ByteValue>10</ByteValue>
+      <Name Metadata="Step Name">Set LED1 to Dim</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="d4d6b195-4864-4d17-ac64-c140c8f7fda4">
+      <ListOfAvailableValues>
+        <String>SMUA-B.CTRLBYTE</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smua-</Filter>
+      <RSMChannelName>SMUA-B.CTRLBYTE</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Name Metadata="Step Name">disconnect Measure Buses from DACs</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="d0b5fe3e-2988-4893-b05b-faca0d0fd904">
+      <ListOfAvailableValues>
+        <String>SMUA.DMMVP</String>
+        <String>SMUA.SDMMVP</String>
+        <String>SMUA.DAC</String>
+        <String>SMUA.BATNEG</String>
+        <String>SMUA.BATPOS</String>
+        <String>SMUA.VREFA</String>
+        <String>SMUA.VREFB</String>
+        <String>SMUA.GND</String>
+        <String>SMUA.VTEST</String>
+        <String>SMUA.MEASA</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smua</Filter>
+      <RSMChannelName>SMUA.DMMVP</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">connect BUSA to AIN0 (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="ba61e20a-d8e1-44c5-a46c-0e4cf542c4ef">
+      <ListOfAvailableValues>
+        <String>SMUA.DMMVP</String>
+        <String>SMUA.SDMMVP</String>
+        <String>SMUA.DAC</String>
+        <String>SMUA.BATNEG</String>
+        <String>SMUA.BATPOS</String>
+        <String>SMUA.VREFA</String>
+        <String>SMUA.VREFB</String>
+        <String>SMUA.GND</String>
+        <String>SMUA.VTEST</String>
+        <String>SMUA.MEASA</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smua</Filter>
+      <RSMChannelName>SMUA.SDMMVP</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">connect BUSA to AIN1</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="bbdc466f-71f8-4fe5-885f-bff2e82bcbc6">
+      <ListOfAvailableValues>
+        <String>SMUA.DMMVP</String>
+        <String>SMUA.SDMMVP</String>
+        <String>SMUA.DAC</String>
+        <String>SMUA.BATNEG</String>
+        <String>SMUA.BATPOS</String>
+        <String>SMUA.VREFA</String>
+        <String>SMUA.VREFB</String>
+        <String>SMUA.GND</String>
+        <String>SMUA.VTEST</String>
+        <String>SMUA.MEASA</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smua</Filter>
+      <RSMChannelName>SMUA.DAC</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">
+        <Base64>Q29ubmVjdCBEQUNBIHRvIEJVU0Eg</Base64>
+      </Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="436889fb-1edc-4c28-afd7-67552c759fe1">
+      <ListOfAvailableValues>
+        <String>SMUB.VTEST</String>
+        <String>SMUB.MEASA</String>
+        <String>SMUB.MEASB</String>
+        <String>SMUB.DMMVP</String>
+        <String>SMUB.SDMMVP</String>
+        <String>SMUB.DAC</String>
+        <String>SMUB.BATNEG</String>
+        <String>SMUB.BATPOS</String>
+        <String>SMUB.VREFA</String>
+        <String>SMUB.VREFB</String>
+        <String>SMUB.GND</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smub</Filter>
+      <RSMChannelName>SMUB.DAC</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">Connect DACB to BUSB</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="e6473dc9-74d7-417f-9e9c-5035dd93e625">
+      <ListOfAvailableValues>
+        <String>SMUB.VTEST</String>
+        <String>SMUB.MEASA</String>
+        <String>SMUB.MEASB</String>
+        <String>SMUB.DMMVP</String>
+        <String>SMUB.SDMMVP</String>
+        <String>SMUB.DAC</String>
+        <String>SMUB.BATNEG</String>
+        <String>SMUB.BATPOS</String>
+        <String>SMUB.VREFA</String>
+        <String>SMUB.VREFB</String>
+        <String>SMUB.GND</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smub</Filter>
+      <RSMChannelName>SMUB.DMMVP</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">
+        <Base64>Q29ubmVjdCBBSU4yIHRvIEJVU0Ig</Base64>
+      </Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="dae3b8ca-f1a3-457e-94cf-38c57b2a1830">
+      <ListOfAvailableValues>
+        <String>SMUB.VTEST</String>
+        <String>SMUB.MEASA</String>
+        <String>SMUB.MEASB</String>
+        <String>SMUB.DMMVP</String>
+        <String>SMUB.SDMMVP</String>
+        <String>SMUB.DAC</String>
+        <String>SMUB.BATNEG</String>
+        <String>SMUB.BATPOS</String>
+        <String>SMUB.VREFA</String>
+        <String>SMUB.VREFB</String>
+        <String>SMUB.GND</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smub</Filter>
+      <RSMChannelName>SMUB.SDMMVP</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">
+        <Base64>Q29ubmVjdCBBSU4zIHRvIEJVU0Ig</Base64>
+      </Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="LabJackProject.LabjackWriteNameStep" Id="385d012d-cda2-4a80-949f-0ed8e0cd8703" OpenTap.Visibility="Visible">
+      <LBName>DAC0</LBName>
+      <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+      <Value>1.452</Value>
+      <Name Metadata="Step Name">LabjackSETDac0ForVin2V5</Name>
+      <ChildTestSteps />
+      <OpenTap.Description>
+        <Base64>V3JpdGUgTGFiamFjayBkYXRhIGJ5IE5hbWUNCkRBQzAqMTAgLTEyLjAyPSBWc3RpbXVsdXMNCkRhYzA9MS40NTI9PlZTdGltPTIuNVYNCg==</Base64>
+      </OpenTap.Description>
+    </TestStep>
+    <TestStep type="LabJackProject.LabjackWriteNameStep" Id="c6060787-5ef0-4a71-b9a5-bd8e8b74872f" OpenTap.Visibility="Visible">
+      <LBName>DAC1</LBName>
+      <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+      <Value>1.452</Value>
+      <Name Metadata="Step Name">LabjackSETDac1ForVin2V5</Name>
+      <ChildTestSteps />
+      <OpenTap.Description>
+        <Base64>V3JpdGUgTGFiamFjayBkYXRhIGJ5IE5hbWUNCkRBQzAqMTAgLTEyLjAyPSBWc3RpbXVsdXMNCkRhYzA9MS40NTI9PlZTdGltPTIuNVYNCg==</Base64>
+      </OpenTap.Description>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="121ce016-1a1a-475f-84d4-4a9f241231af">
+      <DelaySecs>2</DelaySecs>
+      <Name Metadata="Step Name">Delay {time delay}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="82050b3c-0f6c-4e6c-8c66-4a6e92846198">
+      <ListOfAvailableValues>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>SMU</Filter>
+      <RSMChannelName>SMUA-B.CTRLBYTE</RSMChannelName>
+      <ByteValue>18</ByteValue>
+      <Name Metadata="Step Name">RSM Write SMUA-B Byte for VMeasure (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="e75cb556-21b2-4a16-a4d9-ebdb51191353">
+      <DelaySecs>2</DelaySecs>
+      <Name Metadata="Step Name">Delay {time delay}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="f212966d-f094-40cd-ae05-8326e15a6f31">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC2</RSMChannelName>
+      <ByteValue>10</ByteValue>
+      <Name Metadata="Step Name">Set LED2 to Dim</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="LabJackProject.LabjackReadNameStep" Id="f281b3fb-63ed-4996-9ac0-48dc76b25d83">
+      <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+      <LBName>AIN0</LBName>
+      <LimitCheckEnabled>true</LimitCheckEnabled>
+      <MaxLimit>2.525</MaxLimit>
+      <MinLimit>2.475</MinLimit>
+      <Name Metadata="Step Name">LabjackRead DACA by AIN0</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="LabJackProject.LabjackReadNameStep" Id="1ffc8ffd-4990-436a-a0f0-d81a4ca63eb0">
+      <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+      <LBName>AIN1</LBName>
+      <LimitCheckEnabled>true</LimitCheckEnabled>
+      <MaxLimit>0.45</MaxLimit>
+      <MinLimit>0.35</MinLimit>
+      <Name Metadata="Step Name">LabjackRead DACA by AIN1</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="LabJackProject.LabjackReadNameStep" Id="e1954935-b4e3-48c0-bca6-882ae4b17830">
+      <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+      <LBName>AIN2</LBName>
+      <LimitCheckEnabled>true</LimitCheckEnabled>
+      <MaxLimit>2.525</MaxLimit>
+      <MinLimit>2.475</MinLimit>
+      <Name Metadata="Step Name">LabjackRead DACB by AIN2</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="LabJackProject.LabjackReadNameStep" Id="77d05542-61d9-4bfc-97a8-aaa3204c07e4">
+      <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+      <LBName>AIN3</LBName>
+      <LimitCheckEnabled>true</LimitCheckEnabled>
+      <MaxLimit>0.45</MaxLimit>
+      <MinLimit>0.35</MinLimit>
+      <Name Metadata="Step Name">LabjackRead DACB by AIN3</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="00493bb3-86b4-492d-9865-5cd33b7ab657">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC3</RSMChannelName>
+      <ByteValue>10</ByteValue>
+      <Name Metadata="Step Name">Set LED3 to Dim</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="b7fd3fc5-90c9-45c7-b30f-1f86cad2fef8">
+      <ListOfAvailableValues>
+        <String>SMUA.DMMVP</String>
+        <String>SMUA.SDMMVP</String>
+        <String>SMUA.DAC</String>
+        <String>SMUA.BATNEG</String>
+        <String>SMUA.BATPOS</String>
+        <String>SMUA.VREFA</String>
+        <String>SMUA.VREFB</String>
+        <String>SMUA.GND</String>
+        <String>SMUA.VTEST</String>
+        <String>SMUA.MEASA</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smua</Filter>
+      <RSMChannelName>SMUA.DAC</RSMChannelName>
+      <OnOff>false</OnOff>
+      <Name Metadata="Step Name">DisConnect DACA to BUSA  (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="a9865ef0-e9ff-4f01-937c-353bb2285292">
+      <ListOfAvailableValues>
+        <String>SMUB.VTEST</String>
+        <String>SMUB.MEASA</String>
+        <String>SMUB.MEASB</String>
+        <String>SMUB.DMMVP</String>
+        <String>SMUB.SDMMVP</String>
+        <String>SMUB.DAC</String>
+        <String>SMUB.BATNEG</String>
+        <String>SMUB.BATPOS</String>
+        <String>SMUB.VREFA</String>
+        <String>SMUB.VREFB</String>
+        <String>SMUB.GND</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smub</Filter>
+      <RSMChannelName>SMUB.DAC</RSMChannelName>
+      <OnOff>false</OnOff>
+      <Name Metadata="Step Name">DisConnect DACB to BUSB (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="0cc30984-7226-4bac-b7c3-0022558f5c9d">
+      <ListOfAvailableValues>
+        <String>VREFA.LLBNEG</String>
+        <String>VREFB.LLBNEG</String>
+        <String>HBR4B.BNEG</String>
+        <String>BNEG.VTEST</String>
+        <String>BNEG.GND</String>
+        <String>BNEG.MEAS</String>
+        <String>BNEG.RST</String>
+        <String>BNEG.OC</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>Bn</Filter>
+      <RSMChannelName>BNEG.GND</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">Connect BNEG to GND (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="f3c17491-7d15-43b7-a0b4-0cd144f72118">
+      <ListOfAvailableValues>
+        <String>IGN.BPOS</String>
+        <String>IGN.MEAS</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>ign</Filter>
+      <RSMChannelName>IGN.BPOS</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">Connect Ignition to BATPOS (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="c579aa47-4c08-461d-8e04-e746a3671c1b">
+      <ListOfAvailableValues>
+        <String>HBR4A.BPOS</String>
+        <String>BPOS.VTEST</String>
+        <String>BPOS.GND</String>
+        <String>BPOS.MEAS</String>
+        <String>BPOS.RST</String>
+        <String>BPOS.OC</String>
+        <String>IGN.BPOS</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>BP</Filter>
+      <RSMChannelName>BPOS.VTEST</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Name Metadata="Step Name">Connect BPOS to VTEST (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="b730c276-81d7-4ff0-99b4-d01cd65a6950" OpenTap.Visibility="Visible">
+      <DelaySecs>1</DelaySecs>
+      <Name Metadata="Step Name">Delay {time delay}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="461735e8-fa56-4662-b2f6-bb263799e417">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC1</RSMChannelName>
+      <ByteValue>200</ByteValue>
+      <Name Metadata="Step Name">Set LED1 to medhigh</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="372fa032-5aa0-425b-812f-f1216c675279">
+      <DelaySecs>1</DelaySecs>
+      <Name Metadata="Step Name">Delay {time delay}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="2994fec2-2408-4185-b1e4-f310f4259c3a">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC2</RSMChannelName>
+      <ByteValue>200</ByteValue>
+      <Name Metadata="Step Name">Set LED2 to medhigh</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="4981562b-632f-4a6d-a756-9f333ce06b8c">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC3</RSMChannelName>
+      <ByteValue>200</ByteValue>
+      <Name Metadata="Step Name">Set LED3 to medhigh</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.LogStep" Id="d4b3009f-60f1-4481-b021-71dbd74628ab">
+      <LogMessage>Code below her turns off the DUT. Enable to run</LogMessage>
+      <Severity>Info</Severity>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Turn Off</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="bab6381a-40d3-4cb2-99ef-eab715e0b74f">
+      <ListOfAvailableValues>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>bpos</Filter>
+      <RSMChannelName>BPOS.CTRLBYTE</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Clear BPOS.CTRLBYTE</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="814ff669-f1a9-40bf-b9e5-06a073739db2">
+      <ListOfAvailableValues>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>bneg</Filter>
+      <RSMChannelName>BNEG.CTRLBYTE</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Clear BNEG.CTRLBYTE</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="75ac26bb-2194-4cfb-96cc-7f75f4ae158a">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC1</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Turn off LED1</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="f2e8c32d-c684-42e6-a0da-bd476b4e9021">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC2</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Turn off LED2</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="df9a57a8-0759-4a57-9887-64b4a1a18774">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter></Filter>
+      <RSMChannelName>MECH.INDC3</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Turn off LED3</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="12e012cd-c406-4439-ae65-a92449541736">
+      <ListOfAvailableValues>
+        <String>CANA.CTRLBYTE</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>cana</Filter>
+      <RSMChannelName>CANA.CTRLBYTE</RSMChannelName>
+      <ByteValue>28</ByteValue>
+      <Name Metadata="Step Name">Connect CANA to gigastar N termination</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="01fde1fa-6b23-4219-8bab-4c9dfba3fd12">
+      <ListOfAvailableValues>
+        <String>CANB.CTRLBYTE</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>canb</Filter>
+      <RSMChannelName>CANB.CTRLBYTE</RSMChannelName>
+      <ByteValue>28</ByteValue>
+      <Name Metadata="Step Name">Connect CANB to gigastar N termination</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="9cce2656-f002-40d2-9eda-f7aa468a43f7">
+      <ListOfAvailableValues>
+        <String>CANC.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>canc</Filter>
+      <RSMChannelName>CANC.CTRLBYTE</RSMChannelName>
+      <ByteValue>31</ByteValue>
+      <Name Metadata="Step Name">Connect CANC to Termination and external</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="a32d7bbe-ad68-4a6c-90cd-697c47d14238">
+      <ListOfAvailableValues>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>cand</Filter>
+      <RSMChannelName>CAND.CTRLBYTE</RSMChannelName>
+      <ByteValue>28</ByteValue>
+      <Name Metadata="Step Name">Connect CAND to gigastar N termination</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="bdf941dd-7b37-4e34-9ee2-ad482b84e50a">
+      <DelaySecs>5</DelaySecs>
+      <Name Metadata="Step Name">Delay {Time delay}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.SequenceStep" Id="387c58ec-08e4-4189-8771-fe40223d6df2" OpenTap.Visibility="Visible">
+      <Name Metadata="Step Name">Check VREFs</Name>
+      <ChildTestSteps>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="cf301c54-0363-425c-80a9-d69c6c825d8e">
+          <ListOfAvailableValues>
+            <String>SMUA.DMMVP</String>
+            <String>SMUA.SDMMVP</String>
+            <String>SMUA.DAC</String>
+            <String>SMUA.BATNEG</String>
+            <String>SMUA.BATPOS</String>
+            <String>SMUA.VREFA</String>
+            <String>SMUA.VREFB</String>
+            <String>SMUA.GND</String>
+            <String>SMUA.VTEST</String>
+            <String>SMUA.MEASA</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smua</Filter>
+          <RSMChannelName>SMUA.DMMVP</RSMChannelName>
+          <OnOff>true</OnOff>
+          <Name Metadata="Step Name">
+            <Base64>Y29ubmVjdCBCVVNBIHRvIEFJTjAg</Base64>
+          </Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="df748dab-6643-495f-854f-60ee5133ddd1">
+          <ListOfAvailableValues>
+            <String>SMUA.DMMVP</String>
+            <String>SMUA.SDMMVP</String>
+            <String>SMUA.DAC</String>
+            <String>SMUA.BATNEG</String>
+            <String>SMUA.BATPOS</String>
+            <String>SMUA.VREFA</String>
+            <String>SMUA.VREFB</String>
+            <String>SMUA.GND</String>
+            <String>SMUA.VTEST</String>
+            <String>SMUA.MEASA</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smua</Filter>
+          <RSMChannelName>SMUA.VREFA</RSMChannelName>
+          <OnOff>true</OnOff>
+          <Name Metadata="Step Name">Connect VREFA to BUSA</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="8ae35446-fd1f-4dfa-b33f-b0a079dc1bfb">
+          <ListOfAvailableValues>
+            <String>SMUB.VTEST</String>
+            <String>SMUB.MEASA</String>
+            <String>SMUB.MEASB</String>
+            <String>SMUB.DMMVP</String>
+            <String>SMUB.SDMMVP</String>
+            <String>SMUB.DAC</String>
+            <String>SMUB.BATNEG</String>
+            <String>SMUB.BATPOS</String>
+            <String>SMUB.VREFA</String>
+            <String>SMUB.VREFB</String>
+            <String>SMUB.GND</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smub</Filter>
+          <RSMChannelName>SMUB.VREFA</RSMChannelName>
+          <OnOff>true</OnOff>
+          <Name Metadata="Step Name">Connect VREFA to BUSB</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="b170fff6-44a8-4cd8-a5e7-b07d19dc9837" OpenTap.Visibility="Visible">
+          <DelaySecs>0.5</DelaySecs>
+          <Name Metadata="Step Name">Delay (1) (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="LabJackProject.LabjackReadNameStep" Id="6a81d174-df01-4154-854d-61f25c15ce0c">
+          <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+          <LBName>AIN0</LBName>
+          <LimitCheckEnabled>true</LimitCheckEnabled>
+          <MaxLimit>5.5</MaxLimit>
+          <MinLimit>4.5</MinLimit>
+          <Name Metadata="Step Name">LabjackRead VREFA</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="LabJackProject.LabjackReadNameStep" Id="4a7adb89-18aa-4b91-85fc-7e435c26eecc">
+          <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+          <LBName>AIN1</LBName>
+          <LimitCheckEnabled>true</LimitCheckEnabled>
+          <MaxLimit>0.85</MaxLimit>
+          <MinLimit>0.75</MinLimit>
+          <Name Metadata="Step Name">LabjackRead VREFA (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="LabJackProject.LabjackReadNameStep" Id="c4806046-97eb-425c-9c61-c42f3738e917">
+          <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+          <LBName>AIN2</LBName>
+          <LimitCheckEnabled>true</LimitCheckEnabled>
+          <MaxLimit>5.5</MaxLimit>
+          <MinLimit>4.5</MinLimit>
+          <Name Metadata="Step Name">LabjackRead VREFA (2)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="LabJackProject.LabjackReadNameStep" Id="dd402c2d-e402-401b-8917-4ca6ebce87cb">
+          <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+          <LBName>AIN3</LBName>
+          <LimitCheckEnabled>true</LimitCheckEnabled>
+          <MaxLimit>0.85</MaxLimit>
+          <MinLimit>0.75</MinLimit>
+          <Name Metadata="Step Name">LabjackRead VREFA (3)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="807f4890-3211-47bc-9c41-602daaf61663">
+          <ListOfAvailableValues>
+            <String>SMUA.DMMVP</String>
+            <String>SMUA.SDMMVP</String>
+            <String>SMUA.DAC</String>
+            <String>SMUA.BATNEG</String>
+            <String>SMUA.BATPOS</String>
+            <String>SMUA.VREFA</String>
+            <String>SMUA.VREFB</String>
+            <String>SMUA.GND</String>
+            <String>SMUA.VTEST</String>
+            <String>SMUA.MEASA</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smua</Filter>
+          <RSMChannelName>SMUA.VREFA</RSMChannelName>
+          <OnOff>false</OnOff>
+          <Name Metadata="Step Name">DisConnect VREFA from BUSA (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="1b2eac5d-6b1c-4067-84ef-752132b43aea">
+          <ListOfAvailableValues>
+            <String>SMUB.VTEST</String>
+            <String>SMUB.MEASA</String>
+            <String>SMUB.MEASB</String>
+            <String>SMUB.DMMVP</String>
+            <String>SMUB.SDMMVP</String>
+            <String>SMUB.DAC</String>
+            <String>SMUB.BATNEG</String>
+            <String>SMUB.BATPOS</String>
+            <String>SMUB.VREFA</String>
+            <String>SMUB.VREFB</String>
+            <String>SMUB.GND</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smuB</Filter>
+          <RSMChannelName>SMUB.VREFA</RSMChannelName>
+          <OnOff>false</OnOff>
+          <Name Metadata="Step Name">DisConnect VREFA from BUSB</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="3e24fa2e-f776-473b-9477-9e99a20c15b0">
+          <ListOfAvailableValues>
+            <String>SMUA.DMMVP</String>
+            <String>SMUA.SDMMVP</String>
+            <String>SMUA.DAC</String>
+            <String>SMUA.BATNEG</String>
+            <String>SMUA.BATPOS</String>
+            <String>SMUA.VREFA</String>
+            <String>SMUA.VREFB</String>
+            <String>SMUA.GND</String>
+            <String>SMUA.VTEST</String>
+            <String>SMUA.MEASA</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smua</Filter>
+          <RSMChannelName>SMUA.VREFB</RSMChannelName>
+          <OnOff>true</OnOff>
+          <Name Metadata="Step Name">Connect VREFB to BUSA (1) (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="4dadb724-86f7-4251-9f7c-d38c93b76017">
+          <ListOfAvailableValues>
+            <String>SMUB.VTEST</String>
+            <String>SMUB.MEASA</String>
+            <String>SMUB.MEASB</String>
+            <String>SMUB.DMMVP</String>
+            <String>SMUB.SDMMVP</String>
+            <String>SMUB.DAC</String>
+            <String>SMUB.BATNEG</String>
+            <String>SMUB.BATPOS</String>
+            <String>SMUB.VREFA</String>
+            <String>SMUB.VREFB</String>
+            <String>SMUB.GND</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smub</Filter>
+          <RSMChannelName>SMUB.VREFB</RSMChannelName>
+          <OnOff>true</OnOff>
+          <Name Metadata="Step Name">Connect VREFB to BUSB (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="6498b674-de11-4620-924c-71e2b7f9c0f6">
+          <ListOfAvailableValues>
+            <String>SMUA.DMMVP</String>
+            <String>SMUA.SDMMVP</String>
+            <String>SMUA.DAC</String>
+            <String>SMUA.BATNEG</String>
+            <String>SMUA.BATPOS</String>
+            <String>SMUA.VREFA</String>
+            <String>SMUA.VREFB</String>
+            <String>SMUA.GND</String>
+            <String>SMUA.VTEST</String>
+            <String>SMUA.MEASA</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smua</Filter>
+          <RSMChannelName>SMUA.DMMVP</RSMChannelName>
+          <OnOff>true</OnOff>
+          <Name Metadata="Step Name">Connect AIN0 to BUSA (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="2de960ea-b23c-42b3-8ebb-26bbd5d04dc0">
+          <DelaySecs>1</DelaySecs>
+          <Name Metadata="Step Name">Delay {Time delay}</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="LabJackProject.LabjackReadNameStep" Id="906ec20c-8b07-4be1-b3cb-0c85eea2d471">
+          <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+          <LBName>AIN0</LBName>
+          <LimitCheckEnabled>true</LimitCheckEnabled>
+          <MaxLimit>5.5</MaxLimit>
+          <MinLimit>4.5</MinLimit>
+          <Name Metadata="Step Name">LabjackRead VREFB</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="LabJackProject.LabjackReadNameStep" Id="9f0441d0-cff2-4c3c-8ad4-f26266f217cc">
+          <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+          <LBName>AIN1</LBName>
+          <LimitCheckEnabled>true</LimitCheckEnabled>
+          <MaxLimit>0.85</MaxLimit>
+          <MinLimit>0.75</MinLimit>
+          <Name Metadata="Step Name">LabjackRead VREFB (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="LabJackProject.LabjackReadNameStep" Id="092ba974-44c3-40fd-8862-9c5d9829eb57">
+          <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+          <LBName>AIN2</LBName>
+          <LimitCheckEnabled>true</LimitCheckEnabled>
+          <MaxLimit>5.5</MaxLimit>
+          <MinLimit>4.5</MinLimit>
+          <Name Metadata="Step Name">LabjackRead VREFB (2)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="LabJackProject.LabjackReadNameStep" Id="2b256d67-7d65-4924-ab1c-706cdac3b1fb">
+          <LabJackInstrument Source="OpenTap.InstrumentSettings">LabJackInstrument</LabJackInstrument>
+          <LBName>AIN3</LBName>
+          <LimitCheckEnabled>true</LimitCheckEnabled>
+          <MaxLimit>0.85</MaxLimit>
+          <MinLimit>0.75</MinLimit>
+          <Name Metadata="Step Name">LabjackRead VREFB (3)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="92b4f654-b885-4623-87f1-7f2fbad77eb7" OpenTap.Visibility="Visible">
+          <ListOfAvailableValues>
+            <String>SMUA.CTRLBYTE</String>
+            <String>SMUA-B.CTRLBYTE</String>
+            <String>SMUB.CTRLBYTE</String>
+            <String>SMU.CTRLBYTE</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>SMU</Filter>
+          <RSMChannelName>SMUA.CTRLBYTE</RSMChannelName>
+          <ByteValue>0</ByteValue>
+          <Name Metadata="Step Name">RSM Write SMUA Byte for  VMeasure (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="4baa165b-a215-4fd2-aed6-f99ea9a07780">
+          <ListOfAvailableValues>
+            <String>SMUA.CTRLBYTE</String>
+            <String>SMUA-B.CTRLBYTE</String>
+            <String>SMUB.CTRLBYTE</String>
+            <String>SMU.CTRLBYTE</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>SMU</Filter>
+          <RSMChannelName>SMUA-B.CTRLBYTE</RSMChannelName>
+          <ByteValue>0</ByteValue>
+          <Name Metadata="Step Name">RSM Write SMUA-B Byte for VMeasure (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="ce8263ca-356f-4aca-9459-2afc5804730d">
+          <ListOfAvailableValues>
+            <String>SMUA.CTRLBYTE</String>
+            <String>SMUA-B.CTRLBYTE</String>
+            <String>SMUB.CTRLBYTE</String>
+            <String>SMU.CTRLBYTE</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>SMU</Filter>
+          <RSMChannelName>SMUB.CTRLBYTE</RSMChannelName>
+          <ByteValue>0</ByteValue>
+          <Name Metadata="Step Name">RSM Write SMUB Byte for VMeasure (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="3a83273b-9136-490b-b279-ce45ac6d8375" OpenTap.Visibility="Visible">
+          <ListOfAvailableValues>
+            <String>SMUA.DMMVP</String>
+            <String>SMUA.SDMMVP</String>
+            <String>SMUA.DAC</String>
+            <String>SMUA.BATNEG</String>
+            <String>SMUA.BATPOS</String>
+            <String>SMUA.VREFA</String>
+            <String>SMUA.VREFB</String>
+            <String>SMUA.GND</String>
+            <String>SMUA.VTEST</String>
+            <String>SMUA.MEASA</String>
+          </ListOfAvailableValues>
+          <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+          <Filter>smua</Filter>
+          <RSMChannelName>SMUA.VREFB</RSMChannelName>
+          <OnOff>false</OnOff>
+          <Name Metadata="Step Name">disConnect VREFb from BUSA (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="b2f5438b-c6db-489e-9d89-09129a584bfd" OpenTap.Visibility="Visible">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>mpl_mode</Measurement>
+      <Filter>mpl_mode</Filter>
+      <Available>
+        <String>mpl_mode</String>
+        <String>mpl_mode_run_time</String>
+      </Available>
+      <MeasurementValue>1</MeasurementValue>
+      <CheckLimits>true</CheckLimits>
+      <MinimumValue>2</MinimumValue>
+      <MaximumValue>2</MaximumValue>
+      <Name Metadata="Step Name">Check if DUT Alive</Name>
+      <ChildTestSteps />
+      <BreakConditions>0</BreakConditions>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.IfStep" Id="1a8d4683-6279-40ef-beb0-c47d5af495fa" OpenTap.Visibility="Visible">
+      <InputVerdict>
+        <PropertyName>OpenTap.TestStep|Verdict</PropertyName>
+        <Step>b2f5438b-c6db-489e-9d89-09129a584bfd</Step>
+      </InputVerdict>
+      <TargetVerdict>Error</TargetVerdict>
+      <Action>RunChildren</Action>
+      <Name Metadata="Step Name">If Not alive</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.BasicSteps.DialogStep" Id="92fe915c-9eb3-496c-96d1-0b73bff20966">
+          <Message>
+            <Base64>VGhlIERVVCBkaWQgbm90IHJlc3BvbmQuDQoNCkNoZWNrIHRoYXQgaXQgaGFzIHBvd2VyLCBJZ25pdGlvbi9SVU4gYW5kIGlzIHByb2dyYW1tZWQ=</Base64>
+          </Message>
+          <Title>DUT NOT ALIVE!!!</Title>
+          <Buttons>OkCancel</Buttons>
+          <PositiveAnswer>Error</PositiveAnswer>
+          <NegativeAnswer>Error</NegativeAnswer>
+          <UseTimeout>false</UseTimeout>
+          <Timeout>5</Timeout>
+          <DefaultAnswer>NotSet</DefaultAnswer>
+          <ShowPicture>true</ShowPicture>
+          <PictureSource>Packages\OpenECU\Deadbug2.png</PictureSource>
+          <PictureDescription>It's Dead Jim</PictureDescription>
+          <Name Metadata="Step Name">
+            <Base64>RGVhZCBEVVQgRGlhbG9nIA==</Base64>
+          </Name>
+          <ChildTestSteps />
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.IfStep" Id="0e613386-04ab-4322-a47d-9970b1a38fa0" OpenTap.Visibility="Visible">
+      <InputVerdict>
+        <PropertyName>OpenTap.TestStep|Verdict</PropertyName>
+        <Step>b2f5438b-c6db-489e-9d89-09129a584bfd</Step>
+      </InputVerdict>
+      <TargetVerdict>Fail</TargetVerdict>
+      <Action>RunChildren</Action>
+      <Name Metadata="Step Name">
+        <Base64>SWYgTm90IGluIEFQUCBtb2RlIA==</Base64>
+      </Name>
+      <ChildTestSteps>
+        <TestStep type="OpenECU.IfEqualStep.IfEqualsStep" Id="71f76804-8993-4d8e-8bfc-f7c962c93a52" OpenTap.Visibility="Visible">
+          <Value1>1</Value1>
+          <Value2>1</Value2>
+          <Name Metadata="Step Name">If stuck in PRG</Name>
+          <ChildTestSteps>
+            <TestStep type="OpenTap.Plugins.BasicSteps.DialogStep" Id="bfe7b6d2-b03e-4cfe-9e10-2864c14561ed">
+              <Message>
+                <Base64>VGhlIERVVCBpcyBwb3dlcmVkIE9OLCBidXQgaXQgZGlkIG5vdCBleGVjdXRlIHRoZSBUZXN0IEFwcGxpY2FpdG9uDQpDaGVjayBmb3Jjb3JyZWN0IGFwcCBvciBvdGhlciBpc3N1ZXMgdGhhdCBjb3VsZCBjYXVzZSB0aGUgYXBwbGljYWlvdG4gdG8gbm90IHN0YXJ0Lg==</Base64>
+              </Message>
+              <Title>DUT Stuck IN PRG</Title>
+              <Buttons>OkCancel</Buttons>
+              <PositiveAnswer>NotSet</PositiveAnswer>
+              <NegativeAnswer>NotSet</NegativeAnswer>
+              <UseTimeout>false</UseTimeout>
+              <Timeout>5</Timeout>
+              <DefaultAnswer>NotSet</DefaultAnswer>
+              <ShowPicture>false</ShowPicture>
+              <PictureSource />
+              <PictureDescription />
+              <Name Metadata="Step Name">Dialog (1)</Name>
+              <ChildTestSteps />
+            </TestStep>
+          </ChildTestSteps>
+          <TestStep.Inputs>
+            <InputOutputMember id="b2f5438b-c6db-489e-9d89-09129a584bfd" member="MeasurementValue" target-member="Value1"></InputOutputMember>
+          </TestStep.Inputs>
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.BasicSteps.DialogStep" Id="694b845a-23d7-4a29-98e1-02842f0b4133">
+          <Message>
+            <Base64>RG8geW91IHdpc2ggdG8gY29udGludWUgb3IgZW5kIHRoZSB0ZXN0DQpQcmVzcyBPSyB0byBjb250aW51ZQ0KIG9yIENhbmNlbCB0byBhYm9ydCB0ZXN0Pw==</Base64>
+          </Message>
+          <Title>DUT Running Test Application</Title>
+          <Buttons>OkCancel</Buttons>
+          <PositiveAnswer>Fail</PositiveAnswer>
+          <NegativeAnswer>Error</NegativeAnswer>
+          <UseTimeout>false</UseTimeout>
+          <Timeout>5</Timeout>
+          <DefaultAnswer>NotSet</DefaultAnswer>
+          <ShowPicture>false</ShowPicture>
+          <PictureSource />
+          <PictureDescription />
+          <Name Metadata="Step Name">Dialog (2)</Name>
+          <ChildTestSteps />
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="18c51fb0-5409-462a-9d44-3be830d34b85" OpenTap.Visibility="Visible">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>AIN_V_3V3IO</Measurement>
+      <Filter>AIN_V_3V3IO</Filter>
+      <Available>
+        <String>AIN_V_3V3IO</String>
+        <String>AIN_V_3V3IORaw</String>
+      </Available>
+      <MeasurementValue>3.319091796875</MeasurementValue>
+      <CheckLimits>true</CheckLimits>
+      <MinimumValue>3</MinimumValue>
+      <MaximumValue>3.5</MaximumValue>
+      <Name Metadata="Step Name">Check if DUT has 3V3IO</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.SequenceStep" Id="3a0a58fb-9a22-446e-80ed-394ee571552f" OpenTap.Visibility="Visible">
+      <Name Metadata="Step Name">CheckDUTCodeRevision</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="2fe22f0e-b29b-4948-a3f3-6547919fccb5">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_prg_ver_major</Measurement>
+          <Filter>mpl_prg_ver_major</Filter>
+          <Available>
+            <String>mpl_prg_ver_major</String>
+          </Available>
+          <MeasurementValue>4</MeasurementValue>
+          <CheckLimits>true</CheckLimits>
+          <MinimumValue>4</MinimumValue>
+          <MaximumValue>4</MaximumValue>
+          <Name Metadata="Step Name">Read {Measurement}</Name>
+          <ChildTestSteps />
+          <TestStep.Inputs>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="PlatformMajor" target-member="MinimumValue"></InputOutputMember>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="PlatformMajor" target-member="MaximumValue"></InputOutputMember>
+          </TestStep.Inputs>
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="fe45f554-2f1e-49cb-910a-893b2be64413">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_prg_ver_minor</Measurement>
+          <Filter>mpl_prg_ver_minor</Filter>
+          <Available>
+            <String>mpl_prg_ver_minor</String>
+          </Available>
+          <MeasurementValue>7</MeasurementValue>
+          <CheckLimits>true</CheckLimits>
+          <MinimumValue>7</MinimumValue>
+          <MaximumValue>7</MaximumValue>
+          <Name Metadata="Step Name">Read {Measurement}</Name>
+          <ChildTestSteps />
+          <TestStep.Inputs>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="PlatformMinor" target-member="MinimumValue"></InputOutputMember>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="PlatformMinor" target-member="MaximumValue"></InputOutputMember>
+          </TestStep.Inputs>
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="74f014e4-e662-4a8e-80a4-8b487925a280">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_prg_ver_sub</Measurement>
+          <Filter>mpl_prg_ver_sub</Filter>
+          <Available>
+            <String>mpl_prg_ver_sub</String>
+          </Available>
+          <MeasurementValue>0</MeasurementValue>
+          <CheckLimits>true</CheckLimits>
+          <MinimumValue>0</MinimumValue>
+          <MaximumValue>0</MaximumValue>
+          <Name Metadata="Step Name">Read {Measurement}</Name>
+          <ChildTestSteps />
+          <TestStep.Inputs>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="PlatformSub" target-member="MaximumValue"></InputOutputMember>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="PlatformSub" target-member="MinimumValue"></InputOutputMember>
+          </TestStep.Inputs>
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="631017a7-26be-4d52-9025-a732798b7d9e">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_app_ver_major</Measurement>
+          <Filter>mpl_app_ver_major</Filter>
+          <Available>
+            <String>mpl_app_ver_major</String>
+          </Available>
+          <MeasurementValue>5</MeasurementValue>
+          <CheckLimits>true</CheckLimits>
+          <MinimumValue>5</MinimumValue>
+          <MaximumValue>5</MaximumValue>
+          <Name Metadata="Step Name">Read {Measurement}</Name>
+          <ChildTestSteps />
+          <TestStep.Inputs>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="AppMajor" target-member="MaximumValue"></InputOutputMember>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="AppMajor" target-member="MinimumValue"></InputOutputMember>
+          </TestStep.Inputs>
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="871ce67b-951a-4677-b4be-43dd788b94ef">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_app_ver_minor</Measurement>
+          <Filter>mpl_app_ver_minor</Filter>
+          <Available>
+            <String>mpl_app_ver_minor</String>
+          </Available>
+          <MeasurementValue>0</MeasurementValue>
+          <CheckLimits>true</CheckLimits>
+          <MinimumValue>0</MinimumValue>
+          <MaximumValue>0</MaximumValue>
+          <Name Metadata="Step Name">Read {Measurement}</Name>
+          <ChildTestSteps />
+          <TestStep.Inputs>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="AppMinor" target-member="MaximumValue"></InputOutputMember>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="AppMinor" target-member="MinimumValue"></InputOutputMember>
+          </TestStep.Inputs>
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="f05821ff-eae4-4070-839f-c0c6d9667534">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_app_ver_sub</Measurement>
+          <Filter>mpl_app_ver_sub</Filter>
+          <Available>
+            <String>mpl_app_ver_sub</String>
+          </Available>
+          <MeasurementValue>0</MeasurementValue>
+          <CheckLimits>true</CheckLimits>
+          <MinimumValue>0</MinimumValue>
+          <MaximumValue>0</MaximumValue>
+          <Name Metadata="Step Name">Read {Measurement}</Name>
+          <ChildTestSteps />
+          <TestStep.Inputs>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="AppSub" target-member="MaximumValue"></InputOutputMember>
+            <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="AppSub" target-member="MinimumValue"></InputOutputMember>
+          </TestStep.Inputs>
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="18dde269-b054-4620-95fc-48649e140fd9">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_app_build_month</Measurement>
+          <Filter>mpl_app_build_month</Filter>
+          <Available>
+            <String>mpl_app_build_month</String>
+          </Available>
+          <MeasurementValue>5</MeasurementValue>
+          <CheckLimits>false</CheckLimits>
+          <MinimumValue>-99999</MinimumValue>
+          <MaximumValue>99999</MaximumValue>
+          <Name Metadata="Step Name">Read App Build Month</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="5e98e983-0c2a-4cd3-921d-cc744351207a">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_app_build_day</Measurement>
+          <Filter>mpl_app_build_day</Filter>
+          <Available>
+            <String>mpl_app_build_day</String>
+          </Available>
+          <MeasurementValue>15</MeasurementValue>
+          <CheckLimits>false</CheckLimits>
+          <MinimumValue>-99999</MinimumValue>
+          <MaximumValue>99999</MaximumValue>
+          <Name Metadata="Step Name">Read App Build Day</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="4571138b-59a9-44e2-b656-e96cd312b9b1">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_app_build_year</Measurement>
+          <Filter>mpl_app_build_year</Filter>
+          <Available>
+            <String>mpl_app_build_year</String>
+          </Available>
+          <MeasurementValue>2026</MeasurementValue>
+          <CheckLimits>false</CheckLimits>
+          <MinimumValue>-99999</MinimumValue>
+          <MaximumValue>99999</MaximumValue>
+          <Name Metadata="Step Name">Read App Build Year</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="7810425d-f2dc-43fe-bef9-524297252a21">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>mpl_app_build_hour</Measurement>
+          <Filter>mpl_app_build_hour</Filter>
+          <Available>
+            <String>mpl_app_build_hour</String>
+          </Available>
+          <MeasurementValue>12</MeasurementValue>
+          <CheckLimits>false</CheckLimits>
+          <MinimumValue>-99999</MinimumValue>
+          <MaximumValue>99999</MaximumValue>
+          <Name Metadata="Step Name">Read App Build Hour</Name>
+          <ChildTestSteps />
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+    <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="6b8ec1a4-429e-4c1f-94fc-0287690892d2">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>DOTc_b_CANASelWakeEnable</Calibration>
+      <Available>
+        <String>DOTc_b_CANASelWakeEnable</String>
+      </Available>
+      <Filter>DOTc_b_CANASelWakeEnable</Filter>
+      <CalibrationValue>1</CalibrationValue>
+      <Name Metadata="Step Name">WriteCalibration CANA SelWake Enable</Name>
+      <ChildTestSteps />
+      <OpenTap.Description>Only wake on specific CAN message</OpenTap.Description>
+    </TestStep>
+    <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="9c2158c1-4504-4612-b117-2d6efe714c33">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>DOTc_b_CANBSelWakeEnable</Calibration>
+      <Available>
+        <String>DOTc_b_CANBSelWakeEnable</String>
+      </Available>
+      <Filter>DOTc_b_CANBSelWakeEnable</Filter>
+      <CalibrationValue>1</CalibrationValue>
+      <Name Metadata="Step Name">WriteCalibration CANB SelWake Enable</Name>
+      <ChildTestSteps />
+      <OpenTap.Description>Only wkae on specific CAN message</OpenTap.Description>
+    </TestStep>
+    <TestStep type="OpenECU.SendCAN.SendCAN" Id="009d7029-75bd-44b9-bbc9-57be71cb805f">
+      <Dut Source="OpenTap.DutSettings">CAN DUT1</Dut>
+      <CANExt>false</CANExt>
+      <CANFDMode>false</CANFDMode>
+      <CANID>2047</CANID>
+      <CANData>1, 2, 3, 4, 5, 6, 7</CANData>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Send CANA (1) (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.SendCAN.SendCAN" Id="6c807d37-eb91-4db2-8a4f-c82ba78a9070">
+      <Dut Source="OpenTap.DutSettings">CAN DUT2B</Dut>
+      <CANExt>false</CANExt>
+      <CANFDMode>false</CANFDMode>
+      <CANID>128</CANID>
+      <CANData>1, 2, 3, 4, 5, 6, 7, 8</CANData>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Send CANB (2) (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.SendCAN.SendCAN" Id="435a0f4f-d4f3-49ad-934a-d661288c3e73">
+      <Dut Source="OpenTap.DutSettings">CAN DUT3</Dut>
+      <CANExt>true</CANExt>
+      <CANFDMode>false</CANFDMode>
+      <CANID>3</CANID>
+      <CANData>1, 2, 3, 4, 5, 6, 7, 8</CANData>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Send CANC (3) (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.SendCAN.SendCAN" Id="145d3b61-c1b9-456a-95a9-a3e402720cb2">
+      <Dut Source="OpenTap.DutSettings">CAN DUT4D</Dut>
+      <CANExt>true</CANExt>
+      <CANFDMode>false</CANFDMode>
+      <CANID>3</CANID>
+      <CANData>1, 2, 3, 4, 5, 6, 7, 8</CANData>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Send CAND (5)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenTap.Plugins.BasicSteps.IfStep" Id="b71256e8-f54f-4211-b413-5ac43fd7e860" OpenTap.Visibility="Visible">
+      <InputVerdict>
+        <PropertyName>OpenTap.TestStep|Verdict</PropertyName>
+        <Step>3a0a58fb-9a22-446e-80ed-394ee571552f</Step>
+      </InputVerdict>
+      <TargetVerdict>Fail</TargetVerdict>
+      <Action>RunChildren</Action>
+      <Name Metadata="Step Name">If Code Not Matching</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenTap.Plugins.BasicSteps.DialogStep" Id="20055573-11b4-4b40-aa99-165a0edcbdd5">
+          <Message>
+            <Base64>VGhlIENvZGUgaW4gdGhlIERVVCBkb2VzIG5vdCBtYXRjaCB3aGF0IGlzIGNvbmZpZ3VyZWQhISEhIQ0KDQpQcmVzcyBPSyBpZiB5b3Ugd2lzaCB0byBjb250aW51ZSBpbiBzcGl0ZSBvZiBwb3RlbnRpYWwgcHJvYmxlbXMuDQoNClByZXNzIENhbmNlbCB0byBhYm9ydCB0ZXN0Lg==</Base64>
+          </Message>
+          <Title>DUT Code Wrong</Title>
+          <Buttons>OkCancel</Buttons>
+          <PositiveAnswer>Pass</PositiveAnswer>
+          <NegativeAnswer>Error</NegativeAnswer>
+          <UseTimeout>true</UseTimeout>
+          <Timeout>60</Timeout>
+          <DefaultAnswer>Fail</DefaultAnswer>
+          <ShowPicture>false</ShowPicture>
+          <PictureSource />
+          <PictureDescription />
+          <Name Metadata="Step Name">Dialog</Name>
+          <ChildTestSteps />
+        </TestStep>
+      </ChildTestSteps>
+    </TestStep>
+    <TestStep type="OpenECU.ReadCalibration.ReadCalibration" Id="f4286051-3d18-40c8-995f-ab005b9dcd0d">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>AINc_V_BlpOffset</Calibration>
+      <Available>
+        <String>AINc_V_BlpOffset</String>
+      </Available>
+      <Filter>AINc_V_BlpOffset</Filter>
+      <CalibrationValue>1.5119999647140503</CalibrationValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadCalibration AINc_V_BlpOffset</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="876600e4-d67d-4a23-af4c-caf3130fb6a2">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>AINc_V_BlpOffset</Calibration>
+      <Available>
+        <String>AINc_V_BlpOffset</String>
+      </Available>
+      <Filter>AINc_V_BlpOffset</Filter>
+      <CalibrationValue>1.512</CalibrationValue>
+      <Name Metadata="Step Name">WriteCalibration AINc_V_BlpOffset</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadCalibration.ReadCalibration" Id="731b91b3-4e24-4c5a-b989-f1d34b5eb875">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>AINc_V_BlpOffset</Calibration>
+      <Available>
+        <String>AINc_V_BlpOffset</String>
+      </Available>
+      <Filter>AINc_V_BlpOffset</Filter>
+      <CalibrationValue>1.5119999647140503</CalibrationValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadCalibration AINc_V_BlpOffset(1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="b0a2a5ef-4a9c-404b-9841-25780193eb0c" OpenTap.Visibility="Visible">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>mpl_mode</Measurement>
+      <Filter>mpl_mode</Filter>
+      <Available>
+        <String>mpl_mode</String>
+        <String>mpl_mode_run_time</String>
+      </Available>
+      <MeasurementValue>2</MeasurementValue>
+      <CheckLimits>true</CheckLimits>
+      <MinimumValue>2</MinimumValue>
+      <MaximumValue>2</MaximumValue>
+      <Name Metadata="Step Name">Check if DUT in APP</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadCalibration.ReadCalibration" Id="dbf64d01-aedd-4c33-a16f-604d8bc8c3ed">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>TSTc_e_TestMode</Calibration>
+      <Available>
+        <String>TSTc_e_TestMode</String>
+      </Available>
+      <Filter>TSTc_e_TestMode</Filter>
+      <CalibrationValue>0</CalibrationValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadCal TSTc_e_TestMode</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="a6011863-e458-47bc-b157-19d470b42dab">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>TST_e_TestMode</Measurement>
+      <Filter>TST_e_TestMode</Filter>
+      <Available>
+        <String>TST_e_TestMode</String>
+      </Available>
+      <MeasurementValue>0</MeasurementValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadMeas TST_e_TestMode</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="d5c0aff8-c757-4d14-8b0e-f7424825e33a">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>AIN_V_VRefA</Measurement>
+      <Filter>AIN_V_VRefA</Filter>
+      <Available>
+        <String>AIN_V_VRefA</String>
+        <String>AIN_V_VRefARaw</String>
+      </Available>
+      <MeasurementValue>5.011229515075684</MeasurementValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadAIN-VREFA</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="6428be34-af68-4920-bbc4-4510e0696b35" OpenTap.Visibility="Visible">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>AIN_V_VRefB</Measurement>
+      <Filter>AIN_V_VRefB</Filter>
+      <Available>
+        <String>AIN_V_VRefB</String>
+        <String>AIN_V_VRefBRaw</String>
+      </Available>
+      <MeasurementValue>5.005859375</MeasurementValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadAIN-VREFB</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="09b503e4-b72c-4736-b653-b3b8dee92a4a" OpenTap.Visibility="Visible">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>AIN_V_Blp</Measurement>
+      <Filter>AIN_V_Blp</Filter>
+      <Available>
+        <String>AIN_V_Blp</String>
+        <String>AIN_V_BlpRaw</String>
+      </Available>
+      <MeasurementValue>1.5004661083221436</MeasurementValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadAIN-VBLP</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="a9097970-2b50-4c17-9088-65f56bd8afcb">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>AIN_V_3V3QCA</Measurement>
+      <Filter>AIN_V_3V3QCA</Filter>
+      <Available>
+        <String>AIN_V_3V3QCA</String>
+        <String>AIN_V_3V3QCARaw</String>
+      </Available>
+      <MeasurementValue>0.2001943439245224</MeasurementValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>3.2</MinimumValue>
+      <MaximumValue>3.4</MaximumValue>
+      <Name Metadata="Step Name">Read QCA Voltage</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.IfLessThanStep.IfLessThanStep" Id="4616bce6-a05e-41f8-b4c4-f2dfda3dad7d" OpenTap.Visibility="Visible">
+      <Value1>0</Value1>
+      <Value2>7</Value2>
+      <Name Metadata="Step Name">If OC-Check Less Than 7 do check QCA3v3a</Name>
+      <ChildTestSteps>
+        <TestStep type="OpenECU.ReadCalibration.ReadCalibration" Id="d38cd19d-26ef-41d1-b78a-352695a5d636">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Calibration>DOTc_b_QCAEnable</Calibration>
+          <Available>
+            <String>DOTc_b_QCAEnable</String>
+          </Available>
+          <Filter>DOTc_b_QCAEnable</Filter>
+          <CalibrationValue>0</CalibrationValue>
+          <CheckLimits>false</CheckLimits>
+          <MinimumValue>-99999</MinimumValue>
+          <MaximumValue>99999</MaximumValue>
+          <Name Metadata="Step Name">Read QCAEnable</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="8ebc247e-1911-495f-816a-da23e357930d">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Calibration>DOTc_b_QCAEnable</Calibration>
+          <Available>
+            <String>DOTc_b_QCAEnable</String>
+          </Available>
+          <Filter>DOTc_b_QCAEnable</Filter>
+          <CalibrationValue>0</CalibrationValue>
+          <Name Metadata="Step Name">WriteCalibration qcaenable off</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="346adbaa-9c4e-45e9-8aaa-24031384c1c4">
+          <DelaySecs>1</DelaySecs>
+          <Name Metadata="Step Name">Delay {Time delay}</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="b6bcd267-9ed2-477a-b7ec-2a11d79ab805">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>AIN_V_3V3QCA</Measurement>
+          <Filter>AIN_V_3V3QCA</Filter>
+          <Available>
+            <String>AIN_V_3V3QCA</String>
+            <String>AIN_V_3V3QCARaw</String>
+          </Available>
+          <MeasurementValue>0.1953134685754776</MeasurementValue>
+          <CheckLimits>true</CheckLimits>
+          <MinimumValue>-0.01</MinimumValue>
+          <MaximumValue>2.5</MaximumValue>
+          <Name Metadata="Step Name">Read QCA Voltage Off</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="77dc5240-430a-4f36-a076-1a02b2acd306">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Calibration>DOTc_b_QCAEnable</Calibration>
+          <Available>
+            <String>DOTc_b_QCAEnable</String>
+          </Available>
+          <Filter>DOTc_b_QCAEnable</Filter>
+          <CalibrationValue>1</CalibrationValue>
+          <Name Metadata="Step Name">WriteCalibration qcaenable ON</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenTap.Plugins.BasicSteps.DelayStep" Id="2b773390-ec08-49a3-a2bf-c3f36a3d3025">
+          <DelaySecs>1</DelaySecs>
+          <Name Metadata="Step Name">Delay {Time delay} (1)</Name>
+          <ChildTestSteps />
+        </TestStep>
+        <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="020742b1-6258-487f-8d41-371d5a6467c4">
+          <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+          <Measurement>AIN_V_3V3QCA</Measurement>
+          <Filter>AIN_V_3V3QCA</Filter>
+          <Available>
+            <String>AIN_V_3V3QCA</String>
+            <String>AIN_V_3V3QCARaw</String>
+          </Available>
+          <MeasurementValue>3.3361806869506836</MeasurementValue>
+          <CheckLimits>true</CheckLimits>
+          <MinimumValue>3.2</MinimumValue>
+          <MaximumValue>3.4</MaximumValue>
+          <Name Metadata="Step Name">Read QCA Voltage ON</Name>
+          <ChildTestSteps />
+        </TestStep>
+      </ChildTestSteps>
+      <TestStep.Inputs>
+        <InputOutputMember id="52cf167d-b743-4b59-ab48-ed8b654d7361" member="OC-Check" target-member="Value1"></InputOutputMember>
+      </TestStep.Inputs>
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteByte" Id="99b29137-1825-46e1-a40c-08269fb3bd41">
+      <ListOfAvailableValues>
+        <String>TEMPIN1-2.CTRLBYTE</String>
+        <String>TEMPIN3-4.CTRLBYTE</String>
+        <String>VIN1-2.CTRLBYTE</String>
+        <String>VIN3-4.CTRLBYTE</String>
+        <String>VIN5-6.CTRLBYTE</String>
+        <String>VIN7-8.CTRLBYTE</String>
+        <String>VIN9-10.CTRLBYTE</String>
+        <String>BLP-RESIN1.CTRLBYTE</String>
+        <String>RESIN2-PROXI.CTRLBYTE</String>
+        <String>HSP1-2.CTRLBYTE</String>
+        <String>HSP3-4.CTRLBYTE</String>
+        <String>HSP5-HSO1.CTRLBYTE</String>
+        <String>HSO2-3.CTRLBYTE</String>
+        <String>HSO4-LED2.CTRLBYTE</String>
+        <String>LED1-LED3.CTRLBYTE</String>
+        <String>LSB1-2.CTRLBYTE</String>
+        <String>LSB3-4.CTRLBYTE</String>
+        <String>LSB5-6.CTRLBYTE</String>
+        <String>LSB7-LSC1.CTRLBYTE</String>
+        <String>LSC2-3.CTRLBYTE</String>
+        <String>LSC4-LSA1.CTRLBYTE</String>
+        <String>LSA2.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE</String>
+        <String>SPDSNS1.CTRLBYTE1</String>
+        <String>SPDSNS1.DC</String>
+        <String>SPDSNS1.DC-RSVD</String>
+        <String>SPDSNS2.CTRLBYTE</String>
+        <String>SPDSNS2.CTRLBYTE1</String>
+        <String>SPDSNS2.DC</String>
+        <String>SPDSNS2.DC-RSVD</String>
+        <String>SPDSNS3.CTRLBYTE</String>
+        <String>SPDSNS3.CTRLBYTE1</String>
+        <String>SPDSNS3.DC</String>
+        <String>SPDSNS3.DC-RSVD</String>
+        <String>SPDSNS4.CTRLBYTE</String>
+        <String>SPDSNS4.CTRLBYTE1</String>
+        <String>SPDSNS4.DC</String>
+        <String>SPDSNS4.DC-RSVD</String>
+        <String>SPDSNS5.CTRLBYTE</String>
+        <String>SPDSNS5.CTRLBYTE1</String>
+        <String>SPDSNS5.DC</String>
+        <String>SPDSNS5.DC-RSVD</String>
+        <String>SPDSNS6.CTRLBYTE</String>
+        <String>SPDSNS6.CTRLBYTE1</String>
+        <String>SPDSNS6.DC</String>
+        <String>SPDSNS6.DC-RSVD</String>
+        <String>HBR1.CTRLBYTE</String>
+        <String>HBR2.CTRLBYTE</String>
+        <String>HBR3.CTRLBYTE</String>
+        <String>HBR4.CTRLBYTE</String>
+        <String>VREFA-VREFB.CTRLBYTE</String>
+        <String>BPOS.CTRLBYTE</String>
+        <String>BPOS.CTHRESH-DC</String>
+        <String>BPOS.CTHRESH-DC-RSVD</String>
+        <String>BNEG.CTRLBYTE</String>
+        <String>BNEG.CTHRESH-DC</String>
+        <String>BNEG.CTHRESH-DC-RSVD</String>
+        <String>CANA.CTRLBYTE</String>
+        <String>CANB.CTRLBYTE</String>
+        <String>CANC.CTRLBYTE</String>
+        <String>CAND.CTRLBYTE</String>
+        <String>CANE.CTRLBYTE</String>
+        <String>CANF.CTRLBYTE</String>
+        <String>CANCBIAS.CTRLBYTE</String>
+        <String>CANdBIAS.CTRLBYTE</String>
+        <String>CANEBIAS.CTRLBYTE</String>
+        <String>CANFBIAS.CTRLBYTE</String>
+        <String>LINA-B.CTRLBYTE</String>
+        <String>PILOT.CTRLBYTE</String>
+        <String>PILOT.STIM-DC</String>
+        <String>SMUA.CTRLBYTE</String>
+        <String>SMUA-B.CTRLBYTE</String>
+        <String>SMUB.CTRLBYTE</String>
+        <String>SMU.CTRLBYTE</String>
+        <String>PSU.CTRLBYTE</String>
+        <String>EDIN.CTRLBYTE</String>
+        <String>MECH.INDC1</String>
+        <String>MECH.INDC2</String>
+        <String>MECH.INDC3</String>
+        <String>TESTP.CTRLBYTE1</String>
+        <String>TESTP.CTRLBYTE2</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>smua-</Filter>
+      <RSMChannelName>SMUA-B.CTRLBYTE</RSMChannelName>
+      <ByteValue>0</ByteValue>
+      <Name Metadata="Step Name">disconnect Measure Buses from DACs (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="53c69ba5-3c2e-4184-abce-6887fcb2ab3f">
+      <ListOfAvailableValues>
+        <String>TEMPIN1.STIM</String>
+        <String>TEMPIN1.STIMB</String>
+        <String>TEMPIN1.LAIESTIM.BIAS</String>
+        <String>TEMPIN1.LAIESTIM.LVL</String>
+        <String>TEMPIN2.STIM</String>
+        <String>TEMPIN2.STIMB</String>
+        <String>TEMPIN2.LAIESTIM.BIAS</String>
+        <String>TEMPIN2.LAIESTIM.LVL</String>
+        <String>TEMPIN3.STIM</String>
+        <String>TEMPIN3.STIMB</String>
+        <String>TEMPIN3.LAIESTIM.BIAS</String>
+        <String>TEMPIN3.LAIESTIM.LVL</String>
+        <String>TEMPIN4.STIM</String>
+        <String>TEMPIN4.STIMB</String>
+        <String>TEMPIN4.LAIESTIM.BIAS</String>
+        <String>TEMPIN4.LAIESTIM.LVL</String>
+        <String>VIN1.STIM</String>
+        <String>VIN1.STIMB</String>
+        <String>VIN1.AIESTIM.BIAS</String>
+        <String>VIN1.AIESTIM.LVL</String>
+        <String>VIN2.STIM</String>
+        <String>VIN2.STIMB</String>
+        <String>VIN2.AIESTIM.BIAS</String>
+        <String>VIN2.AIESTIM.LVL</String>
+        <String>VIN3.STIM</String>
+        <String>VIN3.STIMB</String>
+        <String>VIN3.AIESTIM.BIAS</String>
+        <String>VIN3.AIESTIM.LVL</String>
+        <String>VIN4.STIM</String>
+        <String>VIN4.STIMB</String>
+        <String>VIN4.AIESTIM.BIAS</String>
+        <String>VIN4.AIESTIM.LVL</String>
+        <String>VIN5.STIM</String>
+        <String>VIN5.STIMB</String>
+        <String>VIN5.AIESTIM.BIAS</String>
+        <String>VIN5.AIESTIM.LVL</String>
+        <String>VIN6.STIM</String>
+        <String>VIN6.STIMB</String>
+        <String>VIN6.AIESTIM.BIAS</String>
+        <String>VIN6.AIESTIM.LVL</String>
+        <String>VIN7.STIM</String>
+        <String>VIN7.STIMB</String>
+        <String>VIN7.AIESTIM.BIAS</String>
+        <String>VIN7.AIESTIM.LVL</String>
+        <String>VIN8.STIM</String>
+        <String>VIN8.STIMB</String>
+        <String>VIN8.AIESTIM.BIAS</String>
+        <String>VIN8.AIESTIM.LVL</String>
+        <String>VIN9.STIM</String>
+        <String>VIN9.STIMB</String>
+        <String>VIN9.AIESTIM.BIAS</String>
+        <String>VIN9.AIESTIM.LVL</String>
+        <String>VIN10.STIM</String>
+        <String>VIN10.STIMB</String>
+        <String>VIN10.AIESTIM.BIAS</String>
+        <String>VIN10.AIESTIM.LVL</String>
+        <String>BLP.STIM</String>
+        <String>BLP.STIMB</String>
+        <String>BLP.AIESTIM.BIAS</String>
+        <String>BLP.AIESTIM.LVL</String>
+        <String>RESIN1.STIM</String>
+        <String>RESIN1.STIMB</String>
+        <String>RESIN1.AIESTIM.BIAS</String>
+        <String>RESIN1.AIESTIM.LVL</String>
+        <String>RESIN2.STIM</String>
+        <String>RESIN2.STIMB</String>
+        <String>RESIN2.AIESTIM.BIAS</String>
+        <String>RESIN2.AIESTIM.LVL</String>
+        <String>PROXI.STIM</String>
+        <String>PROXI.STIMB</String>
+        <String>PROXI.LAIESTIM.BIAS</String>
+        <String>PROXI.LAIESTIM.LVL</String>
+        <String>HSP1.DSTIM</String>
+        <String>HSP1.LSTIM</String>
+        <String>HSP1.SRC1</String>
+        <String>HSP1.SRC2</String>
+        <String>HSP2.DSTIM</String>
+        <String>HSP2.LSTIM</String>
+        <String>HSP2.SRC1</String>
+        <String>HSP2.SRC2</String>
+        <String>HSP3.DSTIM</String>
+        <String>HSP3.LSTIM</String>
+        <String>HSP3.SRC1</String>
+        <String>HSP3.SRC2</String>
+        <String>HSP4.DSTIM</String>
+        <String>HSP4.LSTIM</String>
+        <String>HSP4.SRC1</String>
+        <String>HSP4.SRC2</String>
+        <String>HSP5.DSTIM</String>
+        <String>HSP5.LSTIM</String>
+        <String>HSP5.SRC1</String>
+        <String>HSP5.SRC2</String>
+        <String>HSO1.DSTIM</String>
+        <String>HSO1.LSTIM</String>
+        <String>HSO1.SRC1</String>
+        <String>HSO1.SRC2</String>
+        <String>HSO2.DSTIM</String>
+        <String>HSO2.LSTIM</String>
+        <String>HSO2.SRC1</String>
+        <String>HSO2.SRC2</String>
+        <String>HSO3.DSTIM</String>
+        <String>HSO3.LSTIM</String>
+        <String>HSO3.SRC1</String>
+        <String>HSO3.SRC2</String>
+        <String>HSO4.DSTIM</String>
+        <String>HSO4.LSTIM</String>
+        <String>HSO4.SRC1</String>
+        <String>HSO4.SRC2</String>
+        <String>LED2.DSTIM</String>
+        <String>LED2.LSTIM</String>
+        <String>LED2.SRC1</String>
+        <String>LED2.SRC2</String>
+        <String>LED1.DSTIM</String>
+        <String>LED1.LSTIM</String>
+        <String>LED1.SRC1</String>
+        <String>LED1.SRC2</String>
+        <String>LED3.DSTIM</String>
+        <String>LED3.LSTIM</String>
+        <String>LED3.SRC1</String>
+        <String>LED3.SRC2</String>
+        <String>LSB1.DSTIM</String>
+        <String>LSB1.LSTIM</String>
+        <String>LSB1.SRC1</String>
+        <String>LSB1.SRC2</String>
+        <String>LSB2.DSTIM</String>
+        <String>LSB2.LSTIM</String>
+        <String>LSB2.SRC1</String>
+        <String>LSB2.SRC2</String>
+        <String>LSB3.DSTIM</String>
+        <String>LSB3.LSTIM</String>
+        <String>LSB3.SRC1</String>
+        <String>LSB3.SRC2</String>
+        <String>LSB4.DSTIM</String>
+        <String>LSB4.LSTIM</String>
+        <String>LSB4.SRC1</String>
+        <String>LSB4.SRC2</String>
+        <String>LSB5.DSTIM</String>
+        <String>LSB5.LSTIM</String>
+        <String>LSB5.SRC1</String>
+        <String>LSB5.SRC2</String>
+        <String>LSB6.DSTIM</String>
+        <String>LSB6.LSTIM</String>
+        <String>LSB6.SRC1</String>
+        <String>LSB6.SRC2</String>
+        <String>LSB7.DSTIM</String>
+        <String>LSB7.LSTIM</String>
+        <String>LSB7.SRC1</String>
+        <String>LSB7.SRC2</String>
+        <String>LSC1.DSTIM</String>
+        <String>LSC1.LSTIM</String>
+        <String>LSC1.SRC1</String>
+        <String>LSC1.SRC2</String>
+        <String>LSC2.DSTIM</String>
+        <String>LSC2.LSTIM</String>
+        <String>LSC2.SRC1</String>
+        <String>LSC2.SRC2</String>
+        <String>LSC3.DSTIM</String>
+        <String>LSC3.LSTIM</String>
+        <String>LSC3.SRC1</String>
+        <String>LSC3.SRC2</String>
+        <String>LSC4.DSTIM</String>
+        <String>LSC4.LSTIM</String>
+        <String>LSC4.SRC1</String>
+        <String>LSC4.SRC2</String>
+        <String>LSA1.DSTIM</String>
+        <String>LSA1.LSTIM</String>
+        <String>LSA1.SRC1</String>
+        <String>LSA1.SRC2</String>
+        <String>LSA2.DSTIM</String>
+        <String>LSA2.LSTIM</String>
+        <String>LSA2.SRC1</String>
+        <String>LSA2.SRC2</String>
+        <String>SPDSNS1.STIM</String>
+        <String>SPDSNS1.CC</String>
+        <String>SPDSNS1.CURRSTIM</String>
+        <String>SPDSNS1.HEPD</String>
+        <String>SPDSNS1.HEEPD</String>
+        <String>SPDSNS1.AIESTIM.BIAS</String>
+        <String>SPDSNS1.AIESTIM.LVL</String>
+        <String>SPDSNS1.----22:8</String>
+        <String>SPDSNS1.OUTCTRL0</String>
+        <String>SPDSNS1.OUTCTRL1</String>
+        <String>SPDSNS1.DCDEFAULT</String>
+        <String>SPDSNS1.FREQUENCY</String>
+        <String>SPDSNS1.-----23-5</String>
+        <String>SPDSNS1.-----23-6</String>
+        <String>SPDSNS1.-----23-7</String>
+        <String>SPDSNS1.-----23-8</String>
+        <String>SPDSNS2.STIM</String>
+        <String>SPDSNS2.CC</String>
+        <String>SPDSNS2.CURRSTIM</String>
+        <String>SPDSNS2.HEPD</String>
+        <String>SPDSNS2.HEEPD</String>
+        <String>SPDSNS2.AIESTIM.BIAS</String>
+        <String>SPDSNS2.AIESTIM.LVL</String>
+        <String>SPDSNS2.----24:8</String>
+        <String>SPDSNS2.OUTCTRL0</String>
+        <String>SPDSNS2.OUTCTRL1</String>
+        <String>SPDSNS2.DCDEFAULT</String>
+        <String>SPDSNS2.FREQUENCY</String>
+        <String>SPDSNS2.-----23-5</String>
+        <String>SPDSNS2.-----23-6</String>
+        <String>SPDSNS2.-----23-7</String>
+        <String>SPDSNS2.-----23-8</String>
+        <String>SPDSNS3.STIM</String>
+        <String>SPDSNS3.CC</String>
+        <String>SPDSNS3.CURRSTIM</String>
+        <String>SPDSNS3.HEPD</String>
+        <String>SPDSNS3.HEEPD</String>
+        <String>SPDSNS3.AIESTIM.BIAS</String>
+        <String>SPDSNS3.AIESTIM.LVL</String>
+        <String>SPDSNS3.----26:8</String>
+        <String>SPDSNS3.OUTCTRL0</String>
+        <String>SPDSNS3.OUTCTRL1</String>
+        <String>SPDSNS3.DCDEFAULT</String>
+        <String>SPDSNS3.FREQUENCY</String>
+        <String>SPDSNS3.-----23-5</String>
+        <String>SPDSNS3.-----23-6</String>
+        <String>SPDSNS3.-----23-7</String>
+        <String>SPDSNS3.-----23-8</String>
+        <String>SPDSNS4.STIM</String>
+        <String>SPDSNS4.CC</String>
+        <String>SPDSNS4.CURRSTIM</String>
+        <String>SPDSNS4.HEPD</String>
+        <String>SPDSNS4.HEEPD</String>
+        <String>SPDSNS4.AIESTIM.BIAS</String>
+        <String>SPDSNS4.AIESTIM.LVL</String>
+        <String>SPDSNS4.----28:8</String>
+        <String>SPDSNS4.OUTCTRL0</String>
+        <String>SPDSNS4.OUTCTRL1</String>
+        <String>SPDSNS4.DCDEFAULT</String>
+        <String>SPDSNS4.FREQUENCY</String>
+        <String>SPDSNS4.-----29-5</String>
+        <String>SPDSNS4.-----29-6</String>
+        <String>SPDSNS4.-----29-7</String>
+        <String>SPDSNS4.-----29-8</String>
+        <String>SPDSNS5.STIM</String>
+        <String>SPDSNS5.CC</String>
+        <String>SPDSNS5.CURRSTIM</String>
+        <String>SPDSNS5.HEPD</String>
+        <String>SPDSNS5.HEEPD</String>
+        <String>SPDSNS5.AIESTIM.BIAS</String>
+        <String>SPDSNS5.AIESTIM.LVL</String>
+        <String>SPDSNS5.----30:8</String>
+        <String>SPDSNS5.OUTCTRL0</String>
+        <String>SPDSNS5.OUTCTRL1</String>
+        <String>SPDSNS5.DCDEFAULT</String>
+        <String>SPDSNS5.FREQUENCY</String>
+        <String>SPDSNS5.-----31-5</String>
+        <String>SPDSNS5.-----31-6</String>
+        <String>SPDSNS5.-----31-7</String>
+        <String>SPDSNS5.-----31-8</String>
+        <String>SPDSNS6.STIM</String>
+        <String>SPDSNS6.CC</String>
+        <String>SPDSNS6.CURRSTIM</String>
+        <String>SPDSNS6.HEPD</String>
+        <String>SPDSNS6.HEEPD</String>
+        <String>SPDSNS6.AIESTIM.BIAS</String>
+        <String>SPDSNS6.AIESTIM.LVL</String>
+        <String>SPDSNS6.----32:8</String>
+        <String>SPDSNS6.OUTCTRL0</String>
+        <String>SPDSNS6.OUTCTRL1</String>
+        <String>SPDSNS6.DCDEFAULT</String>
+        <String>SPDSNS6.FREQUENCY</String>
+        <String>SPDSNS6.-----33-5</String>
+        <String>SPDSNS6.-----33-6</String>
+        <String>SPDSNS6.-----33-7</String>
+        <String>SPDSNS6.-----33-8</String>
+        <String>HBR1.MEAS</String>
+        <String>HBR1.LMEAS</String>
+        <String>HBR1.SRC1</String>
+        <String>HBR1.SRC2</String>
+        <String>HBR1.DUTA</String>
+        <String>HBR1.DUTB</String>
+        <String>HBR1.LDUTA</String>
+        <String>HBR2.MEAS</String>
+        <String>HBR2.LMEAS</String>
+        <String>HBR2.SRC1</String>
+        <String>HBR2.SRC2</String>
+        <String>HBR2.DUTA</String>
+        <String>HBR2.DUTB</String>
+        <String>HBR2.LDUTA</String>
+        <String>HBR3.MEAS</String>
+        <String>HBR3.LMEAS</String>
+        <String>HBR3.SRC1</String>
+        <String>HBR3.SRC2</String>
+        <String>HBR3.DUTA</String>
+        <String>HBR3.DUTB</String>
+        <String>HBR3.LDUTA</String>
+        <String>HBR4.MEAS</String>
+        <String>HBR4.LMEAS</String>
+        <String>HBR4.SRC1</String>
+        <String>HBR4.SRC2</String>
+        <String>HBR4.DUTA</String>
+        <String>HBR4.DUTB</String>
+        <String>HBR4.LDUTA</String>
+        <String>VREFA.D+MEAS</String>
+        <String>VREFA.LLMEAS</String>
+        <String>VREFA.LLBNEG</String>
+        <String>VREFA.LLD-</String>
+        <String>VREFB.D+MEAS</String>
+        <String>VREFB.LLMEAS</String>
+        <String>VREFB.LLBNEG</String>
+        <String>VREFB.LLD-</String>
+        <String>HBR4A.BPOS</String>
+        <String>HBR4B.BNEG</String>
+        <String>BPOS.VTEST</String>
+        <String>BPOS.GND</String>
+        <String>BPOS.MEAS</String>
+        <String>BPOS.RST</String>
+        <String>BPOS.OC</String>
+        <String>BNEG.VTEST</String>
+        <String>BNEG.GND</String>
+        <String>BNEG.MEAS</String>
+        <String>BNEG.RST</String>
+        <String>BNEG.OC</String>
+        <String>IGN.BPOS</String>
+        <String>IGN.MEAS</String>
+        <String>CANA.THS</String>
+        <String>CANA.TLS</String>
+        <String>CANA.HSW</String>
+        <String>CANA.LSW</String>
+        <String>CANA.TERM</String>
+        <String>CANA.HMEAS</String>
+        <String>CANA.LMEAS</String>
+        <String>CANB.THS</String>
+        <String>CANB.TLS</String>
+        <String>CANB.HSW</String>
+        <String>CANB.LSW</String>
+        <String>CANB.TERM</String>
+        <String>CANB.HMEAS</String>
+        <String>CANB.LMEAS</String>
+        <String>CANC.THS</String>
+        <String>CANC.TLS</String>
+        <String>CANC.HSW</String>
+        <String>CANC.LSW</String>
+        <String>CANC.TERM</String>
+        <String>CANC.HMEAS</String>
+        <String>CANC.LMEAS</String>
+        <String>CAND.THS</String>
+        <String>CAND.TLS</String>
+        <String>CAND.HSW</String>
+        <String>CAND.LSW</String>
+        <String>CAND.TERM</String>
+        <String>CAND.HMEAS</String>
+        <String>CAND.LMEAS</String>
+        <String>CANE.THS</String>
+        <String>CANE.TLS</String>
+        <String>CANE.HSW</String>
+        <String>CANE.LSW</String>
+        <String>CANE.TERM</String>
+        <String>CANE.HMEAS</String>
+        <String>CANE.LMEAS</String>
+        <String>CANF.THS</String>
+        <String>CANF.TLS</String>
+        <String>CANF.HSW</String>
+        <String>CANF.LSW</String>
+        <String>CANF.TERM</String>
+        <String>CANF.HMEAS</String>
+        <String>CANF.LMEAS</String>
+        <String>CAN.TTERM</String>
+        <String>CANCH.BIAS</String>
+        <String>CANCH.LVL</String>
+        <String>CANCL.BIAS</String>
+        <String>CANCL.LVL</String>
+        <String>CANDH.BIAS</String>
+        <String>CANDH.LVL</String>
+        <String>CANDL.BIAS</String>
+        <String>CANDL.LVL</String>
+        <String>CANEH.BIAS</String>
+        <String>CANEH.LVL</String>
+        <String>CANEL.BIAS</String>
+        <String>CANEL.LVL</String>
+        <String>CANFH.BIAS</String>
+        <String>CANFH.LVL</String>
+        <String>CANFL.BIAS</String>
+        <String>CANFL.LVL</String>
+        <String>LINA.TLIN</String>
+        <String>LINA.LIN</String>
+        <String>LINA.MEAS</String>
+        <String>LINB.TLIN</String>
+        <String>LINB.LIN</String>
+        <String>LINB.MEAS</String>
+        <String>PILOT.STIMSW</String>
+        <String>PILOT.MEAS</String>
+        <String>SMUA.DMMVP</String>
+        <String>SMUA.SDMMVP</String>
+        <String>SMUA.DAC</String>
+        <String>SMUA.BATNEG</String>
+        <String>SMUA.BATPOS</String>
+        <String>SMUA.VREFA</String>
+        <String>SMUA.VREFB</String>
+        <String>SMUA.GND</String>
+        <String>SMUA.VTEST</String>
+        <String>SMUA.MEASA</String>
+        <String>SMUB.VTEST</String>
+        <String>SMUB.MEASA</String>
+        <String>SMUB.MEASB</String>
+        <String>SMUB.DMMVP</String>
+        <String>SMUB.SDMMVP</String>
+        <String>SMUB.DAC</String>
+        <String>SMUB.BATNEG</String>
+        <String>SMUB.BATPOS</String>
+        <String>SMUB.VREFA</String>
+        <String>SMUB.VREFB</String>
+        <String>SMUB.GND</String>
+        <String>SMU.R100k</String>
+        <String>SMU.R10k</String>
+        <String>SMU.R4k7</String>
+        <String>SMU.CURR</String>
+        <String>SMU.CRANGE</String>
+        <String>PSU.+12VMEAS</String>
+        <String>PSU.-12VMEAS</String>
+        <String>PSU.+5VMEAS</String>
+        <String>PSU.+60VMEAS</String>
+        <String>PSU.+60VEN</String>
+        <String>SS.+2.5VEN</String>
+        <String>DI1.EDI1</String>
+        <String>DI2.EDI2</String>
+        <String>TESTP.TSTP65</String>
+        <String>TESTP.TSTP66</String>
+        <String>TESTP.TSTP67</String>
+        <String>TESTP.TSTP68</String>
+        <String>TESTP.TSTP69</String>
+        <String>TESTP.TSTP70</String>
+        <String>TESTP.TSTP71</String>
+        <String>TESTP.TSTP72</String>
+        <String>TESTP.TSTP73</String>
+        <String>TESTP.TSTP74</String>
+        <String>TESTP.TSTP75</String>
+        <String>TESTP.TSTP76</String>
+        <String>TESTP.TSTP77</String>
+        <String>TESTP.CTRLBYTE3</String>
+        <String>TESTP.TPO1</String>
+        <String>TESTP.TPO2</String>
+        <String>TESTP.TPO3</String>
+        <String>TESTP.TPO4</String>
+        <String>TESTP.TPO5</String>
+        <String>TESTP.TPO6</String>
+        <String>TESTP.TPO7</String>
+        <String>TESTP.TPO8</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>ign</Filter>
+      <RSMChannelName>IGN.BPOS</RSMChannelName>
+      <OnOff>true</OnOff>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">DisConnect Ignition to BATPOS</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteChan" Id="d2f53395-8510-4c04-8642-70b6933bcdc2">
+      <ListOfAvailableValues>
+        <String>TEMPIN1.STIM</String>
+        <String>TEMPIN1.STIMB</String>
+        <String>TEMPIN1.LAIESTIM.BIAS</String>
+        <String>TEMPIN1.LAIESTIM.LVL</String>
+        <String>TEMPIN2.STIM</String>
+        <String>TEMPIN2.STIMB</String>
+        <String>TEMPIN2.LAIESTIM.BIAS</String>
+        <String>TEMPIN2.LAIESTIM.LVL</String>
+        <String>TEMPIN3.STIM</String>
+        <String>TEMPIN3.STIMB</String>
+        <String>TEMPIN3.LAIESTIM.BIAS</String>
+        <String>TEMPIN3.LAIESTIM.LVL</String>
+        <String>TEMPIN4.STIM</String>
+        <String>TEMPIN4.STIMB</String>
+        <String>TEMPIN4.LAIESTIM.BIAS</String>
+        <String>TEMPIN4.LAIESTIM.LVL</String>
+        <String>VIN1.STIM</String>
+        <String>VIN1.STIMB</String>
+        <String>VIN1.AIESTIM.BIAS</String>
+        <String>VIN1.AIESTIM.LVL</String>
+        <String>VIN2.STIM</String>
+        <String>VIN2.STIMB</String>
+        <String>VIN2.AIESTIM.BIAS</String>
+        <String>VIN2.AIESTIM.LVL</String>
+        <String>VIN3.STIM</String>
+        <String>VIN3.STIMB</String>
+        <String>VIN3.AIESTIM.BIAS</String>
+        <String>VIN3.AIESTIM.LVL</String>
+        <String>VIN4.STIM</String>
+        <String>VIN4.STIMB</String>
+        <String>VIN4.AIESTIM.BIAS</String>
+        <String>VIN4.AIESTIM.LVL</String>
+        <String>VIN5.STIM</String>
+        <String>VIN5.STIMB</String>
+        <String>VIN5.AIESTIM.BIAS</String>
+        <String>VIN5.AIESTIM.LVL</String>
+        <String>VIN6.STIM</String>
+        <String>VIN6.STIMB</String>
+        <String>VIN6.AIESTIM.BIAS</String>
+        <String>VIN6.AIESTIM.LVL</String>
+        <String>VIN7.STIM</String>
+        <String>VIN7.STIMB</String>
+        <String>VIN7.AIESTIM.BIAS</String>
+        <String>VIN7.AIESTIM.LVL</String>
+        <String>VIN8.STIM</String>
+        <String>VIN8.STIMB</String>
+        <String>VIN8.AIESTIM.BIAS</String>
+        <String>VIN8.AIESTIM.LVL</String>
+        <String>VIN9.STIM</String>
+        <String>VIN9.STIMB</String>
+        <String>VIN9.AIESTIM.BIAS</String>
+        <String>VIN9.AIESTIM.LVL</String>
+        <String>VIN10.STIM</String>
+        <String>VIN10.STIMB</String>
+        <String>VIN10.AIESTIM.BIAS</String>
+        <String>VIN10.AIESTIM.LVL</String>
+        <String>BLP.STIM</String>
+        <String>BLP.STIMB</String>
+        <String>BLP.AIESTIM.BIAS</String>
+        <String>BLP.AIESTIM.LVL</String>
+        <String>RESIN1.STIM</String>
+        <String>RESIN1.STIMB</String>
+        <String>RESIN1.AIESTIM.BIAS</String>
+        <String>RESIN1.AIESTIM.LVL</String>
+        <String>RESIN2.STIM</String>
+        <String>RESIN2.STIMB</String>
+        <String>RESIN2.AIESTIM.BIAS</String>
+        <String>RESIN2.AIESTIM.LVL</String>
+        <String>PROXI.STIM</String>
+        <String>PROXI.STIMB</String>
+        <String>PROXI.LAIESTIM.BIAS</String>
+        <String>PROXI.LAIESTIM.LVL</String>
+        <String>HSP1.DSTIM</String>
+        <String>HSP1.LSTIM</String>
+        <String>HSP1.SRC1</String>
+        <String>HSP1.SRC2</String>
+        <String>HSP2.DSTIM</String>
+        <String>HSP2.LSTIM</String>
+        <String>HSP2.SRC1</String>
+        <String>HSP2.SRC2</String>
+        <String>HSP3.DSTIM</String>
+        <String>HSP3.LSTIM</String>
+        <String>HSP3.SRC1</String>
+        <String>HSP3.SRC2</String>
+        <String>HSP4.DSTIM</String>
+        <String>HSP4.LSTIM</String>
+        <String>HSP4.SRC1</String>
+        <String>HSP4.SRC2</String>
+        <String>HSP5.DSTIM</String>
+        <String>HSP5.LSTIM</String>
+        <String>HSP5.SRC1</String>
+        <String>HSP5.SRC2</String>
+        <String>HSO1.DSTIM</String>
+        <String>HSO1.LSTIM</String>
+        <String>HSO1.SRC1</String>
+        <String>HSO1.SRC2</String>
+        <String>HSO2.DSTIM</String>
+        <String>HSO2.LSTIM</String>
+        <String>HSO2.SRC1</String>
+        <String>HSO2.SRC2</String>
+        <String>HSO3.DSTIM</String>
+        <String>HSO3.LSTIM</String>
+        <String>HSO3.SRC1</String>
+        <String>HSO3.SRC2</String>
+        <String>HSO4.DSTIM</String>
+        <String>HSO4.LSTIM</String>
+        <String>HSO4.SRC1</String>
+        <String>HSO4.SRC2</String>
+        <String>LED2.DSTIM</String>
+        <String>LED2.LSTIM</String>
+        <String>LED2.SRC1</String>
+        <String>LED2.SRC2</String>
+        <String>LED1.DSTIM</String>
+        <String>LED1.LSTIM</String>
+        <String>LED1.SRC1</String>
+        <String>LED1.SRC2</String>
+        <String>LED3.DSTIM</String>
+        <String>LED3.LSTIM</String>
+        <String>LED3.SRC1</String>
+        <String>LED3.SRC2</String>
+        <String>LSB1.DSTIM</String>
+        <String>LSB1.LSTIM</String>
+        <String>LSB1.SRC1</String>
+        <String>LSB1.SRC2</String>
+        <String>LSB2.DSTIM</String>
+        <String>LSB2.LSTIM</String>
+        <String>LSB2.SRC1</String>
+        <String>LSB2.SRC2</String>
+        <String>LSB3.DSTIM</String>
+        <String>LSB3.LSTIM</String>
+        <String>LSB3.SRC1</String>
+        <String>LSB3.SRC2</String>
+        <String>LSB4.DSTIM</String>
+        <String>LSB4.LSTIM</String>
+        <String>LSB4.SRC1</String>
+        <String>LSB4.SRC2</String>
+        <String>LSB5.DSTIM</String>
+        <String>LSB5.LSTIM</String>
+        <String>LSB5.SRC1</String>
+        <String>LSB5.SRC2</String>
+        <String>LSB6.DSTIM</String>
+        <String>LSB6.LSTIM</String>
+        <String>LSB6.SRC1</String>
+        <String>LSB6.SRC2</String>
+        <String>LSB7.DSTIM</String>
+        <String>LSB7.LSTIM</String>
+        <String>LSB7.SRC1</String>
+        <String>LSB7.SRC2</String>
+        <String>LSC1.DSTIM</String>
+        <String>LSC1.LSTIM</String>
+        <String>LSC1.SRC1</String>
+        <String>LSC1.SRC2</String>
+        <String>LSC2.DSTIM</String>
+        <String>LSC2.LSTIM</String>
+        <String>LSC2.SRC1</String>
+        <String>LSC2.SRC2</String>
+        <String>LSC3.DSTIM</String>
+        <String>LSC3.LSTIM</String>
+        <String>LSC3.SRC1</String>
+        <String>LSC3.SRC2</String>
+        <String>LSC4.DSTIM</String>
+        <String>LSC4.LSTIM</String>
+        <String>LSC4.SRC1</String>
+        <String>LSC4.SRC2</String>
+        <String>LSA1.DSTIM</String>
+        <String>LSA1.LSTIM</String>
+        <String>LSA1.SRC1</String>
+        <String>LSA1.SRC2</String>
+        <String>LSA2.DSTIM</String>
+        <String>LSA2.LSTIM</String>
+        <String>LSA2.SRC1</String>
+        <String>LSA2.SRC2</String>
+        <String>SPDSNS1.STIM</String>
+        <String>SPDSNS1.CC</String>
+        <String>SPDSNS1.CURRSTIM</String>
+        <String>SPDSNS1.HEPD</String>
+        <String>SPDSNS1.HEEPD</String>
+        <String>SPDSNS1.AIESTIM.BIAS</String>
+        <String>SPDSNS1.AIESTIM.LVL</String>
+        <String>SPDSNS1.----22:8</String>
+        <String>SPDSNS1.OUTCTRL0</String>
+        <String>SPDSNS1.OUTCTRL1</String>
+        <String>SPDSNS1.DCDEFAULT</String>
+        <String>SPDSNS1.FREQUENCY</String>
+        <String>SPDSNS1.-----23-5</String>
+        <String>SPDSNS1.-----23-6</String>
+        <String>SPDSNS1.-----23-7</String>
+        <String>SPDSNS1.-----23-8</String>
+        <String>SPDSNS2.STIM</String>
+        <String>SPDSNS2.CC</String>
+        <String>SPDSNS2.CURRSTIM</String>
+        <String>SPDSNS2.HEPD</String>
+        <String>SPDSNS2.HEEPD</String>
+        <String>SPDSNS2.AIESTIM.BIAS</String>
+        <String>SPDSNS2.AIESTIM.LVL</String>
+        <String>SPDSNS2.----24:8</String>
+        <String>SPDSNS2.OUTCTRL0</String>
+        <String>SPDSNS2.OUTCTRL1</String>
+        <String>SPDSNS2.DCDEFAULT</String>
+        <String>SPDSNS2.FREQUENCY</String>
+        <String>SPDSNS2.-----23-5</String>
+        <String>SPDSNS2.-----23-6</String>
+        <String>SPDSNS2.-----23-7</String>
+        <String>SPDSNS2.-----23-8</String>
+        <String>SPDSNS3.STIM</String>
+        <String>SPDSNS3.CC</String>
+        <String>SPDSNS3.CURRSTIM</String>
+        <String>SPDSNS3.HEPD</String>
+        <String>SPDSNS3.HEEPD</String>
+        <String>SPDSNS3.AIESTIM.BIAS</String>
+        <String>SPDSNS3.AIESTIM.LVL</String>
+        <String>SPDSNS3.----26:8</String>
+        <String>SPDSNS3.OUTCTRL0</String>
+        <String>SPDSNS3.OUTCTRL1</String>
+        <String>SPDSNS3.DCDEFAULT</String>
+        <String>SPDSNS3.FREQUENCY</String>
+        <String>SPDSNS3.-----23-5</String>
+        <String>SPDSNS3.-----23-6</String>
+        <String>SPDSNS3.-----23-7</String>
+        <String>SPDSNS3.-----23-8</String>
+        <String>SPDSNS4.STIM</String>
+        <String>SPDSNS4.CC</String>
+        <String>SPDSNS4.CURRSTIM</String>
+        <String>SPDSNS4.HEPD</String>
+        <String>SPDSNS4.HEEPD</String>
+        <String>SPDSNS4.AIESTIM.BIAS</String>
+        <String>SPDSNS4.AIESTIM.LVL</String>
+        <String>SPDSNS4.----28:8</String>
+        <String>SPDSNS4.OUTCTRL0</String>
+        <String>SPDSNS4.OUTCTRL1</String>
+        <String>SPDSNS4.DCDEFAULT</String>
+        <String>SPDSNS4.FREQUENCY</String>
+        <String>SPDSNS4.-----29-5</String>
+        <String>SPDSNS4.-----29-6</String>
+        <String>SPDSNS4.-----29-7</String>
+        <String>SPDSNS4.-----29-8</String>
+        <String>SPDSNS5.STIM</String>
+        <String>SPDSNS5.CC</String>
+        <String>SPDSNS5.CURRSTIM</String>
+        <String>SPDSNS5.HEPD</String>
+        <String>SPDSNS5.HEEPD</String>
+        <String>SPDSNS5.AIESTIM.BIAS</String>
+        <String>SPDSNS5.AIESTIM.LVL</String>
+        <String>SPDSNS5.----30:8</String>
+        <String>SPDSNS5.OUTCTRL0</String>
+        <String>SPDSNS5.OUTCTRL1</String>
+        <String>SPDSNS5.DCDEFAULT</String>
+        <String>SPDSNS5.FREQUENCY</String>
+        <String>SPDSNS5.-----31-5</String>
+        <String>SPDSNS5.-----31-6</String>
+        <String>SPDSNS5.-----31-7</String>
+        <String>SPDSNS5.-----31-8</String>
+        <String>SPDSNS6.STIM</String>
+        <String>SPDSNS6.CC</String>
+        <String>SPDSNS6.CURRSTIM</String>
+        <String>SPDSNS6.HEPD</String>
+        <String>SPDSNS6.HEEPD</String>
+        <String>SPDSNS6.AIESTIM.BIAS</String>
+        <String>SPDSNS6.AIESTIM.LVL</String>
+        <String>SPDSNS6.----32:8</String>
+        <String>SPDSNS6.OUTCTRL0</String>
+        <String>SPDSNS6.OUTCTRL1</String>
+        <String>SPDSNS6.DCDEFAULT</String>
+        <String>SPDSNS6.FREQUENCY</String>
+        <String>SPDSNS6.-----33-5</String>
+        <String>SPDSNS6.-----33-6</String>
+        <String>SPDSNS6.-----33-7</String>
+        <String>SPDSNS6.-----33-8</String>
+        <String>HBR1.MEAS</String>
+        <String>HBR1.LMEAS</String>
+        <String>HBR1.SRC1</String>
+        <String>HBR1.SRC2</String>
+        <String>HBR1.DUTA</String>
+        <String>HBR1.DUTB</String>
+        <String>HBR1.LDUTA</String>
+        <String>HBR2.MEAS</String>
+        <String>HBR2.LMEAS</String>
+        <String>HBR2.SRC1</String>
+        <String>HBR2.SRC2</String>
+        <String>HBR2.DUTA</String>
+        <String>HBR2.DUTB</String>
+        <String>HBR2.LDUTA</String>
+        <String>HBR3.MEAS</String>
+        <String>HBR3.LMEAS</String>
+        <String>HBR3.SRC1</String>
+        <String>HBR3.SRC2</String>
+        <String>HBR3.DUTA</String>
+        <String>HBR3.DUTB</String>
+        <String>HBR3.LDUTA</String>
+        <String>HBR4.MEAS</String>
+        <String>HBR4.LMEAS</String>
+        <String>HBR4.SRC1</String>
+        <String>HBR4.SRC2</String>
+        <String>HBR4.DUTA</String>
+        <String>HBR4.DUTB</String>
+        <String>HBR4.LDUTA</String>
+        <String>VREFA.D+MEAS</String>
+        <String>VREFA.LLMEAS</String>
+        <String>VREFA.LLBNEG</String>
+        <String>VREFA.LLD-</String>
+        <String>VREFB.D+MEAS</String>
+        <String>VREFB.LLMEAS</String>
+        <String>VREFB.LLBNEG</String>
+        <String>VREFB.LLD-</String>
+        <String>HBR4A.BPOS</String>
+        <String>HBR4B.BNEG</String>
+        <String>BPOS.VTEST</String>
+        <String>BPOS.GND</String>
+        <String>BPOS.MEAS</String>
+        <String>BPOS.RST</String>
+        <String>BPOS.OC</String>
+        <String>BNEG.VTEST</String>
+        <String>BNEG.GND</String>
+        <String>BNEG.MEAS</String>
+        <String>BNEG.RST</String>
+        <String>BNEG.OC</String>
+        <String>IGN.BPOS</String>
+        <String>IGN.MEAS</String>
+        <String>CANA.THS</String>
+        <String>CANA.TLS</String>
+        <String>CANA.HSW</String>
+        <String>CANA.LSW</String>
+        <String>CANA.TERM</String>
+        <String>CANA.HMEAS</String>
+        <String>CANA.LMEAS</String>
+        <String>CANB.THS</String>
+        <String>CANB.TLS</String>
+        <String>CANB.HSW</String>
+        <String>CANB.LSW</String>
+        <String>CANB.TERM</String>
+        <String>CANB.HMEAS</String>
+        <String>CANB.LMEAS</String>
+        <String>CANC.THS</String>
+        <String>CANC.TLS</String>
+        <String>CANC.HSW</String>
+        <String>CANC.LSW</String>
+        <String>CANC.TERM</String>
+        <String>CANC.HMEAS</String>
+        <String>CANC.LMEAS</String>
+        <String>CAND.THS</String>
+        <String>CAND.TLS</String>
+        <String>CAND.HSW</String>
+        <String>CAND.LSW</String>
+        <String>CAND.TERM</String>
+        <String>CAND.HMEAS</String>
+        <String>CAND.LMEAS</String>
+        <String>CANE.THS</String>
+        <String>CANE.TLS</String>
+        <String>CANE.HSW</String>
+        <String>CANE.LSW</String>
+        <String>CANE.TERM</String>
+        <String>CANE.HMEAS</String>
+        <String>CANE.LMEAS</String>
+        <String>CANF.THS</String>
+        <String>CANF.TLS</String>
+        <String>CANF.HSW</String>
+        <String>CANF.LSW</String>
+        <String>CANF.TERM</String>
+        <String>CANF.HMEAS</String>
+        <String>CANF.LMEAS</String>
+        <String>CAN.TTERM</String>
+        <String>CANCH.BIAS</String>
+        <String>CANCH.LVL</String>
+        <String>CANCL.BIAS</String>
+        <String>CANCL.LVL</String>
+        <String>CANDH.BIAS</String>
+        <String>CANDH.LVL</String>
+        <String>CANDL.BIAS</String>
+        <String>CANDL.LVL</String>
+        <String>CANEH.BIAS</String>
+        <String>CANEH.LVL</String>
+        <String>CANEL.BIAS</String>
+        <String>CANEL.LVL</String>
+        <String>CANFH.BIAS</String>
+        <String>CANFH.LVL</String>
+        <String>CANFL.BIAS</String>
+        <String>CANFL.LVL</String>
+        <String>LINA.TLIN</String>
+        <String>LINA.LIN</String>
+        <String>LINA.MEAS</String>
+        <String>LINB.TLIN</String>
+        <String>LINB.LIN</String>
+        <String>LINB.MEAS</String>
+        <String>PILOT.STIMSW</String>
+        <String>PILOT.MEAS</String>
+        <String>SMUA.DMMVP</String>
+        <String>SMUA.SDMMVP</String>
+        <String>SMUA.DAC</String>
+        <String>SMUA.BATNEG</String>
+        <String>SMUA.BATPOS</String>
+        <String>SMUA.VREFA</String>
+        <String>SMUA.VREFB</String>
+        <String>SMUA.GND</String>
+        <String>SMUA.VTEST</String>
+        <String>SMUA.MEASA</String>
+        <String>SMUB.VTEST</String>
+        <String>SMUB.MEASA</String>
+        <String>SMUB.MEASB</String>
+        <String>SMUB.DMMVP</String>
+        <String>SMUB.SDMMVP</String>
+        <String>SMUB.DAC</String>
+        <String>SMUB.BATNEG</String>
+        <String>SMUB.BATPOS</String>
+        <String>SMUB.VREFA</String>
+        <String>SMUB.VREFB</String>
+        <String>SMUB.GND</String>
+        <String>SMU.R100k</String>
+        <String>SMU.R10k</String>
+        <String>SMU.R4k7</String>
+        <String>SMU.CURR</String>
+        <String>SMU.CRANGE</String>
+        <String>PSU.+12VMEAS</String>
+        <String>PSU.-12VMEAS</String>
+        <String>PSU.+5VMEAS</String>
+        <String>PSU.+60VMEAS</String>
+        <String>PSU.+60VEN</String>
+        <String>SS.+2.5VEN</String>
+        <String>DI1.EDI1</String>
+        <String>DI2.EDI2</String>
+        <String>TESTP.TSTP65</String>
+        <String>TESTP.TSTP66</String>
+        <String>TESTP.TSTP67</String>
+        <String>TESTP.TSTP68</String>
+        <String>TESTP.TSTP69</String>
+        <String>TESTP.TSTP70</String>
+        <String>TESTP.TSTP71</String>
+        <String>TESTP.TSTP72</String>
+        <String>TESTP.TSTP73</String>
+        <String>TESTP.TSTP74</String>
+        <String>TESTP.TSTP75</String>
+        <String>TESTP.TSTP76</String>
+        <String>TESTP.TSTP77</String>
+        <String>TESTP.CTRLBYTE3</String>
+        <String>TESTP.TPO1</String>
+        <String>TESTP.TPO2</String>
+        <String>TESTP.TPO3</String>
+        <String>TESTP.TPO4</String>
+        <String>TESTP.TPO5</String>
+        <String>TESTP.TPO6</String>
+        <String>TESTP.TPO7</String>
+        <String>TESTP.TPO8</String>
+      </ListOfAvailableValues>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Filter>ign</Filter>
+      <RSMChannelName>IGN.MEAS</RSMChannelName>
+      <OnOff>false</OnOff>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">DisConnect Ignition to BATPOS (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="ref@OpenTap.Plugins.BasicSteps.TestPlanReference" Id="cafc1efb-e255-40f1-9162-0b000e558169">
+      <Filepath>PowerOFF.TapPlan</Filepath>
+      <Hash>3F3111EF71D4813C</Hash>
+      <StepMapping>
+        <GuidMapping>
+          <Guid1>bab6381a-40d3-4cb2-99ef-eab715e0b74f</Guid1>
+          <Guid2>7fbb562f-baf7-484e-97cd-08ea3970cd5c</Guid2>
+        </GuidMapping>
+        <GuidMapping>
+          <Guid1>814ff669-f1a9-40bf-b9e5-06a073739db2</Guid1>
+          <Guid2>edf235fb-c1f7-47e4-ad17-95ef4b5d5db6</Guid2>
+        </GuidMapping>
+        <GuidMapping>
+          <Guid1>75ac26bb-2194-4cfb-96cc-7f75f4ae158a</Guid1>
+          <Guid2>ec9ca040-0696-4002-8a06-c08e39c27e22</Guid2>
+        </GuidMapping>
+        <GuidMapping>
+          <Guid1>f2e8c32d-c684-42e6-a0da-bd476b4e9021</Guid1>
+          <Guid2>7a1eae23-0d61-4ad4-a7d1-bc33d50a4f18</Guid2>
+        </GuidMapping>
+        <GuidMapping>
+          <Guid1>df9a57a8-0759-4a57-9887-64b4a1a18774</Guid1>
+          <Guid2>4ccc185f-270a-4e66-8ca9-d7dee4f59bf7</Guid2>
+        </GuidMapping>
+      </StepMapping>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Call Power Off Script if enabled</Name>
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixWriteStep" Id="efd99058-feb2-44be-aae1-7288ea112d32">
+      <RSMAddress>127</RSMAddress>
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Value>170</Value>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">Clear all FPGA registers if this is run</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="RikerTestSerial.RikerMatrixReset" Id="1d52c26d-9f8a-4645-bddf-127ac62e8fc0">
+      <RikerMatrixInstrument Source="OpenTap.InstrumentSettings">Riker Switch Matrix</RikerMatrixInstrument>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">RSM Reset Step</Name>
+      <ChildTestSteps />
+    </TestStep>
+  </Steps>
+  <Parameters_x0020__x005C__x0020_AppMinor>0</Parameters_x0020__x005C__x0020_AppMinor>
+  <Parameters_x0020__x005C__x0020_AppSub>0</Parameters_x0020__x005C__x0020_AppSub>
+  <Parameters_x0020__x005C__x0020_OC-Check>0</Parameters_x0020__x005C__x0020_OC-Check>
+  <Parameters_x0020__x005C__x0020_Test_x0020_Notes>Testing Roush 00G Option Control units</Parameters_x0020__x005C__x0020_Test_x0020_Notes>
+  <Parameters_x0020__x005C__x0020_AppMajor>5</Parameters_x0020__x005C__x0020_AppMajor>
+  <Parameters_x0020__x005C__x0020_Serial_x0020_Number>2403000100459</Parameters_x0020__x005C__x0020_Serial_x0020_Number>
+  <Parameters_x0020__x005C__x0020_PlatformSub>0</Parameters_x0020__x005C__x0020_PlatformSub>
+  <Parameters_x0020__x005C__x0020_Operator_x0020_Name>RDL</Parameters_x0020__x005C__x0020_Operator_x0020_Name>
+  <Parameters_x0020__x005C__x0020_Test_x0020_Name>Roush 00G EOLT</Parameters_x0020__x005C__x0020_Test_x0020_Name>
+  <CheckVersion>true</CheckVersion>
+  <Parameters_x0020__x005C__x0020_PlatformMajor>4</Parameters_x0020__x005C__x0020_PlatformMajor>
+  <Parameters_x0020__x005C__x0020_Part_x0020_Number>01T-0700412-03M00</Parameters_x0020__x005C__x0020_Part_x0020_Number>
+  <Parameters_x0020__x005C__x0020_PlatformMinor>7</Parameters_x0020__x005C__x0020_PlatformMinor>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.33.0+56d4c214" />
+    <Package Name="Expressions" Version="^1.7.0+934da850" />
+  </Package.Dependencies>
+</TestPlan>

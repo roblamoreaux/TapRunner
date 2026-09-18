@@ -12,6 +12,7 @@
     <AssemblyName>TapRunner</AssemblyName>
     <RootNamespace>TapRunner.App</RootNamespace>
     <ApplicationIcon>Assets\TapRunner.ico</ApplicationIcon>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -114,6 +114,11 @@ namespace TapRunner.StatusListener
         {
             stepNames[stepRun.Id] = stepRun.TestStepName;
             stepOutputs[stepRun.Id] = new List<string>();
+
+            // Sent immediately, before the step's verdict/outputs exist, so the app can show it's
+            // executing right now - otherwise a step that never publishes a result (many simple/
+            // flow-control steps don't) shows nothing at all until (if ever) it completes.
+            Send(new StepStartedMessage { Name = stepRun.TestStepName }.ToLine());
         }
 
         public override void OnResultPublished(Guid stepRunId, ResultTable result)

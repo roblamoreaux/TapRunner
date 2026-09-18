@@ -14,27 +14,66 @@ namespace TapRunner.App
     public partial class SettingsWindow : Window
     {
         readonly AppConfig workingConfig;
+        readonly List<ParameterEntry> currentParameters;
         readonly ObservableCollection<DefaultParameterRow> defaultParameterRows = new();
         readonly List<ColorRowControls> colorRows = new();
 
         /// <summary>The updated config, valid after ShowDialog() returns true.</summary>
         public AppConfig Result { get; private set; }
 
-        public SettingsWindow(AppConfig source)
+        /// <param name="source">The config to edit a copy of.</param>
+        /// <param name="currentParameters">
+        /// The parameters currently shown in the main window (with their current values), for
+        /// "Copy From Current Plan" - empty/null if no plan is loaded there.
+        /// </param>
+        public SettingsWindow(AppConfig source, IEnumerable<ParameterEntry> currentParameters = null)
         {
             InitializeComponent();
 
             workingConfig = Clone(source);
+            this.currentParameters = currentParameters?.ToList() ?? new List<ParameterEntry>();
 
             TapExecutablePathText.Text = workingConfig.TapExecutablePath;
             WorkingDirectoryText.Text = workingConfig.WorkingDirectory;
             StationNameText.Text = workingConfig.StationName;
+            LogFilePathText.Text = workingConfig.LogFilePath;
+            ClearFailureLogOnRunCheckBox.IsChecked = workingConfig.ClearFailureLogOnRun;
 
             foreach (var kvp in workingConfig.DefaultParameterValues)
                 defaultParameterRows.Add(new DefaultParameterRow { Name = kvp.Key, Value = kvp.Value });
             DefaultParametersGrid.ItemsSource = defaultParameterRows;
 
             BuildColorRows();
+        }
+
+        void CopyFromCurrentPlanButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentParameters.Count == 0)
+            {
+                MessageBox.Show(this, "No test plan is currently loaded in the main window.",
+                    "TapRunner", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            int added = 0, updated = 0;
+            foreach (var p in currentParameters)
+            {
+                var row = defaultParameterRows.FirstOrDefault(r => string.Equals(r.Name, p.Name, StringComparison.Ordinal));
+                if (row != null)
+                {
+                    row.Value = p.Value;
+                    updated++;
+                }
+                else
+                {
+                    defaultParameterRows.Add(new DefaultParameterRow { Name = p.Name, Value = p.Value });
+                    added++;
+                }
+            }
+
+            MessageBox.Show(this,
+                $"Copied {currentParameters.Count} parameter(s) from the loaded plan ({added} added, {updated} updated).\n\nClick OK to save these as the new defaults.",
+                "TapRunner", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         void BuildColorRows()
@@ -98,11 +137,32 @@ namespace TapRunner.App
                 WorkingDirectoryText.Text = dialog.FolderName;
         }
 
+        void BrowseLogFile_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SaveFileDialog
+            {
+                Title = "Select the log file",
+                Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
+                OverwritePrompt = false,
+            };
+            if (!string.IsNullOrWhiteSpace(LogFilePathText.Text))
+            {
+                dialog.FileName = System.IO.Path.GetFileName(LogFilePathText.Text);
+                var dir = System.IO.Path.GetDirectoryName(LogFilePathText.Text);
+                if (!string.IsNullOrWhiteSpace(dir))
+                    dialog.InitialDirectory = dir;
+            }
+            if (dialog.ShowDialog(this) == true)
+                LogFilePathText.Text = dialog.FileName;
+        }
+
         void OkButton_Click(object sender, RoutedEventArgs e)
         {
             workingConfig.TapExecutablePath = TapExecutablePathText.Text.Trim();
             workingConfig.WorkingDirectory = WorkingDirectoryText.Text.Trim();
             workingConfig.StationName = StationNameText.Text.Trim();
+            workingConfig.LogFilePath = LogFilePathText.Text.Trim();
+            workingConfig.ClearFailureLogOnRun = ClearFailureLogOnRunCheckBox.IsChecked == true;
 
             workingConfig.DefaultParameterValues = defaultParameterRows
                 .Where(r => !string.IsNullOrWhiteSpace(r.Name))
@@ -145,6 +205,8 @@ namespace TapRunner.App
                 WorkingDirectory = source.WorkingDirectory,
                 TapExecutablePath = source.TapExecutablePath,
                 StationName = source.StationName,
+                LogFilePath = source.LogFilePath,
+                ClearFailureLogOnRun = source.ClearFailureLogOnRun,
                 OperatorName = source.OperatorName,
                 UseTui = source.UseTui,
                 DefaultParameterValues = new Dictionary<string, string>(source.DefaultParameterValues),

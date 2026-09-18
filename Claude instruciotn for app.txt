@@ -1,0 +1,32 @@
+Create a C# .net application with a Visuat Studio solution directory.
+This application will open with a dialog box with a button that opens a file selection dialog to select an OpenTap TapPlan file. The last file used before closing the previous run should be prefilled and opened when the program starts otherwise the Open Plan file with refresh everything.
+
+Once the file is selected read all the test Plan Parameters and display a dialog box with the parameters including the default values. 
+If there is a serial number parameter make that the  active box so the user can enter the serial number.
+A configuration file should include the last TapPlan used, the directory to run the Tap program in, the TAP program filename to run, Station Name, the Operator Name and any other default parameters the opererator chooses. If the configuration file has a blank parameter use the default one from the TapPlan.
+the testplan parameters should be displayed in alphabetical order and  loading should be fast so parse the XML
+
+To the right of the parameters have 6 colored circles that go from off to the color when active. Label these Ready, Running, Passed, Failed, Error, and Aborted. The colors for these buttons should be stored in the configuration file with the defaults being Blue (ready), flashing green (running), green (passed), orange (Failed), red (error) and dark red (aborted).
+Below the parameters have four buttons: Run, Stop, Abort and Exit. When Run is pressed call the command line OpenTap application set in a configuration file giving it the parameters from the dialog box. Include an optional check box to edit the Tap program with the tui text based interface as well. when the TUI box is check the RUn button shouild read edit.
+
+
+
+create an associated Opentap result package to provide the testplan status state to set the color status circles while the TAP program is running. If a step fails while the test is running the result viewer should notify the main app so the fail circle should go to partially on to indicate a pending falure while the Running Status stays on. Once the test ends if the final result is Fail then the Fail circle should go full on.  If the Stop button is pressed the application should notify the running OpenTap program to stop and if the Abort button is pressed the applicaiton should kill the running OpenTap program. This could be done by the result viewer or other means if there is one.
+
+Include a status line showing the last step executed and its verdict and outputs
+
+When the script exits without a status such as when there is a licensing error the running circle should turn off and indicate this was an error
+change the status bar to be four lines tall with a history of 1000 line and scrollbar when needed. show the last four steps without "Last step:" at the beginning. also make the status bar full width
+
+
+also create a WiX MSI installer
+
+Add a button to open a log txt file (default is C:\OpenTap\SessionLogs\Latest.txt) using the setting dialog to set its location. Open in the default editor for Windows  .txt files
+
+Make sure the setting that override the Testplan configured parameters are shown in the main dialog and used when the test is run. This should happen right after the testplan is loaded, and when a small Load Setting Button is pressed. Use entered changes should override the setting if they are typed after the load setting.
+
+ Save test steps that have a verdict of Fail or Error to an additional log. This log should be as many lines as possible, and when a Failed button is pressed it should be opened in a separate window for the user to scroll through.
+ Make sure all steps are shown whether they return a results or not. This can be by showing what step is running in the bottom status line then putting it in the status log box
+
+Update the version number by a minor level.
+

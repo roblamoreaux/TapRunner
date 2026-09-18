@@ -51,6 +51,14 @@ namespace TapRunner.Protocol
         /// </summary>
         public const string StepPrefix = "STEP|";
 
+        /// <summary>
+        /// Prefix for a step-started line (see <see cref="StepStartedMessage"/>): a step has just
+        /// begun running. Sent before its verdict/outputs are known, so the app can show live
+        /// "what's executing right now" feedback even for steps that never publish a result and
+        /// so would otherwise show nothing until they finish (or not at all, if they're fast).
+        /// </summary>
+        public const string StepStartedPrefix = "STEP_START|";
+
         // ----- App -> Plugin: command messages -----
 
         /// <summary>Request a graceful/cooperative abort of the currently running test plan.</summary>

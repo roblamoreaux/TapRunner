@@ -49,7 +49,17 @@ namespace TapRunner.App.Services
                     var line = await reader.ReadLineAsync().ConfigureAwait(false);
                     if (line == null)
                         break; // client disconnected
-                    StatusReceived?.Invoke(line);
+
+                    try
+                    {
+                        StatusReceived?.Invoke(line);
+                    }
+                    catch
+                    {
+                        // A subscriber throwing on one message must never kill this loop - that
+                        // would silently stop every status update for the rest of the run. Drop
+                        // this one and keep reading.
+                    }
                 }
             }
             catch (OperationCanceledException)

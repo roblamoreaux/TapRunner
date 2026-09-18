@@ -4,9 +4,17 @@
     <OutputName>TapRunnerSetup</OutputName>
     <!-- The installer always packages Release bits, regardless of which configuration it is itself
          built in - an installer built from Debug binaries isn't something we want to hand out. -->
-    <DefineConstants>PluginPackagePath=..\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.0.0.TapPackage</DefineConstants>
+    <DefineConstants>PluginPackagePath=..\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.2.0.TapPackage</DefineConstants>
     <SuppressPdbOutput>true</SuppressPdbOutput>
     <Platform>x64</Platform>
+    <!-- ICE38/ICE64/ICE91 are the classic Windows Installer validation rules that expect every
+         component under a per-user directory to use its own HKCU registry keypath (for MSI's
+         legacy per-user reference-counting/repair machinery), rather than a file, and want every
+         per-user directory listed in RemoveFile. Doing that for ~10 harvested app files would mean
+         hand-writing a Component+RegistryValue per file instead of the simple harvested <Files>
+         glob, just to satisfy an advisory best-practice check with no effect on this package
+         actually installing/uninstalling correctly. -->
+    <SuppressIces>ICE38;ICE64;ICE91</SuppressIces>
   </PropertyGroup>
 
   <ItemGroup>

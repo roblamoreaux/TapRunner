@@ -22,6 +22,7 @@ namespace TapRunner.App
         readonly ConfigService configService = new();
         readonly TapPlanService tapPlanService = new();
         AppConfig config;
+        LogService logService;
 
         readonly ObservableCollection<ParameterEntry> parameters = new();
 
@@ -40,6 +41,9 @@ namespace TapRunner.App
 
             config = configService.Load();
             ParametersList.ItemsSource = parameters;
+
+            logService = new LogService(config.LogFilePath);
+            logService.EnsureLogFilesExist();
 
             OperatorNameText.Text = config.OperatorName;
             StationNameText.Text = string.IsNullOrWhiteSpace(config.StationName) ? "" : $"Station: {config.StationName}";
@@ -114,6 +118,7 @@ namespace TapRunner.App
             RunButton.IsEnabled = true;
             BrowseButton.IsEnabled = true;
             SettingsButton.IsEnabled = true;
+            LoadDefaultsButton.IsEnabled = true;
             StopButton.IsEnabled = false;
             AbortButton.IsEnabled = false;
         }
@@ -130,6 +135,7 @@ namespace TapRunner.App
             RunButton.IsEnabled = false;
             BrowseButton.IsEnabled = false;
             SettingsButton.IsEnabled = false;
+            LoadDefaultsButton.IsEnabled = false;
             StopButton.IsEnabled = true;
             AbortButton.IsEnabled = true;
         }
@@ -155,7 +161,7 @@ namespace TapRunner.App
         {
             RunButton.IsEnabled = false;
             BrowseButton.IsEnabled = false;
-            StatusMessageText.Text = $"Reading parameters from \"{Path.GetFileName(path)}\"...";
+            SetStatusMessage($"Reading parameters from \"{Path.GetFileName(path)}\"...");
 
             PlanPathText.Text = path;
             parameters.Clear();
@@ -166,33 +172,24 @@ namespace TapRunner.App
 
                 foreach (var p in planParameters)
                 {
-                    // Serial number fields always start blank for the operator to fill in;
-                    // everything else falls back to the operator's saved default, or the TapPlan's
-                    // own default if none was saved (or it was left blank).
-                    if (!p.IsSerialNumber &&
-                        config.DefaultParameterValues.TryGetValue(p.Name, out var savedDefault) &&
-                        !string.IsNullOrEmpty(savedDefault))
-                    {
-                        p.Value = savedDefault;
-                    }
-                    else
-                    {
-                        p.Value = p.PlanDefaultValue;
-                    }
-
+                    // Every parameter - serial number included - falls back to the operator's saved
+                    // default (Settings > Default parameter values) if one is set, or the TapPlan's
+                    // own default otherwise. This happens right after the plan loads, same as
+                    // clicking "Load Defaults" would do.
+                    p.Value = TryGetSavedDefault(p, out var savedDefault) ? savedDefault : p.PlanDefaultValue;
                     parameters.Add(p);
                 }
 
                 config.LastTapPlanPath = path;
                 configService.Save(config);
 
-                StatusMessageText.Text = parameters.Count > 0
+                SetStatusMessage(parameters.Count > 0
                     ? $"Loaded {parameters.Count} parameter(s)."
-                    : "Loaded. This plan has no external (test plan) parameters.";
+                    : "Loaded. This plan has no external (test plan) parameters.");
             }
             catch (Exception ex)
             {
-                StatusMessageText.Text = $"Failed to read parameters: {ex.Message}";
+                SetStatusMessage($"Failed to read parameters: {ex.Message}");
                 MessageBox.Show(this, $"Could not read external parameters from this plan:\n\n{ex.Message}",
                     "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -201,6 +198,45 @@ namespace TapRunner.App
                 RunButton.IsEnabled = true;
                 BrowseButton.IsEnabled = true;
             }
+        }
+
+        /// <summary>
+        /// Looks up the operator's saved default (Settings > Default parameter values) for one
+        /// parameter - including a serial number field, if one was set there. Settings always wins
+        /// over the TapPlan's own default when both exist.
+        /// </summary>
+        bool TryGetSavedDefault(ParameterEntry p, out string value)
+        {
+            value = null;
+            if (config.DefaultParameterValues.TryGetValue(p.Name, out var saved) && !string.IsNullOrEmpty(saved))
+            {
+                value = saved;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Re-applies the operator's saved default parameter values (Settings > Default parameter
+        /// values) to the currently displayed parameters - e.g. after changing them in Settings
+        /// without reopening the plan. Only touches parameters that actually have a saved default;
+        /// anything the operator types afterward is left alone (nothing re-applies automatically).
+        /// </summary>
+        void LoadDefaultsButton_Click(object sender, RoutedEventArgs e)
+        {
+            int applied = 0;
+            foreach (var p in parameters)
+            {
+                if (TryGetSavedDefault(p, out var saved))
+                {
+                    p.Value = saved;
+                    applied++;
+                }
+            }
+
+            SetStatusMessage(applied > 0
+                ? $"Loaded {applied} saved default parameter value(s) from Settings."
+                : "No saved default parameter values apply to this plan.");
         }
 
         void ParameterTextBox_Loaded(object sender, RoutedEventArgs e)
@@ -231,6 +267,7 @@ namespace TapRunner.App
 
             receivedTerminalStatus = false;
             userInitiatedAbort = false;
+            logService.BeginRun(Path.GetFileName(PlanPathText.Text), config.ClearFailureLogOnRun);
 
             pipeServer = new StatusPipeServer();
             pipeServer.StatusReceived += OnStatusReceived;
@@ -250,7 +287,7 @@ namespace TapRunner.App
 
             runningProcess.Exited += RunningProcess_Exited;
             SetRunningState();
-            StatusMessageText.Text = "Running...";
+            SetStatusMessage("Running...");
             stepHistory.Clear();
             UpdateStepHistoryDisplay();
 
@@ -285,17 +322,42 @@ namespace TapRunner.App
         {
             Dispatcher.Invoke(() =>
             {
+                if (StepStartedMessage.TryParse(message, out var started))
+                {
+                    // Live "what's executing right now" indicator - separate from the completed-step
+                    // history below, and not logged, so quick/no-result steps are still visible as
+                    // they run instead of only appearing (or not) after they finish.
+                    StatusMessageText.Text = $"Running: {started.Name}...";
+                    return;
+                }
+
                 if (StepStatusMessage.TryParse(message, out var step))
                 {
-                    var summary = $"{step.Name} — {step.Verdict}";
-                    if (!string.IsNullOrWhiteSpace(step.Outputs))
-                        summary += $"   {step.Outputs}";
+                    // The step history display must always update, even if something below (or a
+                    // future change) throws - one bad step must never stop the rest from showing.
+                    try
+                    {
+                        var summary = $"{step.Name} — {step.Verdict}";
+                        if (!string.IsNullOrWhiteSpace(step.Outputs))
+                            summary += $"   {step.Outputs}";
 
-                    stepHistory.Add(summary);
-                    if (stepHistory.Count > MaxStepHistoryLines)
-                        stepHistory.RemoveAt(0);
+                        stepHistory.Add(summary);
+                        if (stepHistory.Count > MaxStepHistoryLines)
+                            stepHistory.RemoveAt(0);
 
-                    UpdateStepHistoryDisplay();
+                        UpdateStepHistoryDisplay();
+
+                        logService.AppendLine($"Step: {summary}");
+                        if (string.Equals(step.Verdict, "Fail", StringComparison.OrdinalIgnoreCase) ||
+                            string.Equals(step.Verdict, "Error", StringComparison.OrdinalIgnoreCase))
+                        {
+                            logService.AppendFailure(step.Name, step.Verdict, step.Outputs);
+                        }
+                    }
+                    catch
+                    {
+                        // Never let a step update crash the pipe's message loop.
+                    }
                     return;
                 }
 
@@ -354,7 +416,7 @@ namespace TapRunner.App
             verdictCircle.State = CircleState.Full;
 
             RunningCircle.State = CircleState.Off;
-            StatusMessageText.Text = $"Run finished: {verdictCircle.Label}.";
+            SetStatusMessage($"Run finished: {verdictCircle.Label}.");
         }
 
         void RunningProcess_Exited(object sender, EventArgs e)
@@ -384,16 +446,17 @@ namespace TapRunner.App
                     ErrorCircle.State = CircleState.Full;
 
                     var exitCode = TryGetExitCode(runningProcess);
-                    StatusMessageText.Text = "Process exited without reporting a result" +
+                    SetStatusMessage("Process exited without reporting a result" +
                         (exitCode is int code ? $" (exit code {code})" : "") +
                         " - check for a licensing error or other startup failure, and confirm " +
-                        "\"TapRunner Status\" is enabled under Settings > Results in OpenTAP.";
+                        "\"TapRunner Status\" is enabled under Settings > Results in OpenTAP.");
                 }
 
                 ReadyCircle.State = CircleState.Full;
                 RunButton.IsEnabled = true;
                 BrowseButton.IsEnabled = true;
                 SettingsButton.IsEnabled = true;
+                LoadDefaultsButton.IsEnabled = true;
                 StopButton.IsEnabled = false;
                 AbortButton.IsEnabled = false;
 
@@ -405,11 +468,11 @@ namespace TapRunner.App
         {
             if (pipeServer == null)
             {
-                StatusMessageText.Text = "No status listener is connected - Stop request not delivered. Use Abort to force-stop.";
+                SetStatusMessage("No status listener is connected - Stop request not delivered. Use Abort to force-stop.");
                 return;
             }
             pipeServer.SendStop();
-            StatusMessageText.Text = "Stop requested - waiting for the test plan to finish the current step...";
+            SetStatusMessage("Stop requested - waiting for the test plan to finish the current step...");
         }
 
         void AbortButton_Click(object sender, RoutedEventArgs e)
@@ -430,7 +493,7 @@ namespace TapRunner.App
             FailedCircle.State = CircleState.Off;
             ErrorCircle.State = CircleState.Off;
             AbortedCircle.State = CircleState.Full;
-            StatusMessageText.Text = "Aborted (process killed).";
+            SetStatusMessage("Aborted (process killed).");
         }
 
         void KillRunningProcess()
@@ -458,16 +521,38 @@ namespace TapRunner.App
         {
             SaveCurrentSettingsToConfig();
 
-            var settingsWindow = new SettingsWindow(config) { Owner = this };
+            var settingsWindow = new SettingsWindow(config, parameters) { Owner = this };
             if (settingsWindow.ShowDialog() == true)
             {
                 config = settingsWindow.Result;
                 configService.Save(config);
                 StationNameText.Text = string.IsNullOrWhiteSpace(config.StationName) ? "" : $"Station: {config.StationName}";
                 ApplyStatusColorsFromConfig();
+                logService.SetLogFilePath(config.LogFilePath);
+                logService.EnsureLogFilesExist();
                 if (!IsRunning())
                     SetIdleState(clearVerdicts: false);
             }
+        }
+
+        void OpenLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                logService.EnsureLogFilesExist();
+                Process.Start(new ProcessStartInfo(logService.LogFilePath) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, $"Could not open the log file:\n{logService.LogFilePath}\n\n{ex.Message}",
+                    "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        void FailedButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new FailedStepsWindow(logService.FailureLogFilePath) { Owner = this };
+            window.Show();
         }
 
         void SaveCurrentSettingsToConfig()
@@ -477,6 +562,13 @@ namespace TapRunner.App
             // a value typed for one unit's run must never silently become the new default.
             config.OperatorName = OperatorNameText.Text;
             config.UseTui = UseTuiCheckBox.IsChecked == true;
+        }
+
+        /// <summary>Sets the status line and appends the same text to TapRunner's session log.</summary>
+        void SetStatusMessage(string message)
+        {
+            StatusMessageText.Text = message;
+            logService.AppendLine(message);
         }
     }
 

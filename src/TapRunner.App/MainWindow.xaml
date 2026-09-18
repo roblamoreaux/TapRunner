@@ -42,7 +42,15 @@
         </GroupBox>
 
         <!-- Parameters -->
-        <GroupBox Header="Test Plan Parameters" Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
+        <GroupBox Grid.Row="2" Grid.Column="0" Margin="0,0,10,10">
+            <GroupBox.Header>
+                <DockPanel LastChildFill="False" MinWidth="220">
+                    <TextBlock Text="Test Plan Parameters" VerticalAlignment="Center"/>
+                    <Button x:Name="LoadDefaultsButton" Content="Load Defaults" Padding="6,1" FontSize="11"
+                            DockPanel.Dock="Right" Click="LoadDefaultsButton_Click"
+                            ToolTip="Re-apply the default parameter values from Settings to the parameters below."/>
+                </DockPanel>
+            </GroupBox.Header>
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl x:Name="ParametersList" Margin="6">
                     <ItemsControl.ItemTemplate>
@@ -66,14 +74,18 @@
         <CheckBox x:Name="UseTuiCheckBox" Grid.Row="3" Grid.Column="0" Content="Edit with TUI (text-based interface)" Margin="0,0,0,10"
                   Checked="UseTuiCheckBox_CheckedChanged" Unchecked="UseTuiCheckBox_CheckedChanged"/>
 
-        <!-- Run / Stop / Abort / Exit -->
-        <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,0,0,6">
-            <Button x:Name="RunButton" Content="Run" Width="90" Height="32" Margin="0,0,8,0" Click="RunButton_Click"/>
-            <Button x:Name="StopButton" Content="Stop" Width="90" Height="32" Margin="0,0,8,0" Click="StopButton_Click" IsEnabled="False"/>
-            <Button x:Name="AbortButton" Content="Abort" Width="90" Height="32" Margin="0,0,8,0" Click="AbortButton_Click" IsEnabled="False"/>
-            <Button x:Name="ExitButton" Content="Exit" Width="90" Height="32" Margin="0,0,8,0" Click="ExitButton_Click"/>
-            <Button x:Name="SettingsButton" Content="Settings..." Width="90" Height="32" Click="SettingsButton_Click"/>
-        </StackPanel>
+        <!-- Run / Stop / Abort / Exit / Open Log / Failed / Settings -->
+        <WrapPanel Grid.Row="4" Grid.Column="0" Margin="0,0,0,6">
+            <Button x:Name="RunButton" Content="Run" Width="90" Height="32" Margin="0,0,8,6" Click="RunButton_Click"/>
+            <Button x:Name="StopButton" Content="Stop" Width="90" Height="32" Margin="0,0,8,6" Click="StopButton_Click" IsEnabled="False"/>
+            <Button x:Name="AbortButton" Content="Abort" Width="90" Height="32" Margin="0,0,8,6" Click="AbortButton_Click" IsEnabled="False"/>
+            <Button x:Name="ExitButton" Content="Exit" Width="90" Height="32" Margin="0,0,8,6" Click="ExitButton_Click"/>
+            <Button x:Name="OpenLogButton" Content="Open Log" Width="90" Height="32" Margin="0,0,8,6" Click="OpenLogButton_Click"
+                    ToolTip="Open TapRunner's session log in your default .txt editor."/>
+            <Button x:Name="FailedButton" Content="Failed" Width="90" Height="32" Margin="0,0,8,6" Click="FailedButton_Click"
+                    ToolTip="View the log of steps that finished with a Fail or Error verdict."/>
+            <Button x:Name="SettingsButton" Content="Settings..." Width="90" Height="32" Margin="0,0,8,6" Click="SettingsButton_Click"/>
+        </WrapPanel>
 
         <!-- Step history: last 1000 completed steps, one per line, scrollable so the operator can
              review past steps without losing the running display. -->

@@ -38,11 +38,17 @@ Runtime alongside the one OpenTAP already needs.
    Results settings, it connects to that pipe from inside the `tap.exe` process and reports:
    `Running` → a step `Fail`/`Error` (circle goes half-lit, "pending") → the final verdict
    (`Passed`/`Failed`/`Error`/`Aborted`, circle goes fully lit). The app uses these messages to
-   drive the six status circles in real time.
+   drive the six status circles in real time. It also reports the instant each step *starts*
+   (before its verdict/outputs are known), which the app shows as "Running: &lt;step name&gt;..."
+   in the status line - so a step that never publishes a result (many simple/flow-control steps
+   don't) is still visibly executing, not just silent until (or unless) it finishes.
 4. **Stop** sends a "please stop" message back down the same pipe; the plugin calls
    `TestPlanRun.MainThread.Abort()`, which is OpenTAP's normal cooperative abort (finishes the
    current step, runs cleanup/post-plan-run steps, then ends - verdict is normally `Aborted`).
    **Abort** bypasses the plugin entirely and kills the `tap.exe` process tree immediately.
+5. Every status-line message and every completed step is also appended to a running session log
+   (**Open Log**), and any step that finishes Fail/Error additionally gets a fuller, multi-line
+   entry in a second, uncapped log (**Failed**) - see "Logging" below.
 
 ## Building
 
@@ -59,16 +65,19 @@ extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToo
 installed, so it recognizes the `.wixproj`) and Build Solution. This produces:
 
 - `src\TapRunner.App\bin\Release\net9.0-windows\TapRunner.exe` - the app, if you just want to run it as-is.
-- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.0.0.TapPackage` - the plugin package.
+- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.2.0.TapPackage` - the plugin package.
 - `src\TapRunner.Installer\bin\x64\Release\TapRunnerSetup.msi` - the installer (see below).
 
 ## Installing with TapRunnerSetup.msi
 
-Double-click `TapRunnerSetup.msi` (or `msiexec /i TapRunnerSetup.msi` for a silent
-`/quiet` install). It:
+This is a **per-user install - no admin rights or UAC prompt needed**. Double-click
+`TapRunnerSetup.msi` (or `msiexec /i TapRunnerSetup.msi` for a silent `/quiet` install, still with
+no elevation prompt). It:
 
-1. Installs the app to `Program Files\TapRunner` and adds a Start Menu shortcut.
-2. Drops the plugin's `.TapPackage` under `Program Files\TapRunner\Plugin` for reference/manual reinstall.
+1. Installs the app to `%LocalAppData%\Programs\TapRunner` (the same convention VS Code's own
+   per-user installer uses) for the current Windows user, and adds a Start Menu shortcut for them.
+   A different operator signed in on the same station would need to run the installer themselves too.
+2. Drops the plugin's `.TapPackage` under `%LocalAppData%\Programs\TapRunner\Plugin` for reference/manual reinstall.
 3. Best-effort runs `tap.exe package install ...--overwrite` on that file, using whatever `tap.exe`
    is first on `PATH` (which is how the OpenTAP installer itself makes `tap` runnable from anywhere).
    If OpenTAP isn't installed, or `tap` isn't on `PATH`, this step silently does nothing - it never
@@ -78,6 +87,14 @@ Uninstalling TapRunner (Windows Settings → Apps, or the same .msi again) remov
 Menu shortcut, but does **not** uninstall the plugin package from OpenTAP - a live, working
 OpenTAP install isn't something an app uninstaller should touch. Remove it yourself with
 `tap package uninstall "TapRunner.StatusListener"` if you ever need to.
+
+Windows Installer's classic validation rules (the "ICE" checks the linker runs) assume any file
+installed under a per-user folder should be tracked via its own HKCU registry key rather than the
+file itself, so it can be individually "repaired" if deleted - doing that for every one of the
+app's ~10 harvested build output files would mean hand-writing a component per file instead of one
+harvested file glob, just to satisfy an advisory best-practice check that has no bearing on the
+package actually installing/uninstalling correctly. `TapRunner.Installer.wixproj` suppresses those
+specific checks (`ICE38`, `ICE64`, `ICE91`) rather than doing that.
 
 **Either way**, one manual step remains after installing (can't be automated - it's a one-time
 choice in the OpenTAP bench settings, not a file the installer can just drop in place):
@@ -107,21 +124,58 @@ original open license with no such prompt, and has everything this installer nee
 - `LastTapPlanPath` - auto-updated; reopened and its parameters reloaded on startup if the file still exists.
 - `WorkingDirectory`, `TapExecutablePath` - where/what to run.
 - `StationName`, `OperatorName` - free text; OperatorName is also editable directly in the main window.
+  StationName defaults to the Windows device name the first time TapRunner runs on a machine (i.e.
+  there's no `config.json` yet - typically right after installing); after that, whatever's saved is
+  what loads, so clearing it stays cleared rather than being silently re-filled.
+- `LogFilePath` - where the session log is written, edited via **Settings → Log file**. Defaults to
+  `%ProgramData%\TapRunner\TapRunner.log.txt`. See "Logging" below.
 - `DefaultParameterValues` - name → value overrides, edited via **Settings → Default parameter values**.
   A blank/missing entry falls back to the TapPlan's own default. These are only changed
   deliberately in Settings - a value typed into the dialog for one run is never silently saved
   as the new default. Use the same short name shown in the main window (e.g. `PowerOn`), not
-  OpenTAP's full internal name (`Parameters \ PowerOn`) - see below.
+  OpenTAP's full internal name (`Parameters \ PowerOn`) - see below. They're applied automatically
+  right after a plan loads, and any time **Load Defaults** (top-right of the parameters list) is
+  pressed - e.g. after changing them in Settings without reopening the plan. Only parameters that
+  actually have a saved default are touched; anything typed into the parameter list afterward is
+  never overwritten again on its own. Going the other direction, **Settings → Copy From Current
+  Plan** takes a snapshot of every parameter (and its current value) shown in the main window right
+  now and copies it into this list - a quick way to capture values you've dialed in for one plan
+  as the new saved defaults, without retyping them. It only stages the change in the dialog; click
+  **OK** to actually save it.
 - `StatusColors` - per-status `{ Color, Flash }` (hex color + whether it flashes when fully lit),
   editable under **Settings → Status Colors**. Defaults: Ready = blue, Running = flashing green,
   Passed = green, Failed = orange, Error = red, Aborted = dark red.
 
+## Logging
+
+- **Open Log** opens `LogFilePath` in whatever your machine has associated with `.txt` files. Every
+  status-line message (Running/Stop requested/Aborted/Run finished/etc.) and every completed step
+  gets one timestamped line, so it's a full running transcript of a session - it just keeps
+  growing; nothing is trimmed or rotated.
+- **Failed** opens a separate, scrollable TapRunner window (not an external editor) showing the
+  failure log - a second file saved next to the main log as `<name>.Failures.txt`, containing only
+  the steps that finished with a `Fail` or `Error` verdict. Each entry is a multi-line block
+  (timestamp, verdict, step name, then every published result on its own line) rather than the
+  single compact line shown in the app's own step history. The window opens scrolled to the most
+  recent failure; **Refresh** re-reads the file for a run still in progress.
+- Each run's first failure (if any) is preceded by a header block with the TapPlan's file name and
+  when the run started, so it's always clear which run a given block of failures belongs to - this
+  matters most when the failure log is kept across runs (see below), but is written the same way
+  either way.
+- By default the failure log just keeps accumulating across runs, never capped or trimmed.
+  **Settings → "Clear the failure log at the start of each run"** switches that: check it and the
+  file is wiped at the start of every run, so it only ever holds the current run's failures. The
+  main session log is unaffected either way - it always just keeps growing.
+- Both logs are best-effort: a failure to write to either (locked file, missing permissions, full
+  disk) is silently ignored rather than interrupting the actual test run.
+
 ## Assumptions / known limitations (please confirm these are what you want)
 
 - **Serial number field**: any parameter whose (displayed, see below) name contains "serial"
-  (case-insensitive) is treated as the serial number - it's always left blank (never prefilled
-  from saved defaults) and gets keyboard focus when a plan loads, so the operator can scan/type it
-  immediately.
+  (case-insensitive) gets keyboard focus - with its current value fully selected - when a plan
+  loads, so the operator can scan/type over it immediately. If a default is saved for it under
+  Settings, it's prefilled like any other parameter (fully selected, so a scan still overwrites it
+  in one motion); otherwise it comes from the TapPlan itself, same as everything else.
 - **Redundant "Parameters \ " prefix stripped from display only.** Every external parameter in
   your plans lives under one "Parameters" group, so that prefix is shown nowhere in the UI or in
   Settings - just the meaningful part (e.g. `PowerOn`, or `Input \ Value` for a nested one). OpenTAP
@@ -139,6 +193,10 @@ original open license with no such prompt, and has everything this installer nee
 - **Pending vs. final Fail/Error**: the spec called out the Failed circle going half-lit on a step
   failure mid-run; I applied the same "pending" treatment to the Error circle for a step `Error`
   verdict, for symmetry. Only the circle matching the plan's *final* verdict goes fully lit.
+- **Failure log detail comes from the same compact summary shown in the app**, just reformatted -
+  one result per line instead of comma-joined - rather than a richer wire message from the plugin.
+  It's not literally everything OpenTAP knows about the step, but it's already as complete as what
+  TapRunner receives over the pipe.
 - **No status received when a run ends** (plugin not enabled/connected, a licensing error, a
   crash, or - with TUI - the operator closing it without running anything): the app never guesses
   Pass/Fail, but it does light the **Error** circle (and always turns Running off) with a message

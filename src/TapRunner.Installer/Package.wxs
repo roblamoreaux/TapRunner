@@ -4,16 +4,21 @@
 
   <Package Name="TapRunner"
            Manufacturer="New Eagle"
-           Version="1.0.0.0"
+           Version="1.2.0.0"
            UpgradeCode="F6A46D88-35A5-4A92-B4AC-BC77526584E6"
-           Scope="perMachine">
+           Scope="perUser">
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
-    <StandardDirectory Id="ProgramFiles64Folder">
-      <Directory Id="INSTALLFOLDER" Name="TapRunner">
-        <Directory Id="PLUGINFOLDER" Name="Plugin" />
+    <!-- Per-user install under %LocalAppData%\Programs - no admin/UAC prompt needed, matches how
+         e.g. VS Code installs per-user. Installs for the current Windows user only; someone else
+         signed in on the same machine would need to run the installer themselves too. -->
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="ProgramsFolder" Name="Programs">
+        <Directory Id="INSTALLFOLDER" Name="TapRunner">
+          <Directory Id="PLUGINFOLDER" Name="Plugin" />
+        </Directory>
       </Directory>
     </StandardDirectory>
 
@@ -46,7 +51,7 @@
          tap.exe isn't found - the plugin is still available under <install dir>\Plugin for a manual
          "tap package install" later. -->
     <SetProperty Id="InstallPlugin"
-                 Value="&quot;cmd.exe&quot; /c tap.exe package install &quot;[PLUGINFOLDER]TapRunner.StatusListener.1.0.0.TapPackage&quot; --non-interactive -y --overwrite"
+                 Value="&quot;cmd.exe&quot; /c tap.exe package install &quot;[PLUGINFOLDER]TapRunner.StatusListener.1.2.0.TapPackage&quot; --non-interactive -y --overwrite"
                  Before="InstallPlugin"
                  Sequence="execute" />
     <CustomAction Id="InstallPlugin"
@@ -54,7 +59,7 @@
                   BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
                   Execute="deferred"
                   Return="ignore"
-                  Impersonate="no" />
+                  Impersonate="yes" />
 
     <InstallExecuteSequence>
       <Custom Action="InstallPlugin" After="InstallFiles" Condition="NOT Installed" />
