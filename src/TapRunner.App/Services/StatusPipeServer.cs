@@ -29,11 +29,28 @@ namespace TapRunner.App.Services
             pipeName = "TapRunner_" + Guid.NewGuid().ToString("N");
         }
 
+        Task readLoopTask = Task.CompletedTask;
+        volatile bool clientConnected;
+
         /// <summary>Starts listening for the plugin to connect. Does not block.</summary>
         public void Start()
         {
             server = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous);
-            _ = AcceptAndReadLoopAsync(cts.Token);
+            readLoopTask = AcceptAndReadLoopAsync(cts.Token);
+        }
+
+        /// <summary>
+        /// Call when the tap.exe process has exited, before <see cref="Dispose"/>: waits (up to
+        /// <paramref name="timeout"/>) for the read loop to deliver everything the plugin wrote just
+        /// before it went away. A run that ends in an Error aborts the plan, so its last step, the
+        /// final verdict and the pipe closing all land within milliseconds of the process exiting -
+        /// disposing immediately would drop them. Returns at once if the plugin never connected.
+        /// </summary>
+        public async Task DrainAsync(TimeSpan timeout)
+        {
+            if (!clientConnected)
+                return;
+            await Task.WhenAny(readLoopTask, Task.Delay(timeout)).ConfigureAwait(false);
         }
 
         async Task AcceptAndReadLoopAsync(CancellationToken token)
@@ -41,6 +58,7 @@ namespace TapRunner.App.Services
             try
             {
                 await server.WaitForConnectionAsync(token).ConfigureAwait(false);
+                clientConnected = true;
                 writer = new StreamWriter(server, new UTF8Encoding(false)) { AutoFlush = true };
 
                 using var reader = new StreamReader(server, Encoding.UTF8, false, 1024, leaveOpen: true);

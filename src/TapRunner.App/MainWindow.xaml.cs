@@ -31,6 +31,8 @@ namespace TapRunner.App
         StatusPipeServer pipeServer;
         bool receivedTerminalStatus;
         bool userInitiatedAbort;
+        bool errorStepLoggedThisRun;
+        DateTime runProcessStart;
 
         // Oldest first, newest last; capped at MaxStepHistoryLines so older ones roll off the top.
         readonly List<string> stepHistory = new();
@@ -50,6 +52,8 @@ namespace TapRunner.App
             config = configService.Load();
             ParametersList.ItemsSource = parameters;
 
+            MoveTapRunnerLogOutOfOpenTapLogs();
+
             logService = new LogService(config.LogFilePath);
             logService.EnsureLogFilesExist();
 
@@ -63,6 +67,33 @@ namespace TapRunner.App
 
             Loaded += MainWindow_Loaded;
             Closing += MainWindow_Closing;
+        }
+
+        /// <summary>
+        /// Older configs pointed the TapRunner log at a file in OpenTAP's SessionLogs folder (e.g.
+        /// Latest.txt, OpenTAP's live log), mixing the two. Move TapRunner's log back to its own
+        /// default location, and keep that old file as the OpenTAP log the main window opens.
+        /// </summary>
+        void MoveTapRunnerLogOutOfOpenTapLogs()
+        {
+            try
+            {
+                var openTapLog = config.ResolveOpenTapLogPath();
+                var logDir = Path.GetDirectoryName(config.LogFilePath ?? "");
+                var openTapDir = Path.GetDirectoryName(openTapLog);
+                if (string.IsNullOrEmpty(logDir) || string.IsNullOrEmpty(openTapDir) ||
+                    !string.Equals(Path.GetFullPath(logDir), Path.GetFullPath(openTapDir), StringComparison.OrdinalIgnoreCase))
+                    return;
+
+                if (string.IsNullOrWhiteSpace(config.OpenTapLogPath))
+                    config.OpenTapLogPath = config.LogFilePath;
+                config.LogFilePath = new AppConfig().LogFilePath;
+                configService.Save(config);
+            }
+            catch
+            {
+                // Best-effort - worst case the old setting stays as it was.
+            }
         }
 
         async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -128,6 +159,8 @@ namespace TapRunner.App
             BrowseButton.IsEnabled = true;
             SettingsButton.IsEnabled = true;
             LoadDefaultsButton.IsEnabled = true;
+            PowerOnButton.IsEnabled = true;
+            PowerOffButton.IsEnabled = true;
             StopButton.IsEnabled = false;
             AbortButton.IsEnabled = false;
         }
@@ -145,6 +178,8 @@ namespace TapRunner.App
             BrowseButton.IsEnabled = false;
             SettingsButton.IsEnabled = false;
             LoadDefaultsButton.IsEnabled = false;
+            PowerOnButton.IsEnabled = false;
+            PowerOffButton.IsEnabled = false;
             StopButton.IsEnabled = true;
             AbortButton.IsEnabled = true;
         }
@@ -186,6 +221,7 @@ namespace TapRunner.App
                     // own default otherwise. This happens right after the plan loads, same as
                     // clicking "Load Defaults" would do.
                     p.Value = TryGetSavedDefault(p, out var savedDefault) ? savedDefault : p.PlanDefaultValue;
+                    ApplyHiddenSetting(p);
                     parameters.Add(p);
                 }
 
@@ -223,6 +259,23 @@ namespace TapRunner.App
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Hides (or, if Settings says so, greys out) a parameter that's marked Hidden under
+        /// Settings > Default parameter values. This is display-only: a hidden parameter stays in
+        /// the list and is still passed to tap.exe on Run with its saved default (or the plan's).
+        /// </summary>
+        void ApplyHiddenSetting(ParameterEntry p)
+        {
+            bool hidden = config.HiddenParameters.Any(n => string.Equals(n, p.Name, StringComparison.OrdinalIgnoreCase));
+            p.ApplyHiddenSetting(hidden, config.ShowHiddenParametersGreyedOut);
+        }
+
+        void ApplyHiddenSettingToAll()
+        {
+            foreach (var p in parameters)
+                ApplyHiddenSetting(p);
         }
 
         /// <summary>
@@ -264,19 +317,98 @@ namespace TapRunner.App
                 MessageBox.Show(this, "Select a TapPlan file first.", "TapRunner", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (!File.Exists(config.TapExecutablePath))
+            if (!CheckTapExecutable())
+                return;
+
+            await StartRunAsync(PlanPathText.Text, parameters, UseTuiCheckBox.IsChecked == true, runLabel: null);
+        }
+
+        async void PowerOnButton_Click(object sender, RoutedEventArgs e)
+            => await RunPowerPlanAsync("Power On", config.PowerOnPlanPath);
+
+        async void PowerOffButton_Click(object sender, RoutedEventArgs e)
+            => await RunPowerPlanAsync("Power Off", config.PowerOffPlanPath);
+
+        bool CheckTapExecutable()
+        {
+            if (File.Exists(config.TapExecutablePath))
+                return true;
+
+            MessageBox.Show(this, $"The configured OpenTAP executable was not found:\n{config.TapExecutablePath}\n\nSet it under Settings.",
+                "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
+            return false;
+        }
+
+        /// <summary>
+        /// Runs the power on / power off plan from Settings: always headless (the TUI checkbox is
+        /// about the main plan), through the same status circles, timer and logging as any run.
+        /// Settings' default parameter values override the plan's own values here too; whatever is
+        /// typed in the main window's parameter list belongs to the main plan and is not used.
+        /// </summary>
+        async Task RunPowerPlanAsync(string label, string configuredPath)
+        {
+            if (!CheckTapExecutable())
+                return;
+
+            var planPath = ResolvePlanPath(configuredPath);
+            if (planPath == null || !File.Exists(planPath))
             {
-                MessageBox.Show(this, $"The configured OpenTAP executable was not found:\n{config.TapExecutablePath}\n\nSet it under Settings.",
+                MessageBox.Show(this, $"The {label} plan was not found:\n{planPath ?? "(not set)"}\n\nSet it under Settings.",
                     "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
+            List<ParameterEntry> planParameters;
+            try
+            {
+                planParameters = await tapPlanService.ReadExternalParametersAsync(planPath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, $"Could not read the {label} plan:\n\n{ex.Message}", "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            foreach (var p in planParameters)
+                p.Value = TryGetSavedDefault(p, out var saved) ? saved : p.PlanDefaultValue;
+
+            await StartRunAsync(planPath, planParameters, useTui: false, runLabel: label);
+        }
+
+        /// <summary>
+        /// A bare plan name like "PowerON.TapPlan" is looked for in the working directory first,
+        /// then next to tap.exe; a full path is used as-is. If nothing exists yet, returns the first
+        /// place it would have looked, so the "not found" message names a real location.
+        /// </summary>
+        string ResolvePlanPath(string configured)
+        {
+            if (string.IsNullOrWhiteSpace(configured))
+                return null;
+
+            configured = configured.Trim();
+            if (Path.IsPathRooted(configured))
+                return configured;
+
+            var candidates = new List<string>();
+            if (!string.IsNullOrWhiteSpace(config.WorkingDirectory))
+                candidates.Add(Path.Combine(config.WorkingDirectory, configured));
+            var tapDir = Path.GetDirectoryName(config.TapExecutablePath);
+            if (!string.IsNullOrWhiteSpace(tapDir))
+                candidates.Add(Path.Combine(tapDir, configured));
+
+            return candidates.FirstOrDefault(File.Exists) ?? candidates.FirstOrDefault() ?? configured;
+        }
+
+        /// <summary>Starts tap.exe on <paramref name="planPath"/> and puts the window into its "running" state.</summary>
+        async Task StartRunAsync(string planPath, IEnumerable<ParameterEntry> runParameters, bool useTui, string runLabel)
+        {
             SaveCurrentSettingsToConfig();
             configService.Save(config);
 
             receivedTerminalStatus = false;
             userInitiatedAbort = false;
-            logService.BeginRun(Path.GetFileName(PlanPathText.Text), config.ClearFailureLogOnRun);
+            errorStepLoggedThisRun = false;
+            logService.BeginRun(Path.GetFileName(planPath), config.ClearFailureLogOnRun);
 
             pipeServer = new StatusPipeServer();
             pipeServer.StatusReceived += OnStatusReceived;
@@ -284,7 +416,7 @@ namespace TapRunner.App
 
             try
             {
-                runningProcess = tapPlanService.StartRun(config, PlanPathText.Text, parameters, UseTuiCheckBox.IsChecked == true, pipeServer.PipeName);
+                runningProcess = tapPlanService.StartRun(config, planPath, runParameters, useTui, pipeServer.PipeName);
             }
             catch (Exception ex)
             {
@@ -294,9 +426,12 @@ namespace TapRunner.App
                 return;
             }
 
+            try { runProcessStart = runningProcess.StartTime; }
+            catch { runProcessStart = DateTime.Now; }
+
             runningProcess.Exited += RunningProcess_Exited;
             SetRunningState();
-            SetStatusMessage("Running...");
+            SetStatusMessage(runLabel == null ? "Running..." : $"Running {runLabel} ({Path.GetFileName(planPath)})...");
             stepHistory.Clear();
             UpdateStepHistoryDisplay();
             StartRuntimeTimer();
@@ -350,18 +485,19 @@ namespace TapRunner.App
                         var summary = $"{step.Name} — {step.Verdict}";
                         if (!string.IsNullOrWhiteSpace(step.Outputs))
                             summary += $"   {step.Outputs}";
+                        if (!string.IsNullOrWhiteSpace(step.Error))
+                            summary += $"   Error: {step.Error}";
 
-                        stepHistory.Add(summary);
-                        if (stepHistory.Count > MaxStepHistoryLines)
-                            stepHistory.RemoveAt(0);
-
-                        UpdateStepHistoryDisplay();
+                        AddStepHistory(summary);
 
                         logService.AppendLine($"Step: {summary}");
-                        if (string.Equals(step.Verdict, "Fail", StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(step.Verdict, "Error", StringComparison.OrdinalIgnoreCase))
+
+                        bool isError = string.Equals(step.Verdict, "Error", StringComparison.OrdinalIgnoreCase);
+                        if (isError || string.Equals(step.Verdict, "Fail", StringComparison.OrdinalIgnoreCase))
                         {
-                            logService.AppendFailure(step.Name, step.Verdict, step.Outputs);
+                            logService.AppendFailure(step.Name, step.Verdict, step.Outputs, step.Error);
+                            if (isError)
+                                errorStepLoggedThisRun = true;
                         }
                     }
                     catch
@@ -396,6 +532,15 @@ namespace TapRunner.App
                         break;
                 }
             });
+        }
+
+        void AddStepHistory(string summary)
+        {
+            stepHistory.Add(summary);
+            if (stepHistory.Count > MaxStepHistoryLines)
+                stepHistory.RemoveAt(0);
+
+            UpdateStepHistoryDisplay();
         }
 
         void UpdateStepHistoryDisplay()
@@ -442,6 +587,17 @@ namespace TapRunner.App
         {
             receivedTerminalStatus = true;
             StopRuntimeTimer();
+
+            // An Error that no step owns - a licensing check failing, or a resource (instrument/DUT)
+            // that can't be opened, ends the plan before any step starts - would otherwise leave
+            // nothing at all in the failure log or the history, just a red circle. OpenTAP's own log
+            // has the reason, so use that.
+            string errorDetail = null;
+            if (ReferenceEquals(verdictCircle, ErrorCircle) && !errorStepLoggedThisRun)
+            {
+                errorDetail = LogPlanLevelError("The run ended with an Error verdict, but no step reported one.");
+            }
+
             PassedCircle.State = CircleState.Off;
             FailedCircle.State = CircleState.Off;
             ErrorCircle.State = CircleState.Off;
@@ -449,12 +605,55 @@ namespace TapRunner.App
             verdictCircle.State = CircleState.Full;
 
             RunningCircle.State = CircleState.Off;
-            SetStatusMessage($"Run finished: {verdictCircle.Label}.");
+            SetStatusMessage($"Run finished: {verdictCircle.Label}." + (errorDetail != null ? $" {errorDetail}" : ""));
         }
 
-        void RunningProcess_Exited(object sender, EventArgs e)
+        /// <summary>
+        /// One entry in the failure log, and a line in the history box, for an Error that isn't tied
+        /// to a step (see FinishRun and RunningProcess_Exited), so every Error run leaves something
+        /// there. It carries whatever OpenTAP itself logged at Error level during this run - e.g. the
+        /// licence message - read from that process's session log. Returns the most recent of those
+        /// (shortened, for the status line), or null if none were found.
+        /// </summary>
+        string LogPlanLevelError(string text)
         {
-            Dispatcher.Invoke(() =>
+            var openTapErrors = OpenTapLogReader.GetRunErrors(config.TapExecutablePath, runProcessStart);
+
+            var lines = new List<string> { text };
+            if (openTapErrors.Count > 0)
+                lines.AddRange(openTapErrors.Select(e => "OpenTAP logged: " + e));
+            else
+                lines.Add("No Error lines were found in the OpenTAP session log for this run - check it (and the licence) for details.");
+
+            logService.AppendFailure("(test plan)", "Error", "", string.Join("\n", lines));
+            errorStepLoggedThisRun = true;
+
+            var detail = openTapErrors.Count > 0 ? openTapErrors[openTapErrors.Count - 1] : null;
+            if (detail != null && detail.Length > 200)
+                detail = detail.Substring(0, 200) + "...";
+
+            AddStepHistory($"(test plan) — Error   {detail ?? text}");
+            return detail;
+        }
+
+        async void RunningProcess_Exited(object sender, EventArgs e)
+        {
+            // The plugin writes its last step, the final verdict and then closes the pipe just
+            // before tap.exe exits (an Error aborts the plan, so all of that lands within a few
+            // milliseconds of the exit). Let the pipe finish delivering it before tearing it down,
+            // otherwise the last step - often the very one that errored - is dropped.
+            try
+            {
+                var server = pipeServer;
+                if (server != null)
+                    await server.DrainAsync(TimeSpan.FromSeconds(3));
+            }
+            catch
+            {
+                // Best-effort - never let it stop the cleanup below.
+            }
+
+            await Dispatcher.InvokeAsync(() =>
             {
                 if (pipeServer != null)
                 {
@@ -481,10 +680,13 @@ namespace TapRunner.App
                     ErrorCircle.State = CircleState.Full;
 
                     var exitCode = TryGetExitCode(runningProcess);
-                    SetStatusMessage("Process exited without reporting a result" +
-                        (exitCode is int code ? $" (exit code {code})" : "") +
-                        " - check for a licensing error or other startup failure, and confirm " +
-                        "\"TapRunner Status\" is enabled under Settings > Results in OpenTAP.");
+                    var message = "Process exited without reporting a result" +
+                        (exitCode is int code ? $" (exit code {code})" : "");
+                    var detail = LogPlanLevelError(message);
+                    SetStatusMessage(detail != null
+                        ? $"{message} - OpenTAP logged: {detail}"
+                        : $"{message} - check for a licensing error or other startup failure, and confirm " +
+                          "\"TapRunner Status\" is enabled under Settings > Results in OpenTAP.");
                 }
 
                 ReadyCircle.State = CircleState.Full;
@@ -492,6 +694,8 @@ namespace TapRunner.App
                 BrowseButton.IsEnabled = true;
                 SettingsButton.IsEnabled = true;
                 LoadDefaultsButton.IsEnabled = true;
+                PowerOnButton.IsEnabled = true;
+                PowerOffButton.IsEnabled = true;
                 StopButton.IsEnabled = false;
                 AbortButton.IsEnabled = false;
 
@@ -565,6 +769,7 @@ namespace TapRunner.App
                 StationNameText.Text = string.IsNullOrWhiteSpace(config.StationName) ? "" : $"Station: {config.StationName}";
                 ProfileNameText.Text = string.IsNullOrWhiteSpace(config.OpenTapProfile) ? "" : $"Profile: {config.OpenTapProfile}";
                 ApplyStatusColorsFromConfig();
+                ApplyHiddenSettingToAll();
                 logService.SetLogFilePath(config.LogFilePath);
                 logService.EnsureLogFilesExist();
                 if (!IsRunning())
@@ -574,14 +779,21 @@ namespace TapRunner.App
 
         void OpenLogButton_Click(object sender, RoutedEventArgs e)
         {
+            // OpenTAP's own log - TapRunner never writes it, so don't create it if it's missing.
+            var path = config.ResolveOpenTapLogPath();
             try
             {
-                logService.EnsureLogFilesExist();
-                Process.Start(new ProcessStartInfo(logService.LogFilePath) { UseShellExecute = true });
+                if (!File.Exists(path))
+                {
+                    MessageBox.Show(this, $"The OpenTAP log was not found:\n{path}\n\nCheck the OpenTAP log path under Settings.",
+                        "TapRunner", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, $"Could not open the log file:\n{logService.LogFilePath}\n\n{ex.Message}",
+                MessageBox.Show(this, $"Could not open the log file:\n{path}\n\n{ex.Message}",
                     "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Microsoft.Win32;
 using TapRunner.App.Models;
+using TapRunner.App.Services;
 
 namespace TapRunner.App
 {
@@ -39,10 +41,25 @@ namespace TapRunner.App
             WorkingDirectoryText.Text = workingConfig.WorkingDirectory;
             StationNameText.Text = workingConfig.StationName;
             LogFilePathText.Text = workingConfig.LogFilePath;
+            OpenTapLogPathText.Text = workingConfig.OpenTapLogPath;
             ClearFailureLogOnRunCheckBox.IsChecked = workingConfig.ClearFailureLogOnRun;
+            PowerOnPlanText.Text = workingConfig.PowerOnPlanPath;
+            PowerOffPlanText.Text = workingConfig.PowerOffPlanPath;
+            ShowHiddenGreyedOutCheckBox.IsChecked = workingConfig.ShowHiddenParametersGreyedOut;
+
+            bool IsHiddenName(string name) =>
+                workingConfig.HiddenParameters.Any(h => string.Equals(h, name, StringComparison.OrdinalIgnoreCase));
 
             foreach (var kvp in workingConfig.DefaultParameterValues)
-                defaultParameterRows.Add(new DefaultParameterRow { Name = kvp.Key, Value = kvp.Value });
+                defaultParameterRows.Add(new DefaultParameterRow { Name = kvp.Key, Value = kvp.Value, IsHidden = IsHiddenName(kvp.Key) });
+
+            // A parameter can be hidden without having a default value of its own - it just keeps
+            // the TapPlan's - so those names get a row too (blank value, Hidden ticked).
+            foreach (var hidden in workingConfig.HiddenParameters)
+            {
+                if (!defaultParameterRows.Any(r => string.Equals(r.Name, hidden, StringComparison.OrdinalIgnoreCase)))
+                    defaultParameterRows.Add(new DefaultParameterRow { Name = hidden, Value = "", IsHidden = true });
+            }
             DefaultParametersGrid.ItemsSource = defaultParameterRows;
 
             BuildColorRows();
@@ -96,7 +113,7 @@ namespace TapRunner.App
                 }
                 else
                 {
-                    defaultParameterRows.Add(new DefaultParameterRow { Name = p.Name, Value = p.Value });
+                    defaultParameterRows.Add(new DefaultParameterRow { Name = p.Name, Value = p.Value, IsHidden = p.IsHidden });
                     added++;
                 }
             }
@@ -167,6 +184,28 @@ namespace TapRunner.App
                 WorkingDirectoryText.Text = dialog.FolderName;
         }
 
+        void BrowsePowerOnPlan_Click(object sender, RoutedEventArgs e) => BrowsePlanInto(PowerOnPlanText, "Select the Power On plan");
+
+        void BrowsePowerOffPlan_Click(object sender, RoutedEventArgs e) => BrowsePlanInto(PowerOffPlanText, "Select the Power Off plan");
+
+        void BrowsePlanInto(TextBox target, string title)
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = title,
+                Filter = "OpenTAP Plan files (*.TapPlan)|*.TapPlan|All files (*.*)|*.*",
+                CheckFileExists = true,
+            };
+
+            // Start in the working directory (where bare plan names are looked for), if there is one.
+            var startDir = WorkingDirectoryText.Text.Trim();
+            if (startDir.Length > 0 && System.IO.Directory.Exists(startDir))
+                dialog.InitialDirectory = startDir;
+
+            if (dialog.ShowDialog(this) == true)
+                target.Text = dialog.FileName;
+        }
+
         void BrowseLogFile_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new SaveFileDialog
@@ -186,6 +225,36 @@ namespace TapRunner.App
                 LogFilePathText.Text = dialog.FileName;
         }
 
+        void BrowseOpenTapLog_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = "Select the OpenTAP log file",
+                Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*",
+            };
+            var dir = System.IO.Path.GetDirectoryName(OpenTapLogPathText.Text.Trim());
+            if (!string.IsNullOrWhiteSpace(dir) && System.IO.Directory.Exists(dir))
+                dialog.InitialDirectory = dir;
+            if (dialog.ShowDialog(this) == true)
+                OpenTapLogPathText.Text = dialog.FileName;
+        }
+
+        void OpenTapRunnerLog_Click(object sender, RoutedEventArgs e)
+        {
+            var path = LogFilePathText.Text.Trim();
+            try
+            {
+                var log = new LogService(path);
+                log.EnsureLogFilesExist();
+                Process.Start(new ProcessStartInfo(log.LogFilePath) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, $"Could not open the log file:\n{path}\n\n{ex.Message}",
+                    "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         void OkButton_Click(object sender, RoutedEventArgs e)
         {
             workingConfig.TapExecutablePath = TapExecutablePathText.Text.Trim();
@@ -193,12 +262,20 @@ namespace TapRunner.App
             workingConfig.WorkingDirectory = WorkingDirectoryText.Text.Trim();
             workingConfig.StationName = StationNameText.Text.Trim();
             workingConfig.LogFilePath = LogFilePathText.Text.Trim();
+            workingConfig.OpenTapLogPath = OpenTapLogPathText.Text.Trim();
             workingConfig.ClearFailureLogOnRun = ClearFailureLogOnRunCheckBox.IsChecked == true;
+            workingConfig.PowerOnPlanPath = PowerOnPlanText.Text.Trim();
+            workingConfig.PowerOffPlanPath = PowerOffPlanText.Text.Trim();
+            workingConfig.ShowHiddenParametersGreyedOut = ShowHiddenGreyedOutCheckBox.IsChecked == true;
 
-            workingConfig.DefaultParameterValues = defaultParameterRows
+            var namedRows = defaultParameterRows
                 .Where(r => !string.IsNullOrWhiteSpace(r.Name))
-                .GroupBy(r => r.Name)
-                .ToDictionary(g => g.Key, g => g.Last().Value ?? "");
+                .GroupBy(r => r.Name.Trim())
+                .Select(g => g.Last())
+                .ToList();
+
+            workingConfig.DefaultParameterValues = namedRows.ToDictionary(r => r.Name.Trim(), r => r.Value ?? "");
+            workingConfig.HiddenParameters = namedRows.Where(r => r.IsHidden).Select(r => r.Name.Trim()).ToList();
 
             ApplyColorRow(colorRows[0], workingConfig.StatusColors.Ready);
             ApplyColorRow(colorRows[1], workingConfig.StatusColors.Running);
@@ -238,10 +315,15 @@ namespace TapRunner.App
                 OpenTapProfile = source.OpenTapProfile,
                 StationName = source.StationName,
                 LogFilePath = source.LogFilePath,
+                OpenTapLogPath = source.OpenTapLogPath,
                 ClearFailureLogOnRun = source.ClearFailureLogOnRun,
                 OperatorName = source.OperatorName,
                 UseTui = source.UseTui,
                 DefaultParameterValues = new Dictionary<string, string>(source.DefaultParameterValues),
+                HiddenParameters = new List<string>(source.HiddenParameters),
+                ShowHiddenParametersGreyedOut = source.ShowHiddenParametersGreyedOut,
+                PowerOnPlanPath = source.PowerOnPlanPath,
+                PowerOffPlanPath = source.PowerOffPlanPath,
                 StatusColors = new StatusColorsConfig
                 {
                     Ready = new StatusColorConfig { Color = source.StatusColors.Ready.Color, Flash = source.StatusColors.Ready.Flash },
@@ -268,6 +350,9 @@ namespace TapRunner.App
 
         string val = "";
         public string Value { get => val; set { val = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value))); } }
+
+        bool isHidden;
+        public bool IsHidden { get => isHidden; set { isHidden = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsHidden))); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

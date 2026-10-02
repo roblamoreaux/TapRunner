@@ -1,4 +1,4 @@
-# TapRunner
+﻿# TapRunner
 
 A small Windows desktop front-end for running OpenTAP TapPlans, plus an OpenTAP `ResultListener`
 plugin that reports live run status back to it.
@@ -51,7 +51,7 @@ Runtime alongside the one OpenTAP already needs.
    current step, runs cleanup/post-plan-run steps, then ends - verdict is normally `Aborted`).
    **Abort** bypasses the plugin entirely and kills the `tap.exe` process tree immediately.
 6. Every status-line message and every completed step is also appended to a running session log
-   (**Open Log**), and any step that finishes Fail/Error additionally gets a fuller, multi-line
+   (**Settings → Open TapRunner Log**), and any step that finishes Fail/Error additionally gets a fuller, multi-line
    entry in a second, uncapped log (**Failed**) - see "Logging" below.
 
 ## Building
@@ -69,7 +69,7 @@ extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToo
 installed, so it recognizes the `.wixproj`) and Build Solution. This produces:
 
 - `src\TapRunner.App\bin\Release\net9.0-windows\TapRunner.exe` - the app, if you just want to run it as-is.
-- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.2.0.TapPackage` - the plugin package.
+- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.0.TapPackage` - the plugin package.
 - `src\TapRunner.Installer\bin\x64\Release\TapRunnerSetup.msi` - the installer (see below).
 
 ## Installing with TapRunnerSetup.msi
@@ -139,8 +139,13 @@ original open license with no such prompt, and has everything this installer nee
   StationName defaults to the Windows device name the first time TapRunner runs on a machine (i.e.
   there's no `config.json` yet - typically right after installing); after that, whatever's saved is
   what loads, so clearing it stays cleared rather than being silently re-filled.
-- `LogFilePath` - where the session log is written, edited via **Settings → Log file**. Defaults to
-  `%ProgramData%\TapRunner\TapRunner.log.txt`. See "Logging" below.
+- `LogFilePath` - where TapRunner's own session log is written, edited via **Settings → TapRunner log
+  file**. Defaults to `%ProgramData%\TapRunner\TapRunner.log.txt`. Kept separate from OpenTAP's log.
+  A config from an older version that pointed this at a file in OpenTAP's `SessionLogs` folder is
+  moved back to the default on startup, and that old file becomes `OpenTapLogPath`. See "Logging" below.
+- `OpenTapLogPath` - OpenTAP's live log, opened by the main window's **Open Log** button, edited via
+  **Settings → OpenTAP log file**. Blank (the default) means `<tap.exe folder>\SessionLogs\Latest.txt`.
+  TapRunner only reads this file.
 - `DefaultParameterValues` - name → value overrides, edited via **Settings → Default parameter values**.
   A blank/missing entry falls back to the TapPlan's own default. These are only changed
   deliberately in Settings - a value typed into the dialog for one run is never silently saved
@@ -154,13 +159,28 @@ original open license with no such prompt, and has everything this installer nee
   now and copies it into this list - a quick way to capture values you've dialed in for one plan
   as the new saved defaults, without retyping them. It only stages the change in the dialog; click
   **OK** to actually save it.
+- `HiddenParameters`, `ShowHiddenParametersGreyedOut` - the **Hidden** column in the same Settings
+  grid. A parameter ticked Hidden is kept out of the main window's parameter list (a blank default
+  value is fine - it then just keeps the TapPlan's own). It's display-only: a hidden parameter is
+  still passed to the test on Run with its saved default (or the plan's), and Load Defaults still
+  fills it. Tick **"Show hidden parameters greyed out"** to keep them visible but dimmed - they stay
+  editable, not read-only.
+- `PowerOnPlanPath`, `PowerOffPlanPath` - the plans run by the small **Power On** / **Power Off**
+  buttons beside Settings (defaults `PowerON.TapPlan` / `PowerOFF.TapPlan`). A bare name is looked
+  for in the working directory, then next to tap.exe; a full path is used as-is. They always run
+  headless regardless of the "Edit with TUI" box, through the same status circles, runtime clock and
+  logs as any run, with Settings' default parameter values overriding the plan's own. Parameters
+  typed into the main window's list belong to the main plan and aren't used for them. The buttons
+  are disabled while any run is in progress.
 - `StatusColors` - per-status `{ Color, Flash }` (hex color + whether it flashes when fully lit),
   editable under **Settings → Status Colors**. Defaults: Ready = blue, Running = flashing green,
   Passed = green, Failed = orange, Error = red, Aborted = dark red.
 
 ## Logging
 
-- **Open Log** opens `LogFilePath` in whatever your machine has associated with `.txt` files. Every
+- **Open Log** (main window) opens OpenTAP's live log (`OpenTapLogPath`) in whatever your machine has
+  associated with `.txt` files.
+- **Settings → Open TapRunner Log** opens TapRunner's own log (`LogFilePath`). Every
   status-line message (Running/Stop requested/Aborted/Run finished/etc.) and every completed step
   gets one timestamped line, so it's a full running transcript of a session - it just keeps
   growing; nothing is trimmed or rotated.
@@ -170,6 +190,17 @@ original open license with no such prompt, and has everything this installer nee
   (timestamp, verdict, step name, then every published result on its own line) rather than the
   single compact line shown in the app's own step history. The window opens scrolled to the most
   recent failure; **Refresh** re-reads the file for a run still in progress.
+- An `Error` step's entry also carries the error message the step threw (e.g. `Error: Simulated
+  instrument error`), which is usually all an errored step has to report - it's shown in the step
+  history line too. An Error that no step owns - typically a resource (instrument/DUT) failing to
+  open before any step runs, a failed licence check, or tap.exe exiting without reporting a
+  result - gets a `(test plan)` entry instead (also shown as a line in the history box), so every
+  Error run leaves something in the failure log. That entry carries whatever OpenTAP itself logged
+  at Error level during the run - e.g. `License KS8000A or KS8400A ... could not be checked out` -
+  read from that tap.exe process's session log in `<tap.exe folder>\SessionLogs`, matched by the
+  start time in the log's file name (so an Editor open at the same time isn't mistaken for it), and
+  also put in the status line. If none is found the entry says so. (The step error message needs
+  the 1.3.0 plugin package; reinstall it via the MSI or `tap package install ... --overwrite`.)
 - Each run's first failure (if any) is preceded by a header block with the TapPlan's file name and
   when the run started, so it's always clear which run a given block of failures belongs to - this
   matters most when the failure log is kept across runs (see below), but is written the same way

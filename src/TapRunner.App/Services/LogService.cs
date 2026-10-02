@@ -98,7 +98,7 @@ namespace TapRunner.App.Services
         /// a Fail or Error verdict. Never trimmed/capped - unlike the in-app step history, this
         /// file just keeps growing for as long as the log file itself exists.
         /// </summary>
-        public void AppendFailure(string stepName, string verdict, string outputs)
+        public void AppendFailure(string stepName, string verdict, string outputs, string errorText = "")
         {
             try
             {
@@ -123,9 +123,20 @@ namespace TapRunner.App.Services
                 sb.Append('=', 70).AppendLine();
                 sb.AppendLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {verdict.ToUpperInvariant()}  {stepName}");
 
-                if (!string.IsNullOrWhiteSpace(outputs))
-                {
+                bool hasError = !string.IsNullOrWhiteSpace(errorText);
+                bool hasOutputs = !string.IsNullOrWhiteSpace(outputs);
+                if (hasError || hasOutputs)
                     sb.Append('-', 70).AppendLine();
+
+                if (hasError)
+                {
+                    // One "Error:" line per line of text, so a list of messages stays readable.
+                    foreach (var errorLine in errorText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                        sb.AppendLine($"Error: {errorLine.Trim()}");
+                }
+
+                if (hasOutputs)
+                {
                     // Break the compact "Table: col=v, col=v; Table2: col=v" summary out onto its
                     // own line per result, instead of cramming it all onto a single line.
                     foreach (var group in outputs.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))

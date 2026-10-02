@@ -15,12 +15,29 @@ namespace TapRunner.App.Models
         public string LastTapPlanPath { get; set; } = "";
 
         /// <summary>
-        /// Path to TapRunner's own running session log (.txt) - opened via the "Open Log" button
-        /// with whatever the operator's machine uses to open .txt files. Editable under Settings.
-        /// The failed/error step log lives alongside it (see <see cref="LogService"/>).
+        /// Path to TapRunner's own running session log (.txt) - opened via the "Open TapRunner Log"
+        /// button under Settings. Kept separate from OpenTAP's own live log
+        /// (<see cref="OpenTapLogPath"/>). The failed/error step log lives alongside it
+        /// (see <see cref="LogService"/>).
         /// </summary>
         public string LogFilePath { get; set; } =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "TapRunner", "TapRunner.log.txt");
+
+        /// <summary>
+        /// OpenTAP's live session log, opened by the main window's "Open Log" button. Blank means
+        /// "&lt;tap.exe folder&gt;\SessionLogs\Latest.txt" - see <see cref="ResolveOpenTapLogPath"/>.
+        /// TapRunner only ever reads this file, never writes to it.
+        /// </summary>
+        public string OpenTapLogPath { get; set; } = "";
+
+        /// <summary>The OpenTAP log to open: <see cref="OpenTapLogPath"/>, or Latest.txt next to tap.exe if blank.</summary>
+        public string ResolveOpenTapLogPath()
+        {
+            if (!string.IsNullOrWhiteSpace(OpenTapLogPath))
+                return OpenTapLogPath;
+            var tapDir = Path.GetDirectoryName(TapExecutablePath ?? "");
+            return string.IsNullOrEmpty(tapDir) ? "" : Path.Combine(tapDir, "SessionLogs", "Latest.txt");
+        }
 
         /// <summary>
         /// If true, the failed/error step log is wiped at the start of every run, so it only ever
@@ -64,6 +81,28 @@ namespace TapRunner.App.Models
         /// serial number fields included - a saved value here always wins over the TapPlan's own.
         /// </summary>
         public Dictionary<string, string> DefaultParameterValues { get; set; } = new();
+
+        /// <summary>
+        /// Names (as shown in the main window, e.g. "PowerOn") of parameters to keep out of the
+        /// parameter list. Display-only: they are still passed to tap.exe on Run with their saved
+        /// default (or the plan's own). Edited via the Hidden column under Settings.
+        /// </summary>
+        public List<string> HiddenParameters { get; set; } = new();
+
+        /// <summary>
+        /// If true, hidden parameters stay in the list but dimmed (and still editable) instead of
+        /// disappearing.
+        /// </summary>
+        public bool ShowHiddenParametersGreyedOut { get; set; } = false;
+
+        /// <summary>
+        /// Plan run by the main window's "Power On" button. A bare file name is looked for in the
+        /// working directory, then next to tap.exe; a full path is used as-is.
+        /// </summary>
+        public string PowerOnPlanPath { get; set; } = "PowerON.TapPlan";
+
+        /// <summary>Plan run by the "Power Off" button; resolved the same way as <see cref="PowerOnPlanPath"/>.</summary>
+        public string PowerOffPlanPath { get; set; } = "PowerOFF.TapPlan";
 
         public StatusColorsConfig StatusColors { get; set; } = new();
     }

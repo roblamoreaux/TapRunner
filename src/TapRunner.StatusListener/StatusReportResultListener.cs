@@ -164,11 +164,18 @@ namespace TapRunner.StatusListener
             if (outputs.Length > MaxOutputsLength)
                 outputs = outputs.Substring(0, MaxOutputsLength) + "...";
 
+            // A step that throws ends with an Error verdict and usually publishes nothing, so the
+            // exception message is the only useful detail it has - send it along for the logs.
+            var error = stepRun.Exception?.Message ?? "";
+            if (error.Length > MaxOutputsLength)
+                error = error.Substring(0, MaxOutputsLength) + "...";
+
             var stepStatus = new StepStatusMessage
             {
                 Name = name ?? stepRun.TestStepName,
                 Verdict = stepRun.Verdict.ToString(),
                 Outputs = outputs,
+                Error = error,
             };
             Send(stepStatus.ToLine());
 

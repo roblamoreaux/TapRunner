@@ -37,7 +37,11 @@ IN the settings include a button to copy all of the current Testplan parameters 
 Add in the settings area the OpenTap Profile to use with a dropdown box to select any of the profiles in the OpenTap/Setting/Bench directory. The profile should be displayed in the operator box like the station name is
 include a runtime  timer under the TapRunner logo that starts when the test is spawned and ends when the test completes so the use can see how long the test is taking.
 
-
+Add a field in the settings to set parameters hidden so when they are in the testplan they do not get displayed (or are greyed out and not read only)in the test plan parameters section. 
+Add logging steps that return a verdict of error to the fail log.
+Make it so the status log box section can be expanded by the user when the window is bigger
+Add settings for a power on (default PowerON.tapplan) and a power off  (default PowerOFF.tapplan) script with small buttons on the main screen to run each of these scripts
+add a setting for taprunner logs so they can be log separate from OpenTaps live log and be opened from a button on the settings page where the button on the main window opens the opentap log
 
 Update the version number by a minor level.
 
