@@ -59,6 +59,13 @@ namespace TapRunner.Protocol
         /// </summary>
         public const string StepStartedPrefix = "STEP_START|";
 
+        /// <summary>
+        /// Prefix for the run's live overall status (see <see cref="LiveStatusMessage"/>): passing or
+        /// not, and whether a Fail/Error is still active or was cleared by a parent step. Replaces
+        /// the STEP_*_PENDING messages, which the app still understands from an older plugin.
+        /// </summary>
+        public const string LivePrefix = "LIVE|";
+
         // ----- App -> Plugin: command messages -----
 
         /// <summary>Request a graceful/cooperative abort of the currently running test plan.</summary>

@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace TapRunner.App.Services
 {
@@ -22,6 +25,19 @@ namespace TapRunner.App.Services
         DateTime currentRunStartTime;
         bool failureHeaderWritten = true; // nothing to head until a run actually starts
 
+        // File writes happen on one background thread, in order, so a burst of steps never waits
+        // on the disk (and, through the app, never holds up the test plan). Callers only queue.
+        readonly BlockingCollection<LogWrite> pendingWrites = new();
+        Thread writerThread;
+
+        class LogWrite
+        {
+            public string Path;
+            public string Text;      // appended
+            public bool Truncate;    // empty the file instead
+            public ManualResetEventSlim Flushed; // a Flush() marker
+        }
+
         public LogService(string logFilePath)
         {
             SetLogFilePath(logFilePath);
@@ -40,17 +56,7 @@ namespace TapRunner.App.Services
             failureHeaderWritten = false;
 
             if (clearFailureLog)
-            {
-                try
-                {
-                    EnsureDirectory(FailureLogFilePath);
-                    File.WriteAllText(FailureLogFilePath, "");
-                }
-                catch
-                {
-                    // Best-effort, same as every other log write.
-                }
-            }
+                Enqueue(new LogWrite { Path = FailureLogFilePath, Truncate = true });
         }
 
         public void SetLogFilePath(string path)
@@ -79,32 +85,93 @@ namespace TapRunner.App.Services
             TryEnsureFile(FailureLogFilePath);
         }
 
-        /// <summary>Appends one timestamped line to the general session log.</summary>
+        /// <summary>Appends one timestamped line to the general session log (queued - returns at once).</summary>
         public void AppendLine(string message)
         {
-            try
+            Enqueue(new LogWrite { Path = LogFilePath, Text = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}{Environment.NewLine}" });
+        }
+
+        /// <summary>Waits (up to <paramref name="timeout"/>) for every queued write to reach the files.</summary>
+        public void Flush(TimeSpan timeout)
+        {
+            if (writerThread == null)
+                return; // nothing was ever queued
+            using var flushed = new ManualResetEventSlim();
+            Enqueue(new LogWrite { Flushed = flushed });
+            flushed.Wait(timeout);
+        }
+
+        void Enqueue(LogWrite write)
+        {
+            if (writerThread == null)
             {
-                EnsureDirectory(LogFilePath);
-                File.AppendAllText(LogFilePath, $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}{Environment.NewLine}");
+                writerThread = new Thread(WriteLoop) { IsBackground = true, Name = "TapRunner log writer" };
+                writerThread.Start();
             }
-            catch
+            pendingWrites.Add(write);
+        }
+
+        void WriteLoop()
+        {
+            var batch = new List<LogWrite>();
+            foreach (var first in pendingWrites.GetConsumingEnumerable())
             {
-                // Logging must never crash or block the app - a locked/missing log file isn't fatal.
+                // Take whatever else has piled up too, so a burst costs one file open per file.
+                batch.Clear();
+                batch.Add(first);
+                while (pendingWrites.TryTake(out var more))
+                    batch.Add(more);
+
+                int i = 0;
+                while (i < batch.Count)
+                {
+                    var write = batch[i];
+                    if (write.Flushed != null)
+                    {
+                        write.Flushed.Set();
+                        i++;
+                        continue;
+                    }
+
+                    // Consecutive appends to the same file go out together.
+                    var text = new StringBuilder();
+                    int j = i;
+                    if (!write.Truncate)
+                    {
+                        while (j < batch.Count && batch[j].Flushed == null && !batch[j].Truncate && batch[j].Path == write.Path)
+                            text.Append(batch[j++].Text);
+                    }
+                    else
+                    {
+                        j++;
+                    }
+
+                    try
+                    {
+                        EnsureDirectory(write.Path);
+                        if (write.Truncate)
+                            File.WriteAllText(write.Path, "");
+                        else
+                            File.AppendAllText(write.Path, text.ToString());
+                    }
+                    catch
+                    {
+                        // Logging must never crash or block the app - a locked/missing log file isn't fatal.
+                    }
+                    i = j;
+                }
             }
         }
 
         /// <summary>
         /// Appends a detailed, multi-line block to the failure log for one step that finished with
         /// a Fail or Error verdict. Never trimmed/capped - unlike the in-app step history, this
-        /// file just keeps growing for as long as the log file itself exists.
+        /// file just keeps growing for as long as the log file itself exists. Queued - returns at once.
         /// </summary>
         public void AppendFailure(string stepName, string verdict, string outputs, string errorText = "")
         {
             try
             {
-                var path = FailureLogFilePath;
-                EnsureDirectory(path);
-
                 var sb = new StringBuilder();
 
                 // Head this run's first failure with the plan name and when it started, so a
@@ -149,7 +216,7 @@ namespace TapRunner.App.Services
                 }
 
                 sb.AppendLine();
-                File.AppendAllText(path, sb.ToString());
+                Enqueue(new LogWrite { Path = FailureLogFilePath, Text = sb.ToString() });
             }
             catch
             {

@@ -1,4 +1,4 @@
-﻿# TapRunner
+# TapRunner
 
 A small Windows desktop front-end for running OpenTAP TapPlans, plus an OpenTAP `ResultListener`
 plugin that reports live run status back to it.
@@ -36,8 +36,12 @@ Runtime alongside the one OpenTAP already needs.
    child process via the `TAPRUNNER_PIPE` environment variable.
 3. If the `TapRunner.StatusListener` plugin is installed **and enabled** in the OpenTAP bench's
    Results settings, it connects to that pipe from inside the `tap.exe` process and reports:
-   `Running` → a step `Fail`/`Error` (circle goes half-lit, "pending") → the final verdict
-   (`Passed`/`Failed`/`Error`/`Aborted`, circle goes fully lit). The app uses these messages to
+   `Running` → the live overall status while steps complete → the final verdict
+   (`Passed`/`Failed`/`Error`/`Aborted`, circle goes fully lit). While running, **Passed** flashes
+   as long as the run is passing; **Failed**/**Error** flash while a step's Fail/Error stands. If a
+   parent step clears a child's failure (finishes `Pass` anyway, e.g. a retry), that circle goes
+   dim instead and **Passed** flashes again; the dim circle stays after the run ends, to show the
+   pass needed a cleared failure. The app uses these messages to
    drive the six status circles in real time. It also reports the instant each step *starts*
    (before its verdict/outputs are known), which the app shows as "Running: &lt;step name&gt;..."
    in the status line - so a step that never publishes a result (many simple/flow-control steps
@@ -69,7 +73,7 @@ extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToo
 installed, so it recognizes the `.wixproj`) and Build Solution. This produces:
 
 - `src\TapRunner.App\bin\Release\net9.0-windows\TapRunner.exe` - the app, if you just want to run it as-is.
-- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.0.TapPackage` - the plugin package.
+- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.2.TapPackage` - the plugin package.
 - `src\TapRunner.Installer\bin\x64\Release\TapRunnerSetup.msi` - the installer (see below).
 
 ## Installing with TapRunnerSetup.msi
@@ -235,9 +239,11 @@ original open license with no such prompt, and has everything this installer nee
   dialog nor the selected OpenTAP profile are carried into a TUI session - the operator sets/
   reviews parameters inside the TUI itself, and it runs with whatever profile OpenTAP already has
   selected there. Live status circles still work there.
-- **Pending vs. final Fail/Error**: the spec called out the Failed circle going half-lit on a step
-  failure mid-run; I applied the same "pending" treatment to the Error circle for a step `Error`
-  verdict, for symmetry. Only the circle matching the plan's *final* verdict goes fully lit.
+- **Live vs. final Fail/Error**: mid-run, a step's Fail/Error flashes its circle until a parent
+  step clears it (then dim) or takes it on as its own Fail/Error (still flashing). Only the circle
+  matching the plan's *final* verdict goes fully lit. The plugin works this out from the step tree
+  (`LIVE|…` messages); an older plugin that still sends `STATUS|STEP_FAIL_PENDING` just gets the
+  old half-lit circle, so update the plugin in OpenTAP to get the new behavior.
 - **Failure log detail comes from the same compact summary shown in the app**, just reformatted -
   one result per line instead of comma-joined - rather than a richer wire message from the plugin.
   It's not literally everything OpenTAP knows about the step, but it's already as complete as what

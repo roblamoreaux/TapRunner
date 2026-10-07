@@ -8,7 +8,8 @@ namespace TapRunner.App.Controls
 {
     /// <summary>
     /// A labeled circle that can be Off (dim gray), Partial (its color at reduced opacity - a
-    /// pending fail/error while a run is in progress) or Full (its color, flashing if configured).
+    /// fail/error a parent step cleared), Full (its color, flashing if configured) or Flashing
+    /// (its color, always flashing - the live verdict during a run).
     /// </summary>
     public partial class StatusCircle : UserControl
     {
@@ -83,6 +84,12 @@ namespace TapRunner.App.Controls
                     Circle.Opacity = 1.0;
                     if (Flash)
                         storyboard.Begin(this, true);
+                    break;
+
+                case CircleState.Flashing:
+                    Circle.Fill = new SolidColorBrush(OnColor);
+                    Circle.Opacity = 1.0;
+                    storyboard.Begin(this, true);
                     break;
             }
         }

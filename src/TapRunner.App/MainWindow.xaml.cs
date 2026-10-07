@@ -1,10 +1,12 @@
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,11 +34,19 @@ namespace TapRunner.App
         bool receivedTerminalStatus;
         bool userInitiatedAbort;
         bool errorStepLoggedThisRun;
+        bool failResolvedThisRun;  // a step failed but its parent step cleared it
+        bool errorResolvedThisRun;
         DateTime runProcessStart;
 
         // Oldest first, newest last; capped at MaxStepHistoryLines so older ones roll off the top.
         readonly List<string> stepHistory = new();
         const int MaxStepHistoryLines = 1000;
+        bool stepHistoryDirty;
+        readonly DispatcherTimer historyRefreshTimer = new() { Interval = TimeSpan.FromMilliseconds(150) };
+
+        // Status lines from the plugin, queued by the pipe's read thread and handled on the UI thread.
+        readonly ConcurrentQueue<string> pendingMessages = new();
+        int drainScheduled;
 
         // Runtime display under the logo: starts the instant the process is spawned, stops (and
         // freezes on the final value) the instant the run ends, however it ends.
@@ -47,7 +57,14 @@ namespace TapRunner.App
         {
             InitializeComponent();
 
+            // From <Version> in the .csproj, e.g. "TapRunner 1.3.2".
+            var version = typeof(MainWindow).Assembly.GetName().Version;
+            if (version != null)
+                Title = $"TapRunner {version.Major}.{version.Minor}.{version.Build}";
+
             runtimeTimer.Tick += (_, _) => UpdateRuntimeDisplay();
+            historyRefreshTimer.Tick += (_, _) => { if (stepHistoryDirty) UpdateStepHistoryDisplay(); };
+            historyRefreshTimer.Start();
 
             config = configService.Load();
             ParametersList.ItemsSource = parameters;
@@ -122,6 +139,7 @@ namespace TapRunner.App
 
             SaveCurrentSettingsToConfig();
             configService.Save(config);
+            logService.Flush(TimeSpan.FromSeconds(3));
         }
 
         bool IsRunning() => runningProcess != null && !runningProcess.HasExited;
@@ -408,6 +426,8 @@ namespace TapRunner.App
             receivedTerminalStatus = false;
             userInitiatedAbort = false;
             errorStepLoggedThisRun = false;
+            failResolvedThisRun = false;
+            errorResolvedThisRun = false;
             logService.BeginRun(Path.GetFileName(planPath), config.ClearFailureLogOnRun);
 
             pipeServer = new StatusPipeServer();
@@ -463,76 +483,121 @@ namespace TapRunner.App
             RunButton.Content = UseTuiCheckBox.IsChecked == true ? "Edit" : "Run";
         }
 
+        /// <summary>
+        /// Called on the pipe's read thread. Only queues the line and returns, so the read loop keeps
+        /// draining the pipe no matter how far behind the display or the log files are - if it
+        /// waited on them, the pipe would fill and the plugin (and with it the test plan) would stall.
+        /// </summary>
         void OnStatusReceived(string message)
         {
-            Dispatcher.Invoke(() =>
-            {
-                if (StepStartedMessage.TryParse(message, out var started))
-                {
-                    // Live "what's executing right now" indicator - separate from the completed-step
-                    // history below, and not logged, so quick/no-result steps are still visible as
-                    // they run instead of only appearing (or not) after they finish.
-                    StatusMessageText.Text = $"Running: {started.Name}...";
-                    return;
-                }
-
-                if (StepStatusMessage.TryParse(message, out var step))
-                {
-                    // The step history display must always update, even if something below (or a
-                    // future change) throws - one bad step must never stop the rest from showing.
-                    try
-                    {
-                        var summary = $"{step.Name} — {step.Verdict}";
-                        if (!string.IsNullOrWhiteSpace(step.Outputs))
-                            summary += $"   {step.Outputs}";
-                        if (!string.IsNullOrWhiteSpace(step.Error))
-                            summary += $"   Error: {step.Error}";
-
-                        AddStepHistory(summary);
-
-                        logService.AppendLine($"Step: {summary}");
-
-                        bool isError = string.Equals(step.Verdict, "Error", StringComparison.OrdinalIgnoreCase);
-                        if (isError || string.Equals(step.Verdict, "Fail", StringComparison.OrdinalIgnoreCase))
-                        {
-                            logService.AppendFailure(step.Name, step.Verdict, step.Outputs, step.Error);
-                            if (isError)
-                                errorStepLoggedThisRun = true;
-                        }
-                    }
-                    catch
-                    {
-                        // Never let a step update crash the pipe's message loop.
-                    }
-                    return;
-                }
-
-                switch (message)
-                {
-                    case StatusProtocol.StatusRunning:
-                        RunningCircle.State = CircleState.Full;
-                        break;
-                    case StatusProtocol.StatusStepFailPending:
-                        FailedCircle.State = CircleState.Partial;
-                        break;
-                    case StatusProtocol.StatusStepErrorPending:
-                        ErrorCircle.State = CircleState.Partial;
-                        break;
-                    case StatusProtocol.StatusPassed:
-                        FinishRun(PassedCircle);
-                        break;
-                    case StatusProtocol.StatusFailed:
-                        FinishRun(FailedCircle);
-                        break;
-                    case StatusProtocol.StatusError:
-                        FinishRun(ErrorCircle);
-                        break;
-                    case StatusProtocol.StatusAborted:
-                        FinishRun(AbortedCircle);
-                        break;
-                }
-            });
+            pendingMessages.Enqueue(message);
+            if (Interlocked.Exchange(ref drainScheduled, 1) == 0)
+                Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(ProcessPendingMessages));
         }
+
+        /// <summary>Handles every queued status line, in order, on the UI thread.</summary>
+        void ProcessPendingMessages()
+        {
+            Volatile.Write(ref drainScheduled, 0);
+            while (pendingMessages.TryDequeue(out var message))
+            {
+                try
+                {
+                    HandleStatusMessage(message);
+                }
+                catch
+                {
+                    // One bad message must never stop the rest from being handled.
+                }
+            }
+        }
+
+        void HandleStatusMessage(string message)
+        {
+            if (StepStartedMessage.TryParse(message, out var started))
+            {
+                // Live "what's executing right now" indicator - separate from the completed-step
+                // history below, and not logged, so quick/no-result steps are still visible as
+                // they run instead of only appearing (or not) after they finish.
+                StatusMessageText.Text = $"Running: {started.Name}...";
+                return;
+            }
+
+            if (StepStatusMessage.TryParse(message, out var step))
+            {
+                // The step history display must always update, even if something below (or a
+                // future change) throws - one bad step must never stop the rest from showing.
+                try
+                {
+                    var summary = $"{step.Name} — {step.Verdict}";
+                    if (!string.IsNullOrWhiteSpace(step.Outputs))
+                        summary += $"   {step.Outputs}";
+                    if (!string.IsNullOrWhiteSpace(step.Error))
+                        summary += $"   Error: {step.Error}";
+
+                    AddStepHistory(summary);
+
+                    logService.AppendLine($"Step: {summary}");
+
+                    bool isError = string.Equals(step.Verdict, "Error", StringComparison.OrdinalIgnoreCase);
+                    if (isError || string.Equals(step.Verdict, "Fail", StringComparison.OrdinalIgnoreCase))
+                    {
+                        logService.AppendFailure(step.Name, step.Verdict, step.Outputs, step.Error);
+                        if (isError)
+                            errorStepLoggedThisRun = true;
+                    }
+                }
+                catch
+                {
+                    // Never let a step update crash the pipe's message loop.
+                }
+                return;
+            }
+
+            if (LiveStatusMessage.TryParse(message, out var live))
+            {
+                // While running: Passed flashes while the run is passing, Failed/Error flash
+                // while a failure stands, and go dim once a parent step has cleared it.
+                failResolvedThisRun = live.Fail == LiveFailureState.Resolved;
+                errorResolvedThisRun = live.Error == LiveFailureState.Resolved;
+                PassedCircle.State = live.Passing ? CircleState.Flashing : CircleState.Off;
+                FailedCircle.State = LiveCircleState(live.Fail);
+                ErrorCircle.State = LiveCircleState(live.Error);
+                return;
+            }
+
+            switch (message)
+            {
+                case StatusProtocol.StatusRunning:
+                    RunningCircle.State = CircleState.Full;
+                    break;
+                case StatusProtocol.StatusStepFailPending:
+                    FailedCircle.State = CircleState.Partial;
+                    break;
+                case StatusProtocol.StatusStepErrorPending:
+                    ErrorCircle.State = CircleState.Partial;
+                    break;
+                case StatusProtocol.StatusPassed:
+                    FinishRun(PassedCircle);
+                    break;
+                case StatusProtocol.StatusFailed:
+                    FinishRun(FailedCircle);
+                    break;
+                case StatusProtocol.StatusError:
+                    FinishRun(ErrorCircle);
+                    break;
+                case StatusProtocol.StatusAborted:
+                    FinishRun(AbortedCircle);
+                    break;
+            }
+        }
+
+        static CircleState LiveCircleState(LiveFailureState state) => state switch
+        {
+            LiveFailureState.Active => CircleState.Flashing,
+            LiveFailureState.Resolved => CircleState.Partial,
+            _ => CircleState.Off,
+        };
 
         void AddStepHistory(string summary)
         {
@@ -540,11 +605,14 @@ namespace TapRunner.App
             if (stepHistory.Count > MaxStepHistoryLines)
                 stepHistory.RemoveAt(0);
 
-            UpdateStepHistoryDisplay();
+            // Redrawn by historyRefreshTimer - rebuilding up to 1000 lines for every step of a fast
+            // plan would keep the UI thread busy and the display ever further behind.
+            stepHistoryDirty = true;
         }
 
         void UpdateStepHistoryDisplay()
         {
+            stepHistoryDirty = false;
             if (stepHistory.Count == 0)
             {
                 StepHistoryText.Text = "No steps run yet.";
@@ -602,6 +670,11 @@ namespace TapRunner.App
             FailedCircle.State = CircleState.Off;
             ErrorCircle.State = CircleState.Off;
             AbortedCircle.State = CircleState.Off;
+            // Keep a cleared failure dimly lit, so a pass that needed a parent's retry shows it.
+            if (failResolvedThisRun)
+                FailedCircle.State = CircleState.Partial;
+            if (errorResolvedThisRun)
+                ErrorCircle.State = CircleState.Partial;
             verdictCircle.State = CircleState.Full;
 
             RunningCircle.State = CircleState.Off;
@@ -661,6 +734,11 @@ namespace TapRunner.App
                     pipeServer.Dispose();
                     pipeServer = null;
                 }
+
+                // Anything still queued (often the final verdict) is handled before deciding below
+                // whether a result was ever reported.
+                ProcessPendingMessages();
+                UpdateStepHistoryDisplay();
 
                 // The process is no longer running, full stop - Running must never be left lit/flashing
                 // past this point, regardless of what (if anything) was reported. Same for the runtime

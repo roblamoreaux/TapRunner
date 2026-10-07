@@ -32,8 +32,22 @@ namespace TapRunner.StatusListener
         StreamWriter writer;
         Thread commandThread;
         readonly object sendLock = new object();
-        bool sawFailedStep;
-        bool sawErrorStep;
+
+        // Live overall status. A Fail/Error stays "active" until a parent step finishes with a
+        // better verdict (it cleared it - OpenTAP won't count it in the plan's verdict either), or
+        // a parent takes it over by finishing Fail/Error itself.
+        readonly Dictionary<Guid, Guid> stepParents = new Dictionary<Guid, Guid>(); // running steps only
+        readonly List<ActiveFailure> activeFailures = new List<ActiveFailure>();
+        bool sawPass;
+        bool failResolved;
+        bool errorResolved;
+        LiveStatusMessage lastLive;
+
+        class ActiveFailure
+        {
+            public Verdict Verdict;
+            public HashSet<Guid> Ancestors; // step runs this one is nested in
+        }
 
         // Per-step-run bookkeeping so the "last step executed" summary can include its published
         // outputs. Only ResultListener callbacks touch these, and OpenTAP guarantees those are
@@ -51,8 +65,12 @@ namespace TapRunner.StatusListener
 
         public override void OnTestPlanRunStart(TestPlanRun planRun)
         {
-            sawFailedStep = false;
-            sawErrorStep = false;
+            stepParents.Clear();
+            activeFailures.Clear();
+            sawPass = false;
+            failResolved = false;
+            errorResolved = false;
+            lastLive = null;
             stepNames.Clear();
             stepOutputs.Clear();
 
@@ -114,6 +132,7 @@ namespace TapRunner.StatusListener
         {
             stepNames[stepRun.Id] = stepRun.TestStepName;
             stepOutputs[stepRun.Id] = new List<string>();
+            stepParents[stepRun.Id] = stepRun.Parent;
 
             // Sent immediately, before the step's verdict/outputs exist, so the app can show it's
             // executing right now - otherwise a step that never publishes a result (many simple/
@@ -147,16 +166,7 @@ namespace TapRunner.StatusListener
 
         public override void OnTestStepRunCompleted(TestStepRun stepRun)
         {
-            if (stepRun.Verdict == Verdict.Fail && !sawFailedStep)
-            {
-                sawFailedStep = true;
-                Send(StatusProtocol.StatusStepFailPending);
-            }
-            else if (stepRun.Verdict == Verdict.Error && !sawErrorStep)
-            {
-                sawErrorStep = true;
-                Send(StatusProtocol.StatusStepErrorPending);
-            }
+            UpdateLiveStatus(stepRun);
 
             stepNames.TryGetValue(stepRun.Id, out var name);
             stepOutputs.TryGetValue(stepRun.Id, out var outputsList);
@@ -181,6 +191,55 @@ namespace TapRunner.StatusListener
 
             stepNames.Remove(stepRun.Id);
             stepOutputs.Remove(stepRun.Id);
+        }
+
+        void UpdateLiveStatus(TestStepRun stepRun)
+        {
+            var verdict = stepRun.Verdict;
+
+            // Failures nested inside this step are settled now that it has finished: worse than
+            // its verdict = cleared by it; otherwise it carries them on as its own (below). An
+            // aborted step clears nothing - the run is ending anyway.
+            var nested = verdict == Verdict.Aborted
+                ? new List<ActiveFailure>()
+                : activeFailures.Where(f => f.Ancestors.Contains(stepRun.Id)).ToList();
+            foreach (var failure in nested)
+            {
+                activeFailures.Remove(failure);
+                if (failure.Verdict > verdict)
+                {
+                    if (failure.Verdict == Verdict.Error) errorResolved = true;
+                    else failResolved = true;
+                }
+            }
+
+            if (verdict == Verdict.Fail || verdict == Verdict.Error)
+            {
+                var ancestors = new HashSet<Guid>();
+                for (var id = stepRun.Parent; stepParents.TryGetValue(id, out var parent); id = parent)
+                    ancestors.Add(id);
+                activeFailures.Add(new ActiveFailure { Verdict = verdict, Ancestors = ancestors });
+            }
+            else if (verdict == Verdict.Pass)
+            {
+                sawPass = true;
+            }
+
+            stepParents.Remove(stepRun.Id);
+
+            var live = new LiveStatusMessage
+            {
+                Passing = sawPass && activeFailures.Count == 0,
+                Fail = activeFailures.Any(f => f.Verdict == Verdict.Fail) ? LiveFailureState.Active
+                    : failResolved ? LiveFailureState.Resolved : LiveFailureState.None,
+                Error = activeFailures.Any(f => f.Verdict == Verdict.Error) ? LiveFailureState.Active
+                    : errorResolved ? LiveFailureState.Resolved : LiveFailureState.None,
+            };
+            if (!live.Equals(lastLive))
+            {
+                lastLive = live;
+                Send(live.ToLine());
+            }
         }
 
         public override void OnTestPlanRunCompleted(TestPlanRun planRun, Stream logStream)
