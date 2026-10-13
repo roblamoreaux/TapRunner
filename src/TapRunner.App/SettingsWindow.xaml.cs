@@ -19,6 +19,8 @@ namespace TapRunner.App
         readonly List<ParameterEntry> currentParameters;
         readonly ObservableCollection<DefaultParameterRow> defaultParameterRows = new();
         readonly List<ColorRowControls> colorRows = new();
+        string resultsXmlPath;
+        string originalSqliteDatabasePath; // null if Results.xml/its SQLite listener wasn't found
 
         /// <summary>The updated config, valid after ShowDialog() returns true.</summary>
         public AppConfig Result { get; private set; }
@@ -38,6 +40,7 @@ namespace TapRunner.App
             TapExecutablePathText.Text = workingConfig.TapExecutablePath;
             PopulateProfileList();
             ProfileComboBox.Text = workingConfig.OpenTapProfile;
+            LoadSqliteDatabaseSetting();
             WorkingDirectoryText.Text = workingConfig.WorkingDirectory;
             StationNameText.Text = workingConfig.StationName;
             LogFilePathText.Text = workingConfig.LogFilePath;
@@ -63,6 +66,61 @@ namespace TapRunner.App
             DefaultParametersGrid.ItemsSource = defaultParameterRows;
 
             BuildColorRows();
+        }
+
+        /// <summary>
+        /// Shows the SQLite result listener's database from OpenTAP's Results.xml (next to the
+        /// tap.exe configured when this dialog opened). Not kept in TapRunner's own config -
+        /// Results.xml is the one place OpenTAP reads it from, so it's only written back there on OK.
+        /// </summary>
+        void LoadSqliteDatabaseSetting()
+        {
+            resultsXmlPath = OpenTapResultsSettings.GetResultsXmlPath(workingConfig.TapExecutablePath);
+            originalSqliteDatabasePath = OpenTapResultsSettings.ReadSqliteDatabasePath(resultsXmlPath, out var problem);
+            SqliteDatabaseText.Text = originalSqliteDatabasePath ?? "";
+
+            if (problem != null)
+            {
+                SqliteDatabaseText.IsEnabled = false;
+                BrowseSqliteDatabaseButton.IsEnabled = false;
+                SqliteDatabaseNote.Text = problem;
+            }
+            else
+            {
+                SqliteDatabaseNote.Text = $"From {resultsXmlPath}. A relative name is in the tap.exe folder. " +
+                    "Applies to the next run; close the OpenTAP Editor first, or it may save its own copy over it.";
+            }
+            SqliteDatabaseNote.Visibility = Visibility.Visible;
+        }
+
+        void BrowseSqliteDatabase_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SaveFileDialog
+            {
+                Title = "Select the SQLite results database (an existing one, or a new name)",
+                Filter = "OpenTAP results database (*.TapResults)|*.TapResults|All files (*.*)|*.*",
+                OverwritePrompt = false, // results are added to an existing database, not overwritten
+            };
+
+            var current = SqliteDatabaseText.Text.Trim();
+            var tapDir = System.IO.Path.GetDirectoryName(workingConfig.TapExecutablePath ?? "");
+            if (string.IsNullOrEmpty(tapDir))
+                tapDir = null;
+            if (current.Length > 0)
+            {
+                var full = System.IO.Path.IsPathRooted(current) || tapDir == null ? current : System.IO.Path.Combine(tapDir, current);
+                dialog.FileName = System.IO.Path.GetFileName(full);
+                var dir = System.IO.Path.GetDirectoryName(full);
+                if (!string.IsNullOrEmpty(dir) && System.IO.Directory.Exists(dir))
+                    dialog.InitialDirectory = dir;
+            }
+            else if (tapDir != null && System.IO.Directory.Exists(tapDir))
+            {
+                dialog.InitialDirectory = tapDir;
+            }
+
+            if (dialog.ShowDialog(this) == true)
+                SqliteDatabaseText.Text = dialog.FileName;
         }
 
         /// <summary>
@@ -257,6 +315,23 @@ namespace TapRunner.App
 
         void OkButton_Click(object sender, RoutedEventArgs e)
         {
+            // OpenTAP's own file - only touched if the value was actually changed here.
+            var sqlitePath = SqliteDatabaseText.Text.Trim();
+            if (originalSqliteDatabasePath != null && sqlitePath.Length > 0 && sqlitePath != originalSqliteDatabasePath)
+            {
+                try
+                {
+                    OpenTapResultsSettings.WriteSqliteDatabasePath(resultsXmlPath, sqlitePath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, $"Could not update the SQLite database in\n{resultsXmlPath}\n\n{ex.Message}\n\n" +
+                        "Nothing was changed there. Fix the problem, or set the path back, and click OK again.",
+                        "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+            }
+
             workingConfig.TapExecutablePath = TapExecutablePathText.Text.Trim();
             workingConfig.OpenTapProfile = ProfileComboBox.Text.Trim();
             workingConfig.WorkingDirectory = WorkingDirectoryText.Text.Trim();

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <Steps>
+    <TestStep type="ICSLinPlugin.lin_steps.LinTransmitStep" Id="298e0d20-eb26-4c29-bda6-de87e599936d">
+      <Instrument Source="OpenTap.InstrumentSettings">LIN Gigastar</Instrument>
+      <ProtectedID>58</ProtectedID>
+      <DataHex>22 33 44 55 66 77 99</DataHex>
+      <IsMaster>false</IsMaster>
+      <ChannelIndex>1</ChannelIndex>
+      <ListenForMs>500</ListenForMs>
+      <RxProtectedID>58</RxProtectedID>
+      <RxDataHex>22 33 44 55 66 77 99</RxDataHex>
+      <RxIsMaster>false</RxIsMaster>
+      <Name Metadata="Step Name">LIN Transmit (ICS)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="ICSLinPlugin.lin_receive_step.LinReceiveStep" Id="cfe6c83e-10a5-4e57-8d73-3cba1385877b">
+      <Instrument Source="OpenTap.InstrumentSettings">LIN Gigastar</Instrument>
+      <ListenForMs>0</ListenForMs>
+      <ProtectedID>58</ProtectedID>
+      <DataHex>22 33 44 55 66 77 99</DataHex>
+      <IsMaster>false</IsMaster>
+      <Name Metadata="Step Name">LIN Receive (ICS)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="ICSLinPlugin.lin_steps.LinTransmitStep" Id="59b8de95-ab64-4a2c-872c-1015f25f12ee">
+      <Instrument Source="OpenTap.InstrumentSettings">LIN Gigastar</Instrument>
+      <ProtectedID>58</ProtectedID>
+      <DataHex></DataHex>
+      <IsMaster>false</IsMaster>
+      <ChannelIndex>1</ChannelIndex>
+      <ListenForMs>5</ListenForMs>
+      <RxProtectedID>-1</RxProtectedID>
+      <RxDataHex>
+        <Base64>IA==</Base64>
+      </RxDataHex>
+      <RxIsMaster>false</RxIsMaster>
+      <Enabled>false</Enabled>
+      <Name Metadata="Step Name">LIN Transmit (ICS) (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+  </Steps>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.29.1+335b2cbe" />
+  </Package.Dependencies>
+</TestPlan>

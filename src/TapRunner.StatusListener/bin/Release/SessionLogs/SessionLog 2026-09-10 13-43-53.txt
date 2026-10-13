@@ -1,0 +1,39 @@
+﻿2026-09-10 13:43:53.296722 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\tap 2026-09-10 13-43-53.txt'. [3.39 ms]
+2026-09-10 13:43:53.315741 ; OperatingSystem ; Debug       ; OS is windows: Path.DirectorySeparatorChar == '\'
+2026-09-10 13:43:53.330682 ; Session        ; Debug       ; Running '"C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\tap.dll" run "C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\t2t.TapPlan" --list-external-parameters --non-interactive' in 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release'.
+2026-09-10 13:43:53.361682 ; AssemblyFinder ; Debug       ; Found 12/30 assembly files. [11.8 ms]
+2026-09-10 13:43:53.447814 ; Searcher       ; Debug       ; Ordered 8 assemblies according to references. [81.7 ms]
+2026-09-10 13:43:53.472257 ; PluginManager  ; Debug       ; Found 4 plugin assemblies containing 189 plugin types. [105 ms]
+2026-09-10 13:43:53.473056 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.dll
+2026-09-10 13:43:53.473092 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Package.dll
+2026-09-10 13:43:53.473113 ; PluginManager  ; Debug       ; Found version 0.0.0            of TapRunner.StatusListener.dll
+2026-09-10 13:43:53.473120 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Plugins.BasicSteps.dll
+2026-09-10 13:43:53.473152 ; PluginManager  ; Debug       ; Searched 12 Assemblies. [108 ms]
+2026-09-10 13:43:53.484559 ; Settings       ; Debug       ; No settings file exists for EngineSettings. A new instance with default values has been created. [6.38 ms]
+2026-09-10 13:43:53.494969 ; AssemblyData   ; Debug       ; Loaded OpenTap. [296 us]
+2026-09-10 13:43:53.521084 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\SessionLog 2026-09-10 13-43-53.txt'. [19.6 ms]
+2026-09-10 13:43:53.546813 ; SystemInfo     ; Debug       ; Microsoft Windows 10.0.26200X64
+2026-09-10 13:43:53.546822 ; SystemInfo     ; Debug       ; .NET 9.0.20
+2026-09-10 13:43:53.547254 ; SystemInfo     ; Debug       ; OpenTAP Engine 9.33.0+56d4c214 X64
+2026-09-10 13:43:53.548273 ; AssemblyData   ; Debug       ; Loaded OpenTap.Package. [934 us]
+2026-09-10 13:43:53.551401 ; AssemblyData   ; Debug       ; Loaded OpenTap.Plugins.BasicSteps. [621 us]
+2026-09-10 13:43:53.599447 ; AssemblyData   ; Debug       ; Loaded System.Private.CoreLib. [1.70 us]
+2026-09-10 13:43:53.617708 ; CLI            ; Debug       ; Executing CLI action: run
+2026-09-10 13:43:53.709962 ; Installation   ; Debug       ; OpenTAP                     - 9.33.0+56d4c214
+2026-09-10 13:43:53.709968 ; Installation   ; Debug       ; TapRunner.StatusListener    - 1.0.0
+2026-09-10 13:43:53.709969 ; Installation   ; Debug       ; Keysight IO Libraries Suite - 18.4.30319
+2026-09-10 13:43:53.709971 ; Installation   ; Debug       ; PathWave License Manager    - 7.5.0+0128b42c
+2026-09-10 13:43:53.743390 ; Serializer     ; Error       ; XML Line 4: Unable to locate type 'OpenECU.ReadCalibration.ReadCalibration'. Are you missing a plugin?
+2026-09-10 13:43:53.743424 ; Serializer     ; Error       ; XML Line 4: Unable to deserialize test step.
+2026-09-10 13:43:53.744074 ; Main           ; Error       ; Unable to load test plan.
+2026-09-10 13:43:53.745464 ; Main           ; Debug       ; PlanLoadException: XML Line 4: Unable to locate type 'OpenECU.ReadCalibration.ReadCalibration'. Are you missing a plugin? XML Line 4: Unable to deserialize test step.
+2026-09-10 13:43:53.750429 ; Main           ; Debug       ;     at OpenTap.TestPlan.Load(Stream stream, String path, Boolean cacheXml, TapSerializer serializer, Boolean IgnoreLoadErrors)
+2026-09-10 13:43:53.750433 ; Main           ; Debug       ;     at OpenTap.Cli.RunCliAction.HandleExternalParametersAndLoadPlan(String planToLoad)
+2026-09-10 13:43:53.750435 ; Main           ; Debug       ;     at OpenTap.Cli.RunCliAction.Execute(CancellationToken cancellationToken)
+2026-09-10 13:43:53.751585 ; Main           ; Debug       ; Exception caught at:
+2026-09-10 13:43:53.752650 ; Main           ; Debug       ;     at Int32 Execute(System.Threading.CancellationToken)
+2026-09-10 13:43:53.752694 ; Main           ; Debug       ;     at Int32 PerformExecute(OpenTap.Cli.ICliAction, System.String[])
+2026-09-10 13:43:53.752699 ; Main           ; Debug       ;     at Int32 Execute(System.String[])
+2026-09-10 13:43:53.752703 ; Main           ; Debug       ;     at Void Execute()
+2026-09-10 13:43:53.752714 ; Main           ; Debug       ;     ...
+2026-09-10 13:43:53.752727 ; CLI            ; Debug       ; CLI action returned exit code: 70 [135 ms]

@@ -1,7 +1,8 @@
 # TapRunner
 
 A small Windows desktop front-end for running OpenTAP TapPlans, plus an OpenTAP `ResultListener`
-plugin that reports live run status back to it.
+plugin that reports live run status back to it. Created By Claude cause I am an electronic design
+engineer not a software engineer.
 
 Built and verified against the OpenTAP install on this machine: **`C:\OpenTAP`, OpenTAP 9.33.0**.
 
@@ -73,7 +74,7 @@ extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToo
 installed, so it recognizes the `.wixproj`) and Build Solution. This produces:
 
 - `src\TapRunner.App\bin\Release\net9.0-windows\TapRunner.exe` - the app, if you just want to run it as-is.
-- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.2.TapPackage` - the plugin package.
+- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.3.TapPackage` - the plugin package.
 - `src\TapRunner.Installer\bin\x64\Release\TapRunnerSetup.msi` - the installer (see below).
 
 ## Installing with TapRunnerSetup.msi
@@ -150,6 +151,12 @@ original open license with no such prompt, and has everything this installer nee
 - `OpenTapLogPath` - OpenTAP's live log, opened by the main window's **Open Log** button, edited via
   **Settings → OpenTAP log file**. Blank (the default) means `<tap.exe folder>\SessionLogs\Latest.txt`.
   TapRunner only reads this file.
+- **Settings → SQLite results database** is not stored in `config.json`: it is read from and written
+  to the SQLite result listener's `FilePath` in OpenTAP's own `<tap.exe folder>\Settings\Results.xml`,
+  so the next run (from TapRunner or anywhere else) logs results there. Only that one value is
+  changed, and only when it was edited; the previous file is kept as `Results.xml.bak`. The field
+  is disabled with a note if `Results.xml` or a SQLite listener in it isn't found - add the listener
+  in OpenTAP first. Close the OpenTAP Editor before changing it, or the Editor may save its own copy over it.
 - `DefaultParameterValues` - name → value overrides, edited via **Settings → Default parameter values**.
   A blank/missing entry falls back to the TapPlan's own default. These are only changed
   deliberately in Settings - a value typed into the dialog for one run is never silently saved

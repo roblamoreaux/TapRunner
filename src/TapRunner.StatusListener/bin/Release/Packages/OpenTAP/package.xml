@@ -1,0 +1,1165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package InfoLink="http://www.keysight.com/find/TAP" Date="05/15/2026 14:08:04" Name="OpenTAP" Version="9.33.0+56d4c214" Architecture="x64" OS="Windows" xmlns="http://opentap.io/schemas/package">
+  <Hash>lCzx3z_rLsAh5k9KZkWkzu9z070</Hash>
+  <Description>This is the OpenTAP package that contain the most common functionality used in test automation. It controls test plan (list of test steps) execution and provides access to functionality offered by plugins. This covers logging functionality, result handling (database) and instrument communication (user-developed hardware drivers, for example). OpenTAP also includes a CLI and a plugin manager that finds and handles plugins (test steps, DUT and Instrument interfaces, etc.).
+        <Status>Released</Status><Organisation>Keysight Technologies</Organisation></Description>
+  <Owner>OpenTAP</Owner>
+  <SourceUrl>https://github.com/opentap/opentap</SourceUrl>
+  <SourceLicense>MPL-2.0</SourceLicense>
+  <Files>
+    <File Path="tap.dll">
+      <Hash>609EE857427DD148E3DC51DEE7BCAF7703771FD0</Hash>
+    </File>
+    <File Path="OpenTap.dll">
+      <Plugins>
+        <Plugin Type="OpenTap.DefaultDataAnnotator" BaseType="IAnnotator">
+          <Name>DefaultDataAnnotator</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.ProxyAnnotation" BaseType="IAnnotator">
+          <Name>ProxyAnnotation</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.MultiObjectAnnotator" BaseType="IAnnotator">
+          <Name>MultiObjectAnnotator</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.DutSettings" BaseType="Component Settings">
+          <Name>DUTs</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>DUT Settings.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.BreakConditionStrings" BaseType="IStringLocalizer">
+          <Name>BreakConditionStrings</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.DynamicMemberTypeDataProvider" BaseType="Stacked TypeData Provider">
+          <Name>DynamicMemberTypeDataProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.EmbeddedTypeDataProvider" BaseType="Stacked TypeData Provider">
+          <Name>EmbeddedTypeDataProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.EngineSettings" BaseType="Component Settings">
+          <Name>Engine</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Engine Settings</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.InstrumentSettings" BaseType="Component Settings">
+          <Name>Instruments</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Instrument Settings</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.ResultSinkListener" BaseType="Result Listener">
+          <Name>ResultSinkListener</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.LogResultListener" BaseType="Result Listener">
+          <Name>Text Log</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Save the log from a test plan run as a text file.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Text</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.MixinMenuModelFactory" BaseType="ITypeMenuModelFactory | IMenuModelFactory">
+          <Name>MixinMenuModelFactory</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.MixinTypeDataProvider" BaseType="TypeData Provider">
+          <Name>MixinTypeDataProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.ParameterMemberAnnotator" BaseType="IAnnotator">
+          <Name>ParameterMemberAnnotator</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.TestStepMenuItemsModelFactory" BaseType="IMenuModelFactory">
+          <Name>TestStepMenuItemsModelFactory</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.ConnectionSettings" BaseType="Component Settings">
+          <Name>Connections</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Connection Settings</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.RfConnection" BaseType="Generic Connection">
+          <Name>RF Connection</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Directionless RF connection modeled as a set of cable loss points with frequency and loss values.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Basic Connections</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.DirectionalRfConnection" BaseType="Generic Connection">
+          <Name>Directional RF Connection</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Directional RF connection modeled as a set of cable loss points with frequency and loss values and a direction.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Basic Connections</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.CSharpTypeInfoProvider" BaseType="TypeData Provider">
+          <Name>CSharpTypeInfoProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.ResourceTaskManager" BaseType="IResourceManager">
+          <Name>Default</Name>
+          <Order>0</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.LazyResourceManager" BaseType="IResourceManager">
+          <Name>Short Lived Connections</Name>
+          <Order>1</Order>
+          <Browsable>True</Browsable>
+          <Description>Opens resources only right before they are needed (e.g. before an individual test step starts). And closes them again immediately after.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.ResultSettings" BaseType="Component Settings">
+          <Name>Results</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Results Settings</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.ScpiInstrument" BaseType="Instrument">
+          <Name>Generic SCPI Instrument</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Allows you to configure a VISA based connection to a SCPI instrument.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.SystemStartupInfo" BaseType="IStartupInfo">
+          <Name>SystemStartupInfo</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.TestPlanRunSummaryListener" BaseType="Result Listener">
+          <Name>TestPlanRunSummaryListener</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.VisaDeviceDiscovery" BaseType="Device Discovery">
+          <Name>VisaDeviceDiscovery</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.VisaLibraryLoader" BaseType="IVisaFunctionLoader">
+          <Name>VisaLibraryLoader</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Diagnostic.AccurateStamper" BaseType="ILogTimestampProvider">
+          <Name>Local and Accurate</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Delivers timestamping that will be accurate to the system time over longer durations.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.ConvertibleStringConvertProvider" BaseType="String Converter">
+          <Name>ConvertibleStringConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.EnabledStringConvertProvider" BaseType="String Converter">
+          <Name>EnabledStringConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.EnumStringConvertProvider" BaseType="String Converter">
+          <Name>EnumStringConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.ListStringConvertProvider" BaseType="String Converter">
+          <Name>ListStringConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.ResourceStringConvertProvider" BaseType="String Converter">
+          <Name>ResourceStringConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.MacroStringConvertProvider" BaseType="String Converter">
+          <Name>MacroStringConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.SecureStringConvertProvider" BaseType="String Converter">
+          <Name>SecureStringConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.TestStepConvertProvider" BaseType="String Converter">
+          <Name>TestStepConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.InputStringConvertProvider" BaseType="String Converter">
+          <Name>InputStringConvertProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BoolConverter" BaseType="String Converter">
+          <Name>BoolConverter</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.CollectionSerializer" BaseType="Serializer">
+          <Name>CollectionSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.ConstResourceSerializer" BaseType="Serializer">
+          <Name>ConstResourceSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.DefaultValueSerializer" BaseType="Serializer">
+          <Name>DefaultValueSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.ObjectSerializer" BaseType="Serializer">
+          <Name>ObjectSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.DynamicStepSerializer" BaseType="Serializer">
+          <Name>DynamicStepSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.EventsSerializerPlugin" BaseType="Serializer">
+          <Name>EventsSerializerPlugin</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.ExternalParameterSerializer" BaseType="Serializer">
+          <Name>Parameter Serializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Works with parameters in the test plan.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.InputOutputRelationSerializer" BaseType="Serializer">
+          <Name>InputOutputRelationSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.KeyValuePairSerializer" BaseType="Serializer">
+          <Name>KeyValuePairSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.MacroStringSerializer" BaseType="Serializer">
+          <Name>MacroStringSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.MixinSerializer" BaseType="Serializer">
+          <Name>MixinSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.ResourceSerializer" BaseType="Serializer">
+          <Name>ResourceSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.SecureStringSerializer" BaseType="Serializer">
+          <Name>SecureStringSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.TestPlanSerializer" BaseType="Serializer">
+          <Name>TestPlanSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.TestStepListSerializer" BaseType="Serializer">
+          <Name>TestStepListSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.TestStepSerializer" BaseType="Serializer">
+          <Name>TestStepSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Cli.RunCliAction" BaseType="ICliAction">
+          <Name>run</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Run a test plan.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Authentication.AuthenticationSettings" BaseType="Component Settings">
+          <Name>AuthenticationSettings</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.CliUserInputInterface+Strings" BaseType="IStringLocalizer">
+          <Name>Strings</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.DefaultDataAnnotator+InputStepAnnotation+Strings" BaseType="IStringLocalizer">
+          <Name>Strings</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.StringConvertProvider+CachePopularity+Wrap" BaseType="String Converter">
+          <Name>Wrap</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+      </Plugins>
+      <Hash>5C1EBD484353112C07610F540B2B18F8A743BA59</Hash>
+    </File>
+    <File Path="OpenTap.Package.dll">
+      <Plugins>
+        <Plugin Type="OpenTap.ProcessCliAction" BaseType="ICliAction">
+          <Name>ProcessCliAction</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.AutoCorrectRequest" BaseType="IStringLocalizer">
+          <Name>Correct package name?</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.FileHashPackageAction" BaseType="ICustomPackageAction">
+          <Name>FileHashPackageAction</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.VerifyPackageHashes" BaseType="ICliAction">
+          <Name>verify</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Verify the integrity of one or all installed packages by checking their fingerprints.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.GitVersionAction" BaseType="ICliAction">
+          <Name>gitversion</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Calculate the semantic version number for a specific git commit.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>sdk</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.UseVersionData" BaseType="ICustomPackageData">
+          <Name>UseVersion</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.IncludePackageDependencies" BaseType="ICustomPackageAction">
+          <Name>Include Package Dependencies</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.MajorMinorBuildRevisionVersionConverter" BaseType="IVersionTryConverter">
+          <Name>ConvertMajorMinorBuildRevision</Name>
+          <Order>2</Order>
+          <Browsable>True</Browsable>
+          <Description>Supports a four value number (x.x.x.x) which will be interpreted as Major.Minor.BuildMetadata.Patch. This is compatible with Microsoft's definition of version numbers (e.g. for .NET assemblies), see https://docs.microsoft.com/en-us/dotnet/api/system.version</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.FourValueVersionConverter" BaseType="IVersionTryConverter">
+          <Name>ConvertFourValue</Name>
+          <Order>1</Order>
+          <Browsable>True</Browsable>
+          <Description>Supports a four value number (x.y.z.w) which will be converted to the semantic version number x.y.z+w.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.Tap8CompatibilityVersionConverter" BaseType="IVersionConverter">
+          <Name>Compatibility</Name>
+          <Order>1</Order>
+          <Browsable>True</Browsable>
+          <Description>For compatibility with TAP 8.x parsing.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.MissingPackageData" BaseType="ICustomPackageData">
+          <Name>MissingPackageData</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageSpecifierSerializerPlugin" BaseType="Serializer">
+          <Name>PackageSpecifierSerializerPlugin</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.InstallationLoggerStartupInfo" BaseType="IStartupInfo">
+          <Name>InstallationLoggerStartupInfo</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.CacheAction" BaseType="ICliAction">
+          <Name>cache</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description>Operations related to the package cache.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageCreateAction" BaseType="ICliAction">
+          <Name>create</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Create a package based on an XML description file.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageDownloadAction" BaseType="ICliAction">
+          <Name>download</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Download one or more packages.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.ImageInstallAction" BaseType="ICliAction">
+          <Name>install</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Install the specified image, overwriting the existing installation.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>image</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageInstallAction" BaseType="ICliAction">
+          <Name>install</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Install one or more packages.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageListAction" BaseType="ICliAction">
+          <Name>list</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>List locally installed packages and browse the online package repository.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageShowAction" BaseType="ICliAction">
+          <Name>show</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Show information about a package.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageTestAction" BaseType="ICliAction">
+          <Name>test</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Run tests on one or more packages.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageUninstallAction" BaseType="ICliAction">
+          <Name>uninstall</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Uninstall one or more packages.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageDefinitionSerializerPlugin" BaseType="Serializer">
+          <Name>PackageDefinitionSerializerPlugin</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageDependencySerializerPlugin" BaseType="Serializer">
+          <Name>PackageDependencySerializerPlugin</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageFileSerializerPlugin" BaseType="Serializer">
+          <Name>PackageFileSerializerPlugin</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageIconData" BaseType="ICustomPackageData">
+          <Name>PackageIcon</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageManagerSettings" BaseType="Component Settings">
+          <Name>Package Manager</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageVersionSerializerPlugin" BaseType="Serializer">
+          <Name>PackageVersionSerializerPlugin</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PluginFileSerializerPlugin" BaseType="Serializer">
+          <Name>PluginFileSerializerPlugin</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.TestPlanPackageDependencySerializer" BaseType="Serializer">
+          <Name>Test Plan Package Dependencies</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Serializer plugin that inserts package dependencies for a test plan in the test plan itself.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.TestPlanRunPackageParameterMonitor" BaseType="Component Settings | ITestPlanRunMonitor">
+          <Name>TestPlanRunPackageParameterMonitor</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.UpdateCheck" BaseType="ICliAction">
+          <Name>check-updates</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description>Checks for update for installed packages.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>package</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageInstallHelpers.PackageUninstallStep" BaseType="Test Step">
+          <Name>PackageUninstallStep</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageInstallHelpers.PackageInstallStep" BaseType="Test Step">
+          <Name>PackageInstallStep</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.FileHashPackageAction+Hash" BaseType="ICustomPackageData">
+          <Name>Hash</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.IncludePackageDependencies+IncludePackageDependenciesData" BaseType="ICustomPackageData">
+          <Name>IncludePackageDependencies</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Package.PackageDefExt+SetAssemblyInfoData" BaseType="ICustomPackageData">
+          <Name>SetAssemblyInfo</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+      </Plugins>
+      <Hash>296BB44076775949818633AFC71FD08CF606C619</Hash>
+    </File>
+    <File Path="Packages/OpenTAP/OpenTap.Plugins.BasicSteps.dll">
+      <Plugins>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.BasicStepsAnnotator" BaseType="IAnnotator">
+          <Name>BasicStepsAnnotator</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.DelayStep" BaseType="Test Step">
+          <Name>Delay</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Waits a user defined amount of time before continuing.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Basic Steps</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.DialogRequest" BaseType="IStringLocalizer">
+          <Name>DialogRequest</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.DialogStep" BaseType="Test Step">
+          <Name>Dialog</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Shows a message to the user and waits for a response. A verdict can be set based on the response.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Basic Steps</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.DialogStepCompatibilitSerializer" BaseType="Serializer">
+          <Name>DialogStepCompatibilitSerializer</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.ExpandMemberDataProvider" BaseType="TypeData Provider">
+          <Name>ExpandMemberDataProvider</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.IfStep" BaseType="Test Step">
+          <Name>If Verdict</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Runs its child steps only when the verdict of another step has a specific value.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.LockStep" BaseType="Test Step">
+          <Name>Lock</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Locks the execution of child steps based on a specified mutex.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.LogStep" BaseType="Test Step">
+          <Name>Log Output</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Outputs a specified message to the log with a specified severity.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Basic Steps</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.ParallelStep" BaseType="Test Step">
+          <Name>Parallel</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Runs its child steps in parallel in separate threads.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.ProcessStep" BaseType="Test Step">
+          <Name>Run Program</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Runs a program, and optionally applies regular expressions (regex) to the output.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Basic Steps</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.RepeatStep" BaseType="Test Step">
+          <Name>Repeat</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Repeats its child steps a fixed number of times or until the verdict of a child step changes to a specified state.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.GenericScpiInstrument" BaseType="Instrument">
+          <Name>Generic SCPI Instrument</Name>
+          <Order>-10000</Order>
+          <Browsable>False</Browsable>
+          <Description>Allows you to configure a VISA based connection to a SCPI instrument.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.SCPIRegexStep" BaseType="Test Step">
+          <Name>SCPI</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Sends a SCPI (Standard Commands for Programmable Instruments) command or query to a SCPI instrument. For queries, it processes the result with regular expressions.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Basic Steps</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.SequenceStep" BaseType="Test Step">
+          <Name>Sequence</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Runs its child steps sequentially.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.SweepLoop" BaseType="Test Step">
+          <Name>Sweep Loop</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Loops its child steps while sweeping specified parameters/settings on the child steps.</Description>
+          <Collapsed>True</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+            <String>Legacy</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.SweepLoopRange" BaseType="Test Step">
+          <Name>Sweep Loop (Range)</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Loops all of its child steps while sweeping a specified parameter/setting over a range.</Description>
+          <Collapsed>True</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+            <String>Legacy</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.LegacySweepLoader" BaseType="Serializer">
+          <Name>LegacySweepLoader</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.SweepParameterRangeStep" BaseType="Test Step">
+          <Name>Sweep Parameter Range</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Ranged based sweep step that iterates value of its parameters based on a selected range.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.SweepParameterStep" BaseType="Test Step">
+          <Name>Sweep Parameter</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Table based loop that sweeps the value of its parameters based on a set of values.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.TestPlanReference" BaseType="Test Step">
+          <Name>Test Plan Reference</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>References a test plan from an external file directly, without having to store the test plan as steps in the current test plan.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Flow Control</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.TimeGuardStep" BaseType="Test Step">
+          <Name>Time Guard</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description>Tries to end the execution of a number of child steps after a specified timeout. This assumes the test steps comply with the thread abort request issued.</Description>
+          <Collapsed>False</Collapsed>
+          <Groups>
+            <String>Basic Steps</String>
+          </Groups>
+        </Plugin>
+        <Plugin Type="OpenTap.Plugins.BasicSteps.TestPlanReference+SubPlanResultListener" BaseType="Result Listener">
+          <Name>SubPlanResultListener</Name>
+          <Order>-10000</Order>
+          <Browsable>True</Browsable>
+          <Description></Description>
+          <Collapsed>False</Collapsed>
+          <Groups />
+        </Plugin>
+      </Plugins>
+      <Hash>5D309FAE803AC0C70B10BA9DCC58CD2F25C05FE7</Hash>
+    </File>
+    <File Path="Packages/OpenTAP/OpenTap.Cli.dll">
+      <Hash>F9E02F0183F3E0F15588FBA78F2B386649E44471</Hash>
+    </File>
+    <File Path="OpenTapApiReference.chm">
+      <Hash>508C5D3006BD2F47C08B2DDC03B870B5F7FF0ADE</Hash>
+    </File>
+    <File Path="tap.runtimeconfig.json">
+      <Hash>4E1FAEFC506B6BF763DEFEF1A979C7C886EA4584</Hash>
+    </File>
+    <File Path="tap.exe">
+      <Hash>FB01412BA4403CFF0DBAB3960455F027510B4B06</Hash>
+    </File>
+    <File Path="Packages/OpenTAP/tap.exe.new">
+      <Hash>B18FB1DD026A10607E00857DDA935458C494E499</Hash>
+    </File>
+    <File Path="Packages/OpenTAP/tap.dll.new">
+      <Hash>1E8D4A8F5490F9091464C84B6B16D703B0C42E90</Hash>
+    </File>
+    <File Path="Packages/OpenTAP/Tap.Upgrader.runtimeconfig.json">
+      <Hash>C5D918C97739067F26E90C266B3FE2EBB7F692DE</Hash>
+    </File>
+    <File Path="Packages/OpenTAP/Tap.Upgrader.exe">
+      <Hash>DA89E7FA5F63E7FDA7927E4DB9084BD5E8E4D300</Hash>
+    </File>
+    <File Path="Packages/OpenTAP/Tap.Upgrader.dll">
+      <Hash>DB61415991DD6FADCFBD3E8254D2B9DA4C23E19E</Hash>
+    </File>
+    <File Path="Dependencies/LibGit2Sharp.0.27.0.0/git2-b7bad55.dll.x64">
+      <Hash>B80389A6368B85BA6C3015B2198C2A4F6AB7D262</Hash>
+    </File>
+    <File Path="Dependencies/LibGit2Sharp.0.27.0.0/git2-b7bad55.source">
+      <Hash>C9ED49F40FD8D6DAD67C5760F90ECC73C66C656D</Hash>
+    </File>
+    <File Path="Packages/OpenTAP/LICENSE.txt">
+      <Hash>39FE6FBD2CFB575A9B8F97AF54FFF4317B7FA766</Hash>
+    </File>
+    <File Path="Dependencies/LibGit2Sharp.0.27.0.0/LICENSE.txt">
+      <Hash>50C986EEA264F09A4C1CBF76ECCA1A596EB1D1BB</Hash>
+    </File>
+    <File Path="Dependencies/Mono.Cecil.0.10.1.0/LICENSE.txt">
+      <Hash>BF2DB7A95CDEFAB002496C244374F4ED7518F3DB</Hash>
+    </File>
+    <File Path="Dependencies/System.Reflection.Metadata.1.4.3.0/LICENSE.txt">
+      <Hash>26C7C096AC257154020A07532C5EDEBA91EE97E0</Hash>
+    </File>
+    <File Path="Dependencies/System.Collections.Immutable.1.2.3.0/LICENSE.txt">
+      <Hash>26C7C096AC257154020A07532C5EDEBA91EE97E0</Hash>
+    </File>
+    <File Path="Dependencies/Microsoft.CSharp.4.0.4.0/LICENSE.txt">
+      <Hash>26C7C096AC257154020A07532C5EDEBA91EE97E0</Hash>
+    </File>
+    <File Path="Dependencies/System.ValueTuple.4.0.3.0/LICENSE.txt">
+      <Hash>26C7C096AC257154020A07532C5EDEBA91EE97E0</Hash>
+    </File>
+    <File Path="Dependencies/System.Linq.4.1.0.0/LICENSE.txt">
+      <Hash>44482775E8845CAD0F4EF6EAE939DE8FD6E4924F</Hash>
+    </File>
+    <File Path="Dependencies/DotNet.Glob.3.0.1.0/LICENSE.txt">
+      <Hash>AD0F250CE0E1C661132B37B6DAE3E87598ACC956</Hash>
+    </File>
+    <File Path="Dependencies/Newtonsoft.Json.13.0.0.0/LICENSE.txt">
+      <Hash>277802B2810FF917E0D0FAB6F52A2E9485E1B9D0</Hash>
+    </File>
+    <File Path="Dependencies/Newtonsoft.Json.13.0.0.0/Newtonsoft.Json.dll">
+      <Hash>142B1F67C392C48BC36D664CDAEAD35CF00EF209</Hash>
+    </File>
+    <File Path="Dependencies/System.Memory.4.0.1.1/System.Memory.dll">
+      <Hash>D23F11CD8F96AF1E76C847260F9BA6A32E62BD08</Hash>
+    </File>
+    <File Path="Dependencies/System.Collections.Immutable.1.2.3.0/System.Collections.Immutable.dll">
+      <Hash>EEF943E4369166A039DEE90F2D81504613D49CA0</Hash>
+    </File>
+    <File Path="Dependencies/System.Reflection.Metadata.1.4.3.0/System.Reflection.Metadata.dll">
+      <Hash>303D712269EBBAAC476F8B6DB4472BD2464BD3CE</Hash>
+    </File>
+    <File Path="Dependencies/System.Text.Json.4.0.1.2/System.Text.Json.dll">
+      <Hash>7BC37B35C719FD5A7BF60E0EFE97133946D9E159</Hash>
+    </File>
+    <File Path="Dependencies/Microsoft.CSharp.4.0.4.0/Microsoft.CSharp.dll">
+      <Hash>1B37061909C0053B8756A375426C499FF6457A7F</Hash>
+    </File>
+    <File Path="Dependencies/System.Security.Principal.Windows.5.0.0.0/System.Security.Principal.Windows.dll">
+      <Hash>0CF42E1BD78443AE1D6C16223A7FF463C5105D21</Hash>
+    </File>
+    <File Path="Dependencies/LibGit2Sharp.0.27.0.0/LibGit2Sharp.dll">
+      <Hash>E85E292723AC5C8972502E6F3E5E4C76F300004F</Hash>
+    </File>
+    <File Path="Dependencies/DotNet.Glob.3.0.1.0/DotNet.Glob.dll">
+      <Hash>0065ACB4C9EA4C66DBE8CC63E04984DC69444407</Hash>
+    </File>
+    <File Path="Dependencies/OpenTap.Repository.Client.4.17.0.0/OpenTap.Repository.Client.dll">
+      <Hash>2043E203CD7FA647E5FC6201B8FADE258336F9A1</Hash>
+    </File>
+    <File Path="Dependencies/Mono.Cecil.0.11.4.0/Mono.Cecil.dll">
+      <Hash>A240D705B52FB1A78CCEEDAB268DB42CBEB47512</Hash>
+    </File>
+    <File Path="Dependencies/System.Numerics.Vectors.4.1.4.0/System.Numerics.Vectors.dll">
+      <Hash>81580D6788F5CCF418E89F8A5FD7F720D60BD811</Hash>
+    </File>
+    <File Path="Dependencies/System.Runtime.CompilerServices.Unsafe.4.0.6.0/System.Runtime.CompilerServices.Unsafe.dll">
+      <Hash>A05A96E648EC5E1244384E13B3A75A117D21A744</Hash>
+    </File>
+    <File Path="Dependencies/System.Buffers.4.0.3.0/System.Buffers.dll">
+      <Hash>1208E5E0252124F2B2764503608EA1AAD69D0FF1</Hash>
+    </File>
+    <File Path="Dependencies/System.Text.Encodings.Web.4.0.5.1/System.Text.Encodings.Web.dll">
+      <Hash>E214E75E4E8096FD48AEE2D55770CD56A74218EF</Hash>
+    </File>
+    <File Path="Dependencies/System.Threading.Tasks.Extensions.4.2.0.1/System.Threading.Tasks.Extensions.dll">
+      <Hash>850849AA6723733E661F3BFE6DA805F4657A2FCB</Hash>
+    </File>
+    <File Path="Dependencies/Microsoft.Bcl.AsyncInterfaces.1.0.0.0/Microsoft.Bcl.AsyncInterfaces.dll">
+      <Hash>9E134910BB02E162765D0B893FA3CD4860ACCE86</Hash>
+    </File>
+    <File Path="Dependencies/System.Linq.4.1.1.0/System.Linq.dll">
+      <Hash>866B9A8A7DCB00A90990B6CEF915E48464CE2FD7</Hash>
+    </File>
+  </Files>
+  <PackageActionExtensions>
+    <ActionStep ExeFile="Packages/OpenTAP/Tap.Upgrader.exe" ExpectedExitCodes="0" Quiet="false" Optional="false" Arguments="" ActionName="install"></ActionStep>
+  </PackageActionExtensions>
+</Package>

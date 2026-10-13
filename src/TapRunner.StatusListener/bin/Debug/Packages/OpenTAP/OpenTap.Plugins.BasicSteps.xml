@@ -1,0 +1,616 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenTap.Plugins.BasicSteps</name>
+    </assembly>
+    <members>
+        <member name="T:OpenTap.Plugins.BasicSteps.HideOnMultiSelectAttribute">
+            <summary> This attribute indicates that a property should not be accessible for multi-selecting.</summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.ExpandedMemberData.IsDisposed">
+            <summary> Set to true if the member has been removed from the test plan reference.</summary>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.ITableExport">
+            <summary>
+            Custom handler for exporting a table of values to a file.
+            </summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.ITableExport.Extension">
+            <summary>
+            The extension of the file including the '.'. For example '.zip'.
+            </summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.ITableExport.Name">
+            <summary>
+            Name of the file format. Shown when the user selects the format in the GUI.
+            For example, Compressed Using Zip.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.ITableExport.ExportTableValues(System.String[][],System.String)">
+            <summary>
+            Exports a table of values to a file. The table should be arranged as an array of rows.
+            </summary>
+            <param name="table">The values to put in the CSV file.</param>
+            <param name="parameterFilePath">Location of the file.</param>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.ITableImport">
+            <summary>
+            Custom handler for importing values from a file.
+            </summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.ITableImport.Extension">
+            <summary>
+            The extension of the imported file including the '.'. For example '.zip'.
+            </summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.ITableImport.Name">
+            <summary>
+            Name of the file format. Shown when the user selects the format in the GUI.
+            For example, Compressed Using Zip.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.ITableImport.ImportTableValues(System.String)">
+            <summary> Reads a table of values from a file. The tables are ordered an array of rows.</summary>
+            <param name="filePath">Location of the file.</param>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.LoopTestStep.Run">
+            <summary> Always call base.Run in LoopTestStep inheritors. </summary>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.NotifyChangedList`1">
+            <summary>  A list that invokes a callback when it has been changed. This is useful to handle GUIs changing the list. </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.NumberInput">
+            <summary> Inputs that can be any numbers. </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.NumberInput.SupportsType(OpenTap.ITypeData)">
+            <summary> Implementation of input type restrictions. This returns true if its a number type. </summary>
+            <param name="concreteType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.SweepLoop.popChanged">
+            <summary> Quickly check if things has changed. </summary>
+            <returns></returns>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.SweepLoop.ReferencedResources">
+            <summary>
+            To ensure that OpenTAP opens the referenced resources.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.SweepLoop.sanitizeSweepParams(System.Boolean)">
+            <summary>
+            Ensures that the sweep parameters exists within the child test steps and that SweepParam.Property is set.
+            </summary>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.SweepBehavior">
+            <summary> Sweep behavior for linear sweeps. </summary>
+        </member>
+        <member name="F:OpenTap.Plugins.BasicSteps.SweepBehavior.Linear">
+            <summary> Linear growth function. </summary>
+        </member>
+        <member name="F:OpenTap.Plugins.BasicSteps.SweepBehavior.Exponential">
+            <summary> Exponential growth function.</summary>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.SweepLoopRange.ObjPropSet">
+            <summary> Obj/Property mapping </summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.SweepParam.Member">
+            <summary>
+            The property from where attributes are pulled.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.SweepParam.#ctor">
+            <summary>
+            Default constructor. Used by serializer.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.SweepParam.#ctor(System.Collections.Generic.IEnumerable{OpenTap.IMemberData})">
+            <summary>
+            Initializes a new instance of the SweepParam class. For use when programatically creating a <see cref="T:OpenTap.Plugins.BasicSteps.SweepLoop"/>
+            </summary>
+            <param name="props">Property to sweep. This should be one of the properties on one of the childsteps of the <see cref="T:OpenTap.Plugins.BasicSteps.SweepLoop"/>.</param>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.SweepParameterStep.Resources">
+            <summary>
+            This property declares to the Resource Manager which resources are declared by this test step. 
+            </summary>
+        </member>
+        <member name="F:OpenTap.Plugins.BasicSteps.SweepParameterStep.validateSweepMutex">
+            <summary>
+            Validation requires setting the values of parameterized members.
+            This mutex will be locked while the test plan is running to prevent validation requests from interfering with test plan runs. 
+            </summary>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.SweepRow">
+            <summary> An element representing a row in a sweep loop. This has a bunch of dynamically added elements.</summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.SweepRow.Enabled">
+            <summary> Gets or sets if the row is enabled.</summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.SweepRow.Loop">
+            <summary> The sweep step owning this row. This is needed to figure out which properties the object has. </summary>
+        </member>
+        <member name="F:OpenTap.Plugins.BasicSteps.SweepRow.Values">
+            <summary> Dictionary for storing dynamic property values. </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.SweepRow.#ctor">
+            <summary> Create a sweep row instance. </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.SweepRow.#ctor(OpenTap.Plugins.BasicSteps.SweepParameterStep)">
+            <summary> Create a sweep row instance with a step. </summary>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.TestPlanReference.GuidMapping">
+            <summary>
+            Mapping between step GUIDs. Old version -> New Version.
+            </summary>
+        </member>
+        <member name="F:OpenTap.Plugins.BasicSteps.TestPlanReference.referencedPlanPaths">
+            <summary>
+            This is the list of path of test plan loaded and used to prevent recursive TestPlan references.
+            </summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.TestPlanReference.HideSteps">
+            <summary>  Gets or sets if the loaded test steps should be hidden from the user. </summary>
+        </member>
+        <member name="P:OpenTap.Plugins.BasicSteps.TestPlanReference.StepIdMapping">
+            <summary> Used to determine if a step ID has changed from the time it was loaded to the time it is saved. </summary>
+        </member>
+        <member name="M:OpenTap.Plugins.BasicSteps.TestPlanReference.ConvertToSequence">
+            <summary> Convert the test plan reference to a sequence step. This will pop up a dialog. </summary>
+        </member>
+        <member name="T:OpenTap.Plugins.BasicSteps.VirtualCollection`1">
+            <summary> A list with virtual accessors. </summary>
+        </member>
+        <member name="T:OpenTap.ObjectCloner">
+            <summary>
+            Class for generic cloning of values.
+            This is done in multiple ways.
+            - First check IStringValueConvert
+            - Then check if its ICloneable
+            - Finally check if its XML cloneable.
+            </summary>
+        </member>
+        <member name="P:OpenTap.ExecutorClient.IsRunningIsolated">
+            <summary>
+            Is this process an isolated sub process of tap.exe
+            </summary>
+        </member>
+        <member name="P:OpenTap.ExecutorClient.IsExecutorMode">
+            <summary>
+            Is this process a sub process of tap.exe
+            </summary>
+        </member>
+        <member name="P:OpenTap.ExecutorClient.ExeDir">
+            <summary>
+            The directory containing the OpenTAP installation.
+            This is usually the value of the environment variable OPENTAP_INIT_DIRECTORY set by tap.exe
+            If this value is not set, use the location of OpenTap.dll instead
+            In some cases, when running isolated this is that value but from the parent process.
+            </summary>
+        </member>
+        <member name="T:OpenTap.OperatingSystem">
+            <summary> Detects which operating system is used. </summary>
+        </member>
+        <member name="T:OpenTap.ReflectionHelper">
+            <summary>
+            Class to ease the use of reflection.
+            </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.IsA(OpenTap.ITypeData,System.Type)">
+            <summary>Returns true if 'type' and 'basetype' are equal. </summary> 
+            <param name="type"></param>
+            <param name="basetype"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.DirectInheritsFrom(OpenTap.ITypeData,OpenTap.ITypeData)">
+            <summary> Really fast direct descendant test. This checks for reference equality of the type or a base type, and 'baseType'.
+            Given these constraints are met, this can be 6x faster than DescendsTo, but should only be used in special cases. </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.ParseDisplayname(System.String,System.String@)">
+            <summary>
+            Parses a DisplayName into a group:name pair.
+            </summary>
+            <param name="displayName"></param>
+            <param name="group"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.GetCustomAttributes``1(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the custom attributes. Both type and property attributes. Also inherited attributes.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.GetFirstOrDefaultCustomAttribute``1(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the first or default of the custom attributes for this member. Both type and property attributes also inherited attributes.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.GetAttribute``1(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the first or default of the custom attributes for this property. Both type and property attributes also inherited attributes.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.HasAttribute``1(System.Reflection.MemberInfo)">
+            <summary>
+            return whether the property has a given attribute T.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="prop"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.HasAttribute``1(System.Type)">
+            <summary>
+            Return whether the attribute has the given attribute T.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.IsBrowsable(System.Reflection.MemberInfo)">
+            <summary>
+            Returns true if a MemberInfo is Browsable.
+            </summary>
+            <param name="m"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.DescendsTo(System.Type,System.Type)">
+            <summary>
+            Check whether a type 'descends' to otherType or "can be otherType".
+            </summary>
+            <param name="t"></param>
+            <param name="otherType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.HasInterface``1(System.Type)">
+            <summary>
+            returns whether t has a given interface T.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.IsNumeric(System.Type)">
+            <summary>
+            Returns true if a type is numeric.
+            </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.IsNumeric(OpenTap.ITypeData)">
+            <summary> Returns true if a type is numeric. </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.IsPrimitive(OpenTap.ITypeData)">
+            <summary> Returns true if a type is a C# primitive. </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.CreateInstance(System.Type,System.Object[])">
+            <summary> Creates an instance of t with no constructor arguments. </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.CreateInstanceSafe(OpenTap.ITypeData,System.Object[])">
+            <summary> Creates an instance of type t. If an error occurs it returns null and prints an error message. </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.GetEnumerableElementType(System.Type)">
+            <summary>
+            If Type is a collection of items, get the element type.
+            </summary>
+            <param name="enumType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.GetPropertiesTap(System.Type)">
+            <summary> Extracts properties from a Type that are public and not static. Default GetProperties() also returns static properties. </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.GetMethodsTap(System.Type)">
+            <summary> Extracts properties from a Type that are public and not static. Default GetProperties() also returns static properties. </summary>
+        </member>
+        <member name="M:OpenTap.ReflectionHelper.As``1(OpenTap.ITypeData)">
+            <summary> Get the base C# type of a given type. </summary>
+        </member>
+        <member name="T:OpenTap.Memorizer.CyclicInvokeMode">
+            <summary>
+            Enumerates how cyclic invokes can be handled.
+            </summary>
+        </member>
+        <member name="F:OpenTap.Memorizer.CyclicInvokeMode.ThrowException">
+            <summary>
+            Specifies that an exception should be thrown.
+            </summary>
+        </member>
+        <member name="F:OpenTap.Memorizer.CyclicInvokeMode.ReturnDefaultValue">
+            <summary>
+            Specifies that default(ResultT) should be returned.
+            </summary>
+        </member>
+        <member name="T:OpenTap.Memorizer`3">
+            <summary>
+            Convenient when some memorizer optimizations can be done. 
+            Includes functionality for decay time and max number of elements.
+            It assumes that the same ArgT will always result in the same ResultT.
+            </summary>
+            <typeparam name="ArgT"></typeparam>
+            <typeparam name="ResultT"></typeparam>
+            <typeparam name="MemorizerKey"></typeparam>
+        </member>
+        <member name="T:OpenTap.Memorizer`3.LockObject">
+            <summary>
+            Used for locking the invokation of a specific MemorizerKey. 
+            This makes it possible to call Invoke in parallel and avoid recalculating the same value multiple times.
+            </summary>
+        </member>
+        <member name="F:OpenTap.Memorizer`3.SoftSizeDecayTime">
+            <summary> If a certain time passes a result should be removed. By default, never. </summary>
+        </member>
+        <member name="P:OpenTap.Memorizer`3.Validator">
+            <summary> Can be used to create a validation key for each key in the memorizer.
+            Validation keys are used for checking if the memory is up to date or if it should be refreshed. </summary>
+        </member>
+        <member name="F:OpenTap.Memorizer`3.CylicInvokeResponse">
+            <summary>
+            Specifies how to handle situations where an Invoke(x) triggers another Invoke(x) in the same thread. 
+            Since this might cause infinite recursion, it is not allowed. By default an exception is thrown.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Memorizer`3.CheckConstraints">
+            <summary>
+            Forces manual update of constraints.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Memorizer`3.InvalidateWhere(System.Func{`2,`1,System.Boolean})">
+            <summary>
+            Invalidate the keys where f returns true. This is being done while
+            the memorizer is locked, so race conditions are avoided.
+            </summary>
+            <param name="predicate"></param>
+        </member>
+        <member name="M:OpenTap.Utils.InterlockedSwap``1(``0@,System.Func{``0})">
+            <summary>
+            Thread-safe and lock free value exchange. valueGen depends on the current value.
+            </summary>
+            <param name="outPlace"> Where to place the value</param>
+            <param name="valueGen"> Function generating a value based on the current value. </param>
+            <typeparam name="T"> The type of object. </typeparam>
+        </member>
+        <member name="M:OpenTap.Utils.Swap``1(``0@,``0@)">
+            <summary> Swaps two variables </summary>
+        </member>
+        <member name="M:OpenTap.Utils.Noop">
+            <summary> Do nothing. </summary>
+        </member>
+        <member name="M:OpenTap.Utils.FindExtreme``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Int32)">
+            <summary>
+            Returns the element for which selector returns the max value.
+            if IEnumerable is empty, it returns default(T) multiplier gives the direction to search.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Utils.FindMax``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary> Returns the element for which selector returns the max value. if IEnumerable is empty, it returns default(T). </summary>
+        </member>
+        <member name="M:OpenTap.Utils.FindMin``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            Returns the element for which selector returns the minimum value.
+            if IEnumerable is empty, it returns default(T).
+            </summary>
+        </member>
+        <member name="M:OpenTap.Utils.SkipLastN``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+            Skips last N items.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="n">n last items to skip.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Utils.RemoveIf``1(System.Collections.Generic.IList{``0},System.Predicate{``0})">
+            <summary>
+            Removes items of source matching a given predicate.
+            </summary>
+            <param name="source"></param>
+            <param name="pred"></param>
+        </member>
+        <member name="M:OpenTap.Utils.RemoveIf(System.Collections.IList,System.Predicate{System.Object})">
+            <summary>
+            Removes items of source matching a given predicate.
+            </summary>
+            <param name="source"></param>
+            <param name="pred"></param>
+        </member>
+        <member name="M:OpenTap.Utils.FlattenHeirarchy``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Collections.Generic.IEnumerable{``0}},System.Boolean,System.Collections.Generic.List{``0})">
+            <summary>
+            Flattens a recursive IEnumerable.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="lst"></param>
+            <param name="lookup">Returns a list of the next level of elements. The returned value is allowed to be null and will in this case be treated like an empty list.</param>
+            <param name="distinct">True if only one of each element should be inserted in the list.</param>
+            <param name="buffer">Buffer to use instead of creating a new list to store the values. This can be used to avoid allocation.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Utils.Append``1(System.Collections.Generic.IEnumerable{``0},``0[])">
+            <summary>
+            Appends a range of elements to an IEnumerable.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="newObjects"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Utils.IndexWhen``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>  First index where the result of predicate function is true. </summary>
+        </member>
+        <member name="M:OpenTap.Utils.IsEnumerableEmpty(System.Collections.IEnumerable)">
+            <summary>
+            Returns true if the generic IEnumerable is empty
+            </summary>
+            <param name="enu"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Utils.IsLongerThan(System.Collections.IEnumerable,System.Int64)">
+            <summary>
+            Returns true if the source is longer than count elements.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Utils.ToHashSet``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Creates a HashSet from an IEnumerable.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Utils.ToHashSet``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Creates a HashSet from an IEnumerable, with a specialized comparer.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Utils.Except``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            The opposite of Where.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <param name="selector"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Utils.SelectValues``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary> As 'Select' but skipping null values.
+            Short hand for/more efficient version of 'Select(f).Where(x => x != null)' </summary>
+            <param name="source"></param>
+            <param name="f"></param>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Utils.FirstNonDefault``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary> As 'Select and FirstOrDefault' but skipping null values.
+            Short hand for/more efficient version of 'Select(f).Where(x => x != null).FirstOrDefault()'
+            </summary>
+        </member>
+        <member name="M:OpenTap.Utils.MergeInto``2(System.Collections.Generic.Dictionary{``0,``1},System.Collections.Generic.Dictionary{``0,``1})">
+            <summary>
+            Merged a dictionary into another, overwriting colliding keys.
+            </summary>
+            <typeparam name="T1"></typeparam>
+            <typeparam name="T2"></typeparam>
+            <param name="srcDict"></param>
+            <param name="dstDict"></param>
+        </member>
+        <member name="M:OpenTap.Utils.ErrorOnce(OpenTap.TraceSource,System.Object,System.String,System.Object[])">
+            <summary>
+            Avoids spamming the log with errors that 
+            should only be shown once by memorizing token and TraceSource. 
+            </summary>
+            <returns>True if an error was logged.</returns>
+        </member>
+        <member name="M:OpenTap.Utils.SetFlag``1(``0,``0,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="e"></param>
+            <param name="flag"></param>
+            <param name="enabled"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Utils.GetOrCreateValue``2(System.Collections.Generic.Dictionary{``0,``1},``0,System.Func{``0,``1})">
+            <summary> Gets or creates a value based on the key. This is useful for caches. </summary>
+        </member>
+        <member name="M:OpenTap.Utils.Backoff(System.Int32,System.Int32)">
+            <summary> Backoff strategy for Retry.  </summary>
+        </member>
+        <member name="M:OpenTap.Utils.Retry(System.Action,System.Type,System.Int32,System.Type[],System.Int32)">
+            <summary> Retries calling a function a number of times if calling it fails. </summary>
+            <param name="function">The function to call.</param>
+            <param name="retryOn">an exception type to retry on. By default this is typeof(Exception)</param>
+            <param name="maxRetries">default 5 times</param>
+            <param name="moreExceptions"> more exceptions to retry on</param>
+            <param name="sleepBaseMs"> The time to sleep at first iteration. Subsequent sleeps with be longer</param>
+        </member>
+        <member name="M:OpenTap.Utils.Retry``1(System.Func{``0},System.Type,System.Int32,System.Type[],System.Int32)">
+            <summary> Retries calling a function a number of times if calling it fails. </summary>
+            <param name="function">The function to call.</param>
+            <param name="retryOn">an exception type to retry on. By default this is typeof(Exception)</param>
+            <param name="maxRetries">default 5 times</param>
+            <param name="moreExceptions"> more exceptions to retry on</param>
+            <param name="sleepBaseMs"> The time to sleep at first iteration. Subsequent sleeps with be longer</param>
+            <typeparam name="T">the return type.</typeparam>
+            <returns>The return value </returns>
+        </member>
+        <member name="M:OpenTap.Utils.IsTriviallyCloneable(System.Object)">
+            <summary>
+            Fast trivial way of checking if a value type is one of a list of types
+            that we know can be stack cloned.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Sequence.AsSingle``1(``0)">
+            <summary> Turns item into a one element array, unless it is null.</summary>
+        </member>
+        <member name="M:OpenTap.Sequence.DistinctLast``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Like distinct but keeps the last item. Returns List because we need to iterate until last element anyway.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="items"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.Sequence.AddExceptNull``1(System.Collections.Generic.ICollection{``0},``0)">
+            <summary> Adds elements that arent null to the list. </summary>
+        </member>
+        <member name="M:OpenTap.Sequence.Count(System.Collections.IEnumerable)">
+            <summary>
+            Count the number of elements in an enumerable.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Sequence.Pairwise``2(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``1})">
+            <summary>
+            iterates lists and generates pairs of each list. Once the end is reached for one of the lists, execution stops. 
+            </summary>
+        </member>
+        <member name="M:OpenTap.Sequence.Batch``1(System.Collections.Generic.IEnumerable{``0},System.Int32)">
+            <summary>
+             process the enumerable source N objects at a time.
+            </summary>
+        </member>
+        <member name="M:OpenTap.Time.FromSeconds(System.Double)">
+            <summary>
+            A TimeSpan from seconds that does not round to nearest millisecond. (TimeSpan.FromSeconds does that).
+            </summary>
+            <param name="seconds"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OpenTap.TimeoutOperation">
+            <summary> Invoke an action after a timeout, unless canceled. </summary>
+        </member>
+        <member name="F:OpenTap.TimeoutOperation.DefaultTimeout">
+            <summary> Estimate of how long it takes for the user to loose patience.</summary>
+        </member>
+        <member name="M:OpenTap.TimeoutOperation.Create(System.TimeSpan,System.Action)">
+            <summary> Creates a new TimeoutOperation with a specific timeout. </summary>
+            <param name="timeout"></param>
+            <param name="actionOnTimeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.TimeoutOperation.Create(System.Action)">
+            <summary> Creates a timeout operation with the default timeout. </summary>
+            <param name="actionOnTimeout"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenTap.TimeoutOperation.Cancel">
+            <summary>
+            Cancel invoking the action after the timeout.
+            </summary>
+        </member>
+        <member name="T:OpenTap.SubProcessHost">
+            <summary>
+            This is an abstraction for running child processes with support for elevation.
+            It executes a test step (which can have child test steps) in a new process
+            It supports subscribing to log events from the child process, and forwarding the logs directly.
+            </summary>
+        </member>
+        <member name="T:OpenTap.SudoHelper">
+            <summary>
+            This class contains some basic helpers to authenticate using the 'sudo' program
+            </summary>
+        </member>
+    </members>
+</doc>

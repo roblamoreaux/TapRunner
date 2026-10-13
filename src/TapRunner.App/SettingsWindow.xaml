@@ -22,6 +22,13 @@
                     <TextBlock Text="OpenTAP profile (blank = OpenTAP's own default; TUI mode ignores this - it has no --settings option):" Margin="0,10,0,2" TextWrapping="Wrap"/>
                     <ComboBox x:Name="ProfileComboBox" IsEditable="True" VerticalContentAlignment="Center"/>
 
+                    <TextBlock x:Name="SqliteDatabaseLabel" Text="SQLite results database (saved to OpenTAP's Settings\Results.xml):" Margin="0,10,0,2" TextWrapping="Wrap"/>
+                    <DockPanel>
+                        <Button x:Name="BrowseSqliteDatabaseButton" Content="Browse..." Width="80" DockPanel.Dock="Right" Margin="6,0,0,0" Click="BrowseSqliteDatabase_Click"/>
+                        <TextBox x:Name="SqliteDatabaseText" VerticalContentAlignment="Center"/>
+                    </DockPanel>
+                    <TextBlock x:Name="SqliteDatabaseNote" Foreground="Gray" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0" Visibility="Collapsed"/>
+
                     <TextBlock Text="Working directory (directory to run OpenTAP in):" Margin="0,10,0,2"/>
                     <DockPanel>
                         <Button Content="Browse..." Width="80" DockPanel.Dock="Right" Margin="6,0,0,0" Click="BrowseWorkingDirectory_Click"/>

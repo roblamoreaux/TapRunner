@@ -1,7 +1,4 @@
-bin/
 obj/
 .vs/
 *.user
-*.TapPackage
-*.msi
 *.wixpdb

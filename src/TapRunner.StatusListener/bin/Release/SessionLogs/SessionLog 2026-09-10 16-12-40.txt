@@ -1,0 +1,369 @@
+﻿2026-09-10 16:12:40.717561 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\tap 2026-09-10 16-12-40.txt'. [1.97 ms]
+2026-09-10 16:12:40.731704 ; OperatingSystem ; Debug       ; OS is windows: Path.DirectorySeparatorChar == '\'
+2026-09-10 16:12:40.741845 ; Session        ; Debug       ; Deleting log file: C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\SessionLog 2026-09-10 13-38-16.txt
+2026-09-10 16:12:40.747674 ; Session        ; Debug       ; Running '"C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\tap.dll" run C:\OpenTAP\PowerON.TapPlan --list-external-parameters --non-interactive' in 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release'.
+2026-09-10 16:12:40.770999 ; AssemblyFinder ; Debug       ; Found 12/30 assembly files. [8.30 ms]
+2026-09-10 16:12:40.829001 ; Searcher       ; Debug       ; Ordered 8 assemblies according to references. [55.2 ms]
+2026-09-10 16:12:40.848079 ; PluginManager  ; Debug       ; Found 4 plugin assemblies containing 189 plugin types. [74.6 ms]
+2026-09-10 16:12:40.848455 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.dll
+2026-09-10 16:12:40.848479 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Package.dll
+2026-09-10 16:12:40.848497 ; PluginManager  ; Debug       ; Found version 0.0.0            of TapRunner.StatusListener.dll
+2026-09-10 16:12:40.848506 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Plugins.BasicSteps.dll
+2026-09-10 16:12:40.848526 ; PluginManager  ; Debug       ; Searched 12 Assemblies. [75.7 ms]
+2026-09-10 16:12:40.857896 ; Settings       ; Debug       ; No settings file exists for EngineSettings. A new instance with default values has been created. [5.17 ms]
+2026-09-10 16:12:40.866757 ; AssemblyData   ; Debug       ; Loaded OpenTap. [222 us]
+2026-09-10 16:12:40.895362 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\SessionLog 2026-09-10 16-12-40.txt'. [23.7 ms]
+2026-09-10 16:12:40.918912 ; AssemblyData   ; Debug       ; Loaded OpenTap.Plugins.BasicSteps. [520 us]
+2026-09-10 16:12:40.951749 ; AssemblyData   ; Debug       ; Loaded System.Private.CoreLib. [1.70 us]
+2026-09-10 16:12:40.963050 ; SystemInfo     ; Debug       ; Microsoft Windows 10.0.26200X64
+2026-09-10 16:12:40.963056 ; SystemInfo     ; Debug       ; .NET 9.0.20
+2026-09-10 16:12:40.963343 ; SystemInfo     ; Debug       ; OpenTAP Engine 9.33.0+56d4c214 X64
+2026-09-10 16:12:40.964064 ; AssemblyData   ; Debug       ; Loaded OpenTap.Package. [655 us]
+2026-09-10 16:12:40.966023 ; CLI            ; Debug       ; Executing CLI action: run
+2026-09-10 16:12:41.049884 ; Installation   ; Debug       ; OpenTAP                     - 9.33.0+56d4c214
+2026-09-10 16:12:41.049888 ; Installation   ; Debug       ; TapRunner.StatusListener    - 1.0.0
+2026-09-10 16:12:41.049889 ; Installation   ; Debug       ; Keysight IO Libraries Suite - 18.4.30319
+2026-09-10 16:12:41.049890 ; Installation   ; Debug       ; PathWave License Manager    - 7.5.0+0128b42c
+2026-09-10 16:12:41.049942 ; Serializer     ; Error       ; Package 'Expressions' is required to load, but it is not installed.
+2026-09-10 16:12:41.103952 ; TestStep       ; Warning     ; File does not exist: "PowerOFF.TapPlan"
+2026-09-10 16:12:41.107531 ; Serializer     ; Warning     ; Unable to find referenced step b2f5438b-c6db-489e-9d89-09129a584bfd
+2026-09-10 16:12:41.107539 ; Serializer     ; Warning     ; Unable to find referenced step b2f5438b-c6db-489e-9d89-09129a584bfd
+2026-09-10 16:12:41.108495 ; Serializer     ; Error       ; XML Line 2: Package 'Expressions' is required to load, but it is not installed.
+2026-09-10 16:12:41.108523 ; Serializer     ; Error       ; XML Line 12: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin?
+2026-09-10 16:12:41.108525 ; Serializer     ; Error       ; XML Line 12: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.109931 ; Serializer     ; Debug       ; Exception: Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.114085 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.TryDeserializeObject(XElement element, ITypeData t, Action`1 setter, Object newobj, Boolean logWarnings)
+2026-09-10 16:12:41.114089 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.Deserialize(XElement element, ITypeData t, Action`1 setter)
+2026-09-10 16:12:41.115027 ; Serializer     ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.115945 ; Serializer     ; Debug       ;     at Void LogMessages()
+2026-09-10 16:12:41.115981 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.Xml.Linq.XDocument, OpenTap.ITypeData, Boolean, System.String)
+2026-09-10 16:12:41.115986 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.IO.Stream, Boolean, OpenTap.ITypeData, System.String)
+2026-09-10 16:12:41.115992 ; Serializer     ; Debug       ;     at OpenTap.TestPlan Load(System.IO.Stream, System.String, Boolean, OpenTap.TapSerializer, Boolean)
+2026-09-10 16:12:41.115997 ; Serializer     ; Debug       ;     ...
+2026-09-10 16:12:41.116003 ; Serializer     ; Error       ; XML Line 17: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin?
+2026-09-10 16:12:41.116004 ; Serializer     ; Error       ; XML Line 17: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116006 ; Serializer     ; Debug       ; Exception: Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116034 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.TryDeserializeObject(XElement element, ITypeData t, Action`1 setter, Object newobj, Boolean logWarnings)
+2026-09-10 16:12:41.116035 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.Deserialize(XElement element, ITypeData t, Action`1 setter)
+2026-09-10 16:12:41.116071 ; Serializer     ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.116081 ; Serializer     ; Debug       ;     at Void LogMessages()
+2026-09-10 16:12:41.116082 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.Xml.Linq.XDocument, OpenTap.ITypeData, Boolean, System.String)
+2026-09-10 16:12:41.116082 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.IO.Stream, Boolean, OpenTap.ITypeData, System.String)
+2026-09-10 16:12:41.116083 ; Serializer     ; Debug       ;     at OpenTap.TestPlan Load(System.IO.Stream, System.String, Boolean, OpenTap.TapSerializer, Boolean)
+2026-09-10 16:12:41.116088 ; Serializer     ; Debug       ;     ...
+2026-09-10 16:12:41.116089 ; Serializer     ; Error       ; XML Line 22: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin?
+2026-09-10 16:12:41.116091 ; Serializer     ; Error       ; XML Line 22: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116092 ; Serializer     ; Debug       ; Exception: Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116102 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.TryDeserializeObject(XElement element, ITypeData t, Action`1 setter, Object newobj, Boolean logWarnings)
+2026-09-10 16:12:41.116103 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.Deserialize(XElement element, ITypeData t, Action`1 setter)
+2026-09-10 16:12:41.116119 ; Serializer     ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.116121 ; Serializer     ; Debug       ;     at Void LogMessages()
+2026-09-10 16:12:41.116122 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.Xml.Linq.XDocument, OpenTap.ITypeData, Boolean, System.String)
+2026-09-10 16:12:41.116123 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.IO.Stream, Boolean, OpenTap.ITypeData, System.String)
+2026-09-10 16:12:41.116123 ; Serializer     ; Debug       ;     at OpenTap.TestPlan Load(System.IO.Stream, System.String, Boolean, OpenTap.TapSerializer, Boolean)
+2026-09-10 16:12:41.116124 ; Serializer     ; Debug       ;     ...
+2026-09-10 16:12:41.116125 ; Serializer     ; Error       ; XML Line 27: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin?
+2026-09-10 16:12:41.116126 ; Serializer     ; Error       ; XML Line 27: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116127 ; Serializer     ; Debug       ; Exception: Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116137 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.TryDeserializeObject(XElement element, ITypeData t, Action`1 setter, Object newobj, Boolean logWarnings)
+2026-09-10 16:12:41.116139 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.Deserialize(XElement element, ITypeData t, Action`1 setter)
+2026-09-10 16:12:41.116153 ; Serializer     ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.116155 ; Serializer     ; Debug       ;     at Void LogMessages()
+2026-09-10 16:12:41.116156 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.Xml.Linq.XDocument, OpenTap.ITypeData, Boolean, System.String)
+2026-09-10 16:12:41.116156 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.IO.Stream, Boolean, OpenTap.ITypeData, System.String)
+2026-09-10 16:12:41.116157 ; Serializer     ; Debug       ;     at OpenTap.TestPlan Load(System.IO.Stream, System.String, Boolean, OpenTap.TapSerializer, Boolean)
+2026-09-10 16:12:41.116158 ; Serializer     ; Debug       ;     ...
+2026-09-10 16:12:41.116159 ; Serializer     ; Error       ; XML Line 32: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin?
+2026-09-10 16:12:41.116160 ; Serializer     ; Error       ; XML Line 32: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116160 ; Serializer     ; Debug       ; Exception: Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116169 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.TryDeserializeObject(XElement element, ITypeData t, Action`1 setter, Object newobj, Boolean logWarnings)
+2026-09-10 16:12:41.116170 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.Deserialize(XElement element, ITypeData t, Action`1 setter)
+2026-09-10 16:12:41.116183 ; Serializer     ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.116185 ; Serializer     ; Debug       ;     at Void LogMessages()
+2026-09-10 16:12:41.116185 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.Xml.Linq.XDocument, OpenTap.ITypeData, Boolean, System.String)
+2026-09-10 16:12:41.116186 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.IO.Stream, Boolean, OpenTap.ITypeData, System.String)
+2026-09-10 16:12:41.116187 ; Serializer     ; Debug       ;     at OpenTap.TestPlan Load(System.IO.Stream, System.String, Boolean, OpenTap.TapSerializer, Boolean)
+2026-09-10 16:12:41.116187 ; Serializer     ; Debug       ;     ...
+2026-09-10 16:12:41.116188 ; Serializer     ; Error       ; XML Line 37: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin?
+2026-09-10 16:12:41.116189 ; Serializer     ; Error       ; XML Line 37: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116190 ; Serializer     ; Debug       ; Exception: Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116198 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.TryDeserializeObject(XElement element, ITypeData t, Action`1 setter, Object newobj, Boolean logWarnings)
+2026-09-10 16:12:41.116199 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.Deserialize(XElement element, ITypeData t, Action`1 setter)
+2026-09-10 16:12:41.116211 ; Serializer     ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.116213 ; Serializer     ; Debug       ;     at Void LogMessages()
+2026-09-10 16:12:41.116214 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.Xml.Linq.XDocument, OpenTap.ITypeData, Boolean, System.String)
+2026-09-10 16:12:41.116215 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.IO.Stream, Boolean, OpenTap.ITypeData, System.String)
+2026-09-10 16:12:41.116216 ; Serializer     ; Debug       ;     at OpenTap.TestPlan Load(System.IO.Stream, System.String, Boolean, OpenTap.TapSerializer, Boolean)
+2026-09-10 16:12:41.116216 ; Serializer     ; Debug       ;     ...
+2026-09-10 16:12:41.116217 ; Serializer     ; Error       ; XML Line 42: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin?
+2026-09-10 16:12:41.116218 ; Serializer     ; Error       ; XML Line 42: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116219 ; Serializer     ; Debug       ; Exception: Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116227 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.TryDeserializeObject(XElement element, ITypeData t, Action`1 setter, Object newobj, Boolean logWarnings)
+2026-09-10 16:12:41.116227 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.Deserialize(XElement element, ITypeData t, Action`1 setter)
+2026-09-10 16:12:41.116240 ; Serializer     ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.116242 ; Serializer     ; Debug       ;     at Void LogMessages()
+2026-09-10 16:12:41.116242 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.Xml.Linq.XDocument, OpenTap.ITypeData, Boolean, System.String)
+2026-09-10 16:12:41.116243 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.IO.Stream, Boolean, OpenTap.ITypeData, System.String)
+2026-09-10 16:12:41.116244 ; Serializer     ; Debug       ;     at OpenTap.TestPlan Load(System.IO.Stream, System.String, Boolean, OpenTap.TapSerializer, Boolean)
+2026-09-10 16:12:41.116244 ; Serializer     ; Debug       ;     ...
+2026-09-10 16:12:41.116246 ; Serializer     ; Error       ; XML Line 60: Unable to locate type 'RikerTestSerial.RikerMatrixWriteStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116247 ; Serializer     ; Error       ; XML Line 60: Unable to deserialize test step.
+2026-09-10 16:12:41.116247 ; Serializer     ; Error       ; XML Line 68: Unable to locate type 'OpenTap.Plugins.OperatorPanelLite.OperatorInputsReceiver'. Are you missing a plugin?
+2026-09-10 16:12:41.116248 ; Serializer     ; Error       ; XML Line 68: Unable to deserialize test step.
+2026-09-10 16:12:41.116249 ; Serializer     ; Error       ; XML Line 80: Unable to locate type 'RikerTestSerial.RikerMatrixReset'. Are you missing a plugin?
+2026-09-10 16:12:41.116250 ; Serializer     ; Error       ; XML Line 80: Unable to deserialize test step.
+2026-09-10 16:12:41.116251 ; Serializer     ; Error       ; XML Line 90: Unable to locate type 'LabJackProject.LabjackWriteNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116252 ; Serializer     ; Error       ; XML Line 90: Unable to deserialize test step.
+2026-09-10 16:12:41.116253 ; Serializer     ; Error       ; XML Line 97: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116253 ; Serializer     ; Error       ; XML Line 97: Unable to deserialize test step.
+2026-09-10 16:12:41.116254 ; Serializer     ; Error       ; XML Line 106: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116255 ; Serializer     ; Error       ; XML Line 106: Unable to deserialize test step.
+2026-09-10 16:12:41.116256 ; Serializer     ; Error       ; XML Line 119: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116257 ; Serializer     ; Error       ; XML Line 119: Unable to deserialize test step.
+2026-09-10 16:12:41.116257 ; Serializer     ; Error       ; XML Line 132: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116258 ; Serializer     ; Error       ; XML Line 132: Unable to deserialize test step.
+2026-09-10 16:12:41.116259 ; Serializer     ; Error       ; XML Line 178: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116260 ; Serializer     ; Error       ; XML Line 178: Unable to deserialize test step.
+2026-09-10 16:12:41.116261 ; Serializer     ; Error       ; XML Line 224: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116262 ; Serializer     ; Error       ; XML Line 224: Unable to deserialize test step.
+2026-09-10 16:12:41.116263 ; Serializer     ; Error       ; XML Line 246: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116264 ; Serializer     ; Error       ; XML Line 246: Unable to deserialize test step.
+2026-09-10 16:12:41.116264 ; Serializer     ; Error       ; XML Line 269: Unable to locate type 'RikerTestSerial.RikerMatrixWriteWord'. Are you missing a plugin?
+2026-09-10 16:12:41.116265 ; Serializer     ; Error       ; XML Line 269: Unable to deserialize test step.
+2026-09-10 16:12:41.116266 ; Serializer     ; Error       ; XML Line 280: Unable to locate type 'RikerTestSerial.RikerMatrixWriteWord'. Are you missing a plugin?
+2026-09-10 16:12:41.116267 ; Serializer     ; Error       ; XML Line 280: Unable to deserialize test step.
+2026-09-10 16:12:41.116268 ; Serializer     ; Error       ; XML Line 291: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116269 ; Serializer     ; Error       ; XML Line 291: Unable to deserialize test step.
+2026-09-10 16:12:41.116270 ; Serializer     ; Error       ; XML Line 305: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116270 ; Serializer     ; Error       ; XML Line 305: Unable to deserialize test step.
+2026-09-10 16:12:41.116271 ; Serializer     ; Error       ; XML Line 321: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116272 ; Serializer     ; Error       ; XML Line 321: Unable to deserialize test step.
+2026-09-10 16:12:41.116273 ; Serializer     ; Error       ; XML Line 338: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116273 ; Serializer     ; Error       ; XML Line 338: Unable to deserialize test step.
+2026-09-10 16:12:41.116274 ; Serializer     ; Error       ; XML Line 355: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116275 ; Serializer     ; Error       ; XML Line 355: Unable to deserialize test step.
+2026-09-10 16:12:41.116276 ; Serializer     ; Error       ; XML Line 373: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116277 ; Serializer     ; Error       ; XML Line 373: Unable to deserialize test step.
+2026-09-10 16:12:41.116277 ; Serializer     ; Error       ; XML Line 391: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116278 ; Serializer     ; Error       ; XML Line 391: Unable to deserialize test step.
+2026-09-10 16:12:41.116279 ; Serializer     ; Error       ; XML Line 404: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116280 ; Serializer     ; Error       ; XML Line 404: Unable to deserialize test step.
+2026-09-10 16:12:41.116280 ; Serializer     ; Error       ; XML Line 495: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116281 ; Serializer     ; Error       ; XML Line 495: Unable to deserialize test step.
+2026-09-10 16:12:41.116282 ; Serializer     ; Error       ; XML Line 506: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116283 ; Serializer     ; Error       ; XML Line 506: Unable to deserialize test step.
+2026-09-10 16:12:41.116284 ; Serializer     ; Error       ; XML Line 526: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116285 ; Serializer     ; Error       ; XML Line 526: Unable to deserialize test step.
+2026-09-10 16:12:41.116285 ; Serializer     ; Error       ; XML Line 546: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116286 ; Serializer     ; Error       ; XML Line 546: Unable to deserialize test step.
+2026-09-10 16:12:41.116287 ; Serializer     ; Error       ; XML Line 568: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116288 ; Serializer     ; Error       ; XML Line 568: Unable to deserialize test step.
+2026-09-10 16:12:41.116289 ; Serializer     ; Error       ; XML Line 589: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116289 ; Serializer     ; Error       ; XML Line 589: Unable to deserialize test step.
+2026-09-10 16:12:41.116290 ; Serializer     ; Error       ; XML Line 612: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116291 ; Serializer     ; Error       ; XML Line 612: Unable to deserialize test step.
+2026-09-10 16:12:41.116292 ; Serializer     ; Error       ; XML Line 635: Unable to locate type 'LabJackProject.LabjackWriteNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116292 ; Serializer     ; Error       ; XML Line 635: Unable to deserialize test step.
+2026-09-10 16:12:41.116293 ; Serializer     ; Error       ; XML Line 645: Unable to locate type 'LabJackProject.LabjackWriteNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116294 ; Serializer     ; Error       ; XML Line 645: Unable to deserialize test step.
+2026-09-10 16:12:41.116295 ; Serializer     ; Error       ; XML Line 660: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116296 ; Serializer     ; Error       ; XML Line 660: Unable to deserialize test step.
+2026-09-10 16:12:41.116297 ; Serializer     ; Error       ; XML Line 679: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116297 ; Serializer     ; Error       ; XML Line 679: Unable to deserialize test step.
+2026-09-10 16:12:41.116298 ; Serializer     ; Error       ; XML Line 770: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116299 ; Serializer     ; Error       ; XML Line 770: Unable to deserialize test step.
+2026-09-10 16:12:41.116300 ; Serializer     ; Error       ; XML Line 779: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116301 ; Serializer     ; Error       ; XML Line 779: Unable to deserialize test step.
+2026-09-10 16:12:41.116302 ; Serializer     ; Error       ; XML Line 788: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116302 ; Serializer     ; Error       ; XML Line 788: Unable to deserialize test step.
+2026-09-10 16:12:41.116303 ; Serializer     ; Error       ; XML Line 797: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116304 ; Serializer     ; Error       ; XML Line 797: Unable to deserialize test step.
+2026-09-10 16:12:41.116305 ; Serializer     ; Error       ; XML Line 806: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116305 ; Serializer     ; Error       ; XML Line 806: Unable to deserialize test step.
+2026-09-10 16:12:41.116306 ; Serializer     ; Error       ; XML Line 897: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116307 ; Serializer     ; Error       ; XML Line 897: Unable to deserialize test step.
+2026-09-10 16:12:41.116308 ; Serializer     ; Error       ; XML Line 917: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116308 ; Serializer     ; Error       ; XML Line 917: Unable to deserialize test step.
+2026-09-10 16:12:41.116309 ; Serializer     ; Error       ; XML Line 938: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116310 ; Serializer     ; Error       ; XML Line 938: Unable to deserialize test step.
+2026-09-10 16:12:41.116311 ; Serializer     ; Error       ; XML Line 956: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116312 ; Serializer     ; Error       ; XML Line 956: Unable to deserialize test step.
+2026-09-10 16:12:41.116312 ; Serializer     ; Error       ; XML Line 968: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116314 ; Serializer     ; Error       ; XML Line 968: Unable to deserialize test step.
+2026-09-10 16:12:41.116315 ; Serializer     ; Error       ; XML Line 990: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116315 ; Serializer     ; Error       ; XML Line 990: Unable to deserialize test step.
+2026-09-10 16:12:41.116317 ; Serializer     ; Error       ; XML Line 1086: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116318 ; Serializer     ; Error       ; XML Line 1086: Unable to deserialize test step.
+2026-09-10 16:12:41.116319 ; Serializer     ; Error       ; XML Line 1177: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116319 ; Serializer     ; Error       ; XML Line 1177: Unable to deserialize test step.
+2026-09-10 16:12:41.116320 ; Serializer     ; Error       ; XML Line 1275: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116321 ; Serializer     ; Error       ; XML Line 1275: Unable to deserialize test step.
+2026-09-10 16:12:41.116322 ; Serializer     ; Error       ; XML Line 1289: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116323 ; Serializer     ; Error       ; XML Line 1289: Unable to deserialize test step.
+2026-09-10 16:12:41.116323 ; Serializer     ; Error       ; XML Line 1303: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116324 ; Serializer     ; Error       ; XML Line 1303: Unable to deserialize test step.
+2026-09-10 16:12:41.116325 ; Serializer     ; Error       ; XML Line 1395: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116326 ; Serializer     ; Error       ; XML Line 1395: Unable to deserialize test step.
+2026-09-10 16:12:41.116327 ; Serializer     ; Error       ; XML Line 1487: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116327 ; Serializer     ; Error       ; XML Line 1487: Unable to deserialize test step.
+2026-09-10 16:12:41.116328 ; Serializer     ; Error       ; XML Line 1579: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116329 ; Serializer     ; Error       ; XML Line 1579: Unable to deserialize test step.
+2026-09-10 16:12:41.116330 ; Serializer     ; Error       ; XML Line 1590: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116330 ; Serializer     ; Error       ; XML Line 1590: Unable to deserialize test step.
+2026-09-10 16:12:41.116331 ; Serializer     ; Error       ; XML Line 1601: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116332 ; Serializer     ; Error       ; XML Line 1601: Unable to deserialize test step.
+2026-09-10 16:12:41.116333 ; Serializer     ; Error       ; XML Line 1613: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116334 ; Serializer     ; Error       ; XML Line 1613: Unable to deserialize test step.
+2026-09-10 16:12:41.116335 ; Serializer     ; Error       ; XML Line 1633: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116335 ; Serializer     ; Error       ; XML Line 1633: Unable to deserialize test step.
+2026-09-10 16:12:41.116336 ; Serializer     ; Error       ; XML Line 1655: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116337 ; Serializer     ; Error       ; XML Line 1655: Unable to deserialize test step.
+2026-09-10 16:12:41.116338 ; Serializer     ; Error       ; XML Line 1675: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116338 ; Serializer     ; Error       ; XML Line 1675: Unable to deserialize test step.
+2026-09-10 16:12:41.116340 ; Serializer     ; Error       ; XML Line 1701: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116340 ; Serializer     ; Error       ; XML Line 1701: Unable to deserialize test step.
+2026-09-10 16:12:41.116341 ; Serializer     ; Error       ; XML Line 1710: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116342 ; Serializer     ; Error       ; XML Line 1710: Unable to deserialize test step.
+2026-09-10 16:12:41.116342 ; Serializer     ; Error       ; XML Line 1719: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116343 ; Serializer     ; Error       ; XML Line 1719: Unable to deserialize test step.
+2026-09-10 16:12:41.116344 ; Serializer     ; Error       ; XML Line 1728: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116345 ; Serializer     ; Error       ; XML Line 1728: Unable to deserialize test step.
+2026-09-10 16:12:41.116345 ; Serializer     ; Error       ; XML Line 1737: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116346 ; Serializer     ; Error       ; XML Line 1737: Unable to deserialize test step.
+2026-09-10 16:12:41.116347 ; Serializer     ; Error       ; XML Line 1757: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116348 ; Serializer     ; Error       ; XML Line 1757: Unable to deserialize test step.
+2026-09-10 16:12:41.116349 ; Serializer     ; Error       ; XML Line 1778: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116350 ; Serializer     ; Error       ; XML Line 1778: Unable to deserialize test step.
+2026-09-10 16:12:41.116351 ; Serializer     ; Error       ; XML Line 1798: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116352 ; Serializer     ; Error       ; XML Line 1798: Unable to deserialize test step.
+2026-09-10 16:12:41.116352 ; Serializer     ; Error       ; XML Line 1819: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116353 ; Serializer     ; Error       ; XML Line 1819: Unable to deserialize test step.
+2026-09-10 16:12:41.116354 ; Serializer     ; Error       ; XML Line 1844: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116355 ; Serializer     ; Error       ; XML Line 1844: Unable to deserialize test step.
+2026-09-10 16:12:41.116356 ; Serializer     ; Error       ; XML Line 1853: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116356 ; Serializer     ; Error       ; XML Line 1853: Unable to deserialize test step.
+2026-09-10 16:12:41.116357 ; Serializer     ; Error       ; XML Line 1862: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116358 ; Serializer     ; Error       ; XML Line 1862: Unable to deserialize test step.
+2026-09-10 16:12:41.116359 ; Serializer     ; Error       ; XML Line 1871: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116359 ; Serializer     ; Error       ; XML Line 1871: Unable to deserialize test step.
+2026-09-10 16:12:41.116360 ; Serializer     ; Error       ; XML Line 1880: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116361 ; Serializer     ; Error       ; XML Line 1880: Unable to deserialize test step.
+2026-09-10 16:12:41.116362 ; Serializer     ; Error       ; XML Line 1894: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116363 ; Serializer     ; Error       ; XML Line 1894: Unable to deserialize test step.
+2026-09-10 16:12:41.116363 ; Serializer     ; Error       ; XML Line 1908: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116364 ; Serializer     ; Error       ; XML Line 1908: Unable to deserialize test step.
+2026-09-10 16:12:41.116365 ; Serializer     ; Error       ; XML Line 1922: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116366 ; Serializer     ; Error       ; XML Line 1922: Unable to deserialize test step.
+2026-09-10 16:12:41.116367 ; Serializer     ; Error       ; XML Line 1944: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116368 ; Serializer     ; Error       ; XML Line 1944: Unable to deserialize test step.
+2026-09-10 16:12:41.116369 ; Serializer     ; Error       ; XML Line 2001: Unable to locate type 'OpenECU.IfEqualStep.IfEqualsStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116370 ; Serializer     ; Error       ; XML Line 2001: Unable to deserialize test step.
+2026-09-10 16:12:41.116371 ; Serializer     ; Error       ; XML Line 2047: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116371 ; Serializer     ; Error       ; XML Line 2047: Unable to deserialize test step.
+2026-09-10 16:12:41.116372 ; Serializer     ; Error       ; XML Line 2065: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116373 ; Serializer     ; Error       ; XML Line 2065: Unable to deserialize test step.
+2026-09-10 16:12:41.116374 ; Serializer     ; Error       ; XML Line 2083: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116375 ; Serializer     ; Error       ; XML Line 2083: Unable to deserialize test step.
+2026-09-10 16:12:41.116375 ; Serializer     ; Error       ; XML Line 2101: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116376 ; Serializer     ; Error       ; XML Line 2101: Unable to deserialize test step.
+2026-09-10 16:12:41.116377 ; Serializer     ; Error       ; XML Line 2119: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116378 ; Serializer     ; Error       ; XML Line 2119: Unable to deserialize test step.
+2026-09-10 16:12:41.116378 ; Serializer     ; Error       ; XML Line 2137: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116379 ; Serializer     ; Error       ; XML Line 2137: Unable to deserialize test step.
+2026-09-10 16:12:41.116380 ; Serializer     ; Error       ; XML Line 2155: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116381 ; Serializer     ; Error       ; XML Line 2155: Unable to deserialize test step.
+2026-09-10 16:12:41.116382 ; Serializer     ; Error       ; XML Line 2173: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116383 ; Serializer     ; Error       ; XML Line 2173: Unable to deserialize test step.
+2026-09-10 16:12:41.116384 ; Serializer     ; Error       ; XML Line 2187: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116384 ; Serializer     ; Error       ; XML Line 2187: Unable to deserialize test step.
+2026-09-10 16:12:41.116385 ; Serializer     ; Error       ; XML Line 2201: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116386 ; Serializer     ; Error       ; XML Line 2201: Unable to deserialize test step.
+2026-09-10 16:12:41.116387 ; Serializer     ; Error       ; XML Line 2215: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116387 ; Serializer     ; Error       ; XML Line 2215: Unable to deserialize test step.
+2026-09-10 16:12:41.116388 ; Serializer     ; Error       ; XML Line 2231: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin?
+2026-09-10 16:12:41.116389 ; Serializer     ; Error       ; XML Line 2231: Unable to deserialize test step.
+2026-09-10 16:12:41.116390 ; Serializer     ; Error       ; XML Line 2243: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin?
+2026-09-10 16:12:41.116390 ; Serializer     ; Error       ; XML Line 2243: Unable to deserialize test step.
+2026-09-10 16:12:41.116391 ; Serializer     ; Error       ; XML Line 2255: Unable to locate type 'OpenECU.SendCAN.SendCAN'. Are you missing a plugin?
+2026-09-10 16:12:41.116392 ; Serializer     ; Error       ; XML Line 2255: Unable to deserialize test step.
+2026-09-10 16:12:41.116393 ; Serializer     ; Error       ; XML Line 2265: Unable to locate type 'OpenECU.SendCAN.SendCAN'. Are you missing a plugin?
+2026-09-10 16:12:41.116394 ; Serializer     ; Error       ; XML Line 2265: Unable to deserialize test step.
+2026-09-10 16:12:41.116394 ; Serializer     ; Error       ; XML Line 2275: Unable to locate type 'OpenECU.SendCAN.SendCAN'. Are you missing a plugin?
+2026-09-10 16:12:41.116395 ; Serializer     ; Error       ; XML Line 2275: Unable to deserialize test step.
+2026-09-10 16:12:41.116396 ; Serializer     ; Error       ; XML Line 2285: Unable to locate type 'OpenECU.SendCAN.SendCAN'. Are you missing a plugin?
+2026-09-10 16:12:41.116397 ; Serializer     ; Error       ; XML Line 2285: Unable to deserialize test step.
+2026-09-10 16:12:41.116398 ; Serializer     ; Error       ; XML Line 2323: Unable to locate type 'OpenECU.ReadCalibration.ReadCalibration'. Are you missing a plugin?
+2026-09-10 16:12:41.116398 ; Serializer     ; Error       ; XML Line 2323: Unable to deserialize test step.
+2026-09-10 16:12:41.116400 ; Serializer     ; Error       ; XML Line 2337: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin?
+2026-09-10 16:12:41.116400 ; Serializer     ; Error       ; XML Line 2337: Unable to deserialize test step.
+2026-09-10 16:12:41.116401 ; Serializer     ; Error       ; XML Line 2348: Unable to locate type 'OpenECU.ReadCalibration.ReadCalibration'. Are you missing a plugin?
+2026-09-10 16:12:41.116402 ; Serializer     ; Error       ; XML Line 2348: Unable to deserialize test step.
+2026-09-10 16:12:41.116403 ; Serializer     ; Error       ; XML Line 2362: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116403 ; Serializer     ; Error       ; XML Line 2362: Unable to deserialize test step.
+2026-09-10 16:12:41.116404 ; Serializer     ; Error       ; XML Line 2377: Unable to locate type 'OpenECU.ReadCalibration.ReadCalibration'. Are you missing a plugin?
+2026-09-10 16:12:41.116405 ; Serializer     ; Error       ; XML Line 2377: Unable to deserialize test step.
+2026-09-10 16:12:41.116406 ; Serializer     ; Error       ; XML Line 2391: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116407 ; Serializer     ; Error       ; XML Line 2391: Unable to deserialize test step.
+2026-09-10 16:12:41.116408 ; Serializer     ; Error       ; XML Line 2405: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116408 ; Serializer     ; Error       ; XML Line 2405: Unable to deserialize test step.
+2026-09-10 16:12:41.116409 ; Serializer     ; Error       ; XML Line 2420: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116410 ; Serializer     ; Error       ; XML Line 2420: Unable to deserialize test step.
+2026-09-10 16:12:41.116411 ; Serializer     ; Error       ; XML Line 2435: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116412 ; Serializer     ; Error       ; XML Line 2435: Unable to deserialize test step.
+2026-09-10 16:12:41.116412 ; Serializer     ; Error       ; XML Line 2450: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin?
+2026-09-10 16:12:41.116413 ; Serializer     ; Error       ; XML Line 2450: Unable to deserialize test step.
+2026-09-10 16:12:41.116414 ; Serializer     ; Error       ; XML Line 2465: Unable to locate type 'OpenECU.IfLessThanStep.IfLessThanStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116415 ; Serializer     ; Error       ; XML Line 2465: Unable to deserialize test step.
+2026-09-10 16:12:41.116416 ; Serializer     ; Error       ; XML Line 2551: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin?
+2026-09-10 16:12:41.116417 ; Serializer     ; Error       ; XML Line 2551: Unable to deserialize test step.
+2026-09-10 16:12:41.116417 ; Serializer     ; Error       ; XML Line 2642: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116418 ; Serializer     ; Error       ; XML Line 2642: Unable to deserialize test step.
+2026-09-10 16:12:41.116419 ; Serializer     ; Error       ; XML Line 3094: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin?
+2026-09-10 16:12:41.116420 ; Serializer     ; Error       ; XML Line 3094: Unable to deserialize test step.
+2026-09-10 16:12:41.116421 ; Serializer     ; Error       ; XML Line 3574: Unable to locate type 'RikerTestSerial.RikerMatrixWriteStep'. Are you missing a plugin?
+2026-09-10 16:12:41.116422 ; Serializer     ; Error       ; XML Line 3574: Unable to deserialize test step.
+2026-09-10 16:12:41.116422 ; Serializer     ; Error       ; XML Line 3582: Unable to locate type 'RikerTestSerial.RikerMatrixReset'. Are you missing a plugin?
+2026-09-10 16:12:41.116423 ; Serializer     ; Error       ; XML Line 3582: Unable to deserialize test step.
+2026-09-10 16:12:41.116424 ; Serializer     ; Error       ; XML Line 4: Unable to locate type 'OpenTap.BooleanMixinBuilder'. Are you missing a plugin?
+2026-09-10 16:12:41.116425 ; Serializer     ; Error       ; XML Line 4: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116426 ; Serializer     ; Debug       ; Exception: Cannot create instance of OpenTap.IMixinBuilder and no default value exists.
+2026-09-10 16:12:41.116435 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.TryDeserializeObject(XElement element, ITypeData t, Action`1 setter, Object newobj, Boolean logWarnings)
+2026-09-10 16:12:41.116435 ; Serializer     ; Debug       ;     at OpenTap.Plugins.ObjectSerializer.Deserialize(XElement element, ITypeData t, Action`1 setter)
+2026-09-10 16:12:41.116448 ; Serializer     ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.116450 ; Serializer     ; Debug       ;     at Void LogMessages()
+2026-09-10 16:12:41.116451 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.Xml.Linq.XDocument, OpenTap.ITypeData, Boolean, System.String)
+2026-09-10 16:12:41.116452 ; Serializer     ; Debug       ;     at System.Object Deserialize(System.IO.Stream, Boolean, OpenTap.ITypeData, System.String)
+2026-09-10 16:12:41.116453 ; Serializer     ; Debug       ;     at OpenTap.TestPlan Load(System.IO.Stream, System.String, Boolean, OpenTap.TapSerializer, Boolean)
+2026-09-10 16:12:41.116453 ; Serializer     ; Debug       ;     ...
+2026-09-10 16:12:41.116455 ; Serializer     ; Error       ; XML Line 52: Unable to read element 'PlatformMajor'. The property does not exist.
+2026-09-10 16:12:41.116455 ; Serializer     ; Error       ; XML Line 53: Unable to read element 'AppSub'. The property does not exist.
+2026-09-10 16:12:41.116456 ; Serializer     ; Error       ; XML Line 54: Unable to read element 'AppMajor'. The property does not exist.
+2026-09-10 16:12:41.116457 ; Serializer     ; Error       ; XML Line 55: Unable to read element 'AppMinor'. The property does not exist.
+2026-09-10 16:12:41.116458 ; Serializer     ; Error       ; XML Line 56: Unable to read element 'OC-Check'. The property does not exist.
+2026-09-10 16:12:41.116458 ; Serializer     ; Error       ; XML Line 57: Unable to read element 'PlatformSub'. The property does not exist.
+2026-09-10 16:12:41.116459 ; Serializer     ; Error       ; XML Line 58: Unable to read element 'PlatformMinor'. The property does not exist.
+2026-09-10 16:12:41.116460 ; Serializer     ; Error       ; XML Line 3589: Unable to read element 'Parameters \ AppMinor'. The property does not exist.
+2026-09-10 16:12:41.116461 ; Serializer     ; Error       ; XML Line 3590: Unable to read element 'Parameters \ AppSub'. The property does not exist.
+2026-09-10 16:12:41.116462 ; Serializer     ; Error       ; XML Line 3591: Unable to read element 'Parameters \ OC-Check'. The property does not exist.
+2026-09-10 16:12:41.116462 ; Serializer     ; Error       ; XML Line 3592: Unable to read element 'Parameters \ Test Notes'. The property does not exist.
+2026-09-10 16:12:41.116463 ; Serializer     ; Error       ; XML Line 3593: Unable to read element 'Parameters \ AppMajor'. The property does not exist.
+2026-09-10 16:12:41.116464 ; Serializer     ; Error       ; XML Line 3594: Unable to read element 'Parameters \ Serial Number'. The property does not exist.
+2026-09-10 16:12:41.116465 ; Serializer     ; Error       ; XML Line 3595: Unable to read element 'Parameters \ PlatformSub'. The property does not exist.
+2026-09-10 16:12:41.116465 ; Serializer     ; Error       ; XML Line 3596: Unable to read element 'Parameters \ Operator Name'. The property does not exist.
+2026-09-10 16:12:41.116467 ; Serializer     ; Error       ; XML Line 3597: Unable to read element 'Parameters \ Test Name'. The property does not exist.
+2026-09-10 16:12:41.116467 ; Serializer     ; Error       ; XML Line 3598: Unable to read element 'CheckVersion'. The property does not exist.
+2026-09-10 16:12:41.116468 ; Serializer     ; Error       ; XML Line 3599: Unable to read element 'Parameters \ PlatformMajor'. The property does not exist.
+2026-09-10 16:12:41.116469 ; Serializer     ; Error       ; XML Line 3600: Unable to read element 'Parameters \ Part Number'. The property does not exist.
+2026-09-10 16:12:41.116470 ; Serializer     ; Error       ; XML Line 3601: Unable to read element 'Parameters \ PlatformMinor'. The property does not exist.
+2026-09-10 16:12:41.117029 ; Main           ; Error       ; Unable to load test plan.
+2026-09-10 16:12:41.117042 ; Main           ; Debug       ; PlanLoadException: XML Line 2: Package 'Expressions' is required to load, but it is not installed. XML Line 12: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin? XML Line 12: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists. XML Line 17: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin? XML Line 17: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists. XML Line 22: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin? XML Line 22: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists. XML Line 27: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin? XML Line 27: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists. XML Line 32: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin? XML Line 32: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists. XML Line 37: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin? XML Line 37: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists. XML Line 42: Unable to locate type 'OpenTap.NumberMixinBuilder'. Are you missing a plugin? XML Line 42: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists. XML Line 60: Unable to locate type 'RikerTestSerial.RikerMatrixWriteStep'. Are you missing a plugin? XML Line 60: Unable to deserialize test step. XML Line 68: Unable to locate type 'OpenTap.Plugins.OperatorPanelLite.OperatorInputsReceiver'. Are you missing a plugin? XML Line 68: Unable to deserialize test step. XML Line 80: Unable to locate type 'RikerTestSerial.RikerMatrixReset'. Are you missing a plugin? XML Line 80: Unable to deserialize test step. XML Line 90: Unable to locate type 'LabJackProject.LabjackWriteNameStep'. Are you missing a plugin? XML Line 90: Unable to deserialize test step. XML Line 97: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 97: Unable to deserialize test step. XML Line 106: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 106: Unable to deserialize test step. XML Line 119: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 119: Unable to deserialize test step. XML Line 132: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 132: Unable to deserialize test step. XML Line 178: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 178: Unable to deserialize test step. XML Line 224: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 224: Unable to deserialize test step. XML Line 246: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 246: Unable to deserialize test step. XML Line 269: Unable to locate type 'RikerTestSerial.RikerMatrixWriteWord'. Are you missing a plugin? XML Line 269: Unable to deserialize test step. XML Line 280: Unable to locate type 'RikerTestSerial.RikerMatrixWriteWord'. Are you missing a plugin? XML Line 280: Unable to deserialize test step. XML Line 291: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 291: Unable to deserialize test step. XML Line 305: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 305: Unable to deserialize test step. XML Line 321: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 321: Unable to deserialize test step. XML Line 338: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 338: Unable to deserialize test step. XML Line 355: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 355: Unable to deserialize test step. XML Line 373: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 373: Unable to deserialize test step. XML Line 391: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 391: Unable to deserialize test step. XML Line 404: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 404: Unable to deserialize test step. XML Line 495: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 495: Unable to deserialize test step. XML Line 506: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 506: Unable to deserialize test step. XML Line 526: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 526: Unable to deserialize test step. XML Line 546: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 546: Unable to deserialize test step. XML Line 568: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 568: Unable to deserialize test step. XML Line 589: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 589: Unable to deserialize test step. XML Line 612: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 612: Unable to deserialize test step. XML Line 635: Unable to locate type 'LabJackProject.LabjackWriteNameStep'. Are you missing a plugin? XML Line 635: Unable to deserialize test step. XML Line 645: Unable to locate type 'LabJackProject.LabjackWriteNameStep'. Are you missing a plugin? XML Line 645: Unable to deserialize test step. XML Line 660: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 660: Unable to deserialize test step. XML Line 679: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 679: Unable to deserialize test step. XML Line 770: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 770: Unable to deserialize test step. XML Line 779: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 779: Unable to deserialize test step. XML Line 788: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 788: Unable to deserialize test step. XML Line 797: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 797: Unable to deserialize test step. XML Line 806: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 806: Unable to deserialize test step. XML Line 897: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 897: Unable to deserialize test step. XML Line 917: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 917: Unable to deserialize test step. XML Line 938: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 938: Unable to deserialize test step. XML Line 956: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 956: Unable to deserialize test step. XML Line 968: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 968: Unable to deserialize test step. XML Line 990: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 990: Unable to deserialize test step. XML Line 1086: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1086: Unable to deserialize test step. XML Line 1177: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1177: Unable to deserialize test step. XML Line 1275: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1275: Unable to deserialize test step. XML Line 1289: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1289: Unable to deserialize test step. XML Line 1303: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1303: Unable to deserialize test step. XML Line 1395: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1395: Unable to deserialize test step. XML Line 1487: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1487: Unable to deserialize test step. XML Line 1579: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1579: Unable to deserialize test step. XML Line 1590: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1590: Unable to deserialize test step. XML Line 1601: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1601: Unable to deserialize test step. XML Line 1613: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1613: Unable to deserialize test step. XML Line 1633: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1633: Unable to deserialize test step. XML Line 1655: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1655: Unable to deserialize test step. XML Line 1675: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1675: Unable to deserialize test step. XML Line 1701: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 1701: Unable to deserialize test step. XML Line 1710: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 1710: Unable to deserialize test step. XML Line 1719: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 1719: Unable to deserialize test step. XML Line 1728: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 1728: Unable to deserialize test step. XML Line 1737: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1737: Unable to deserialize test step. XML Line 1757: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1757: Unable to deserialize test step. XML Line 1778: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1778: Unable to deserialize test step. XML Line 1798: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1798: Unable to deserialize test step. XML Line 1819: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1819: Unable to deserialize test step. XML Line 1844: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 1844: Unable to deserialize test step. XML Line 1853: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 1853: Unable to deserialize test step. XML Line 1862: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 1862: Unable to deserialize test step. XML Line 1871: Unable to locate type 'LabJackProject.LabjackReadNameStep'. Are you missing a plugin? XML Line 1871: Unable to deserialize test step. XML Line 1880: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1880: Unable to deserialize test step. XML Line 1894: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1894: Unable to deserialize test step. XML Line 1908: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 1908: Unable to deserialize test step. XML Line 1922: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 1922: Unable to deserialize test step. XML Line 1944: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 1944: Unable to deserialize test step. XML Line 2001: Unable to locate type 'OpenECU.IfEqualStep.IfEqualsStep'. Are you missing a plugin? XML Line 2001: Unable to deserialize test step. XML Line 2047: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2047: Unable to deserialize test step. XML Line 2065: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2065: Unable to deserialize test step. XML Line 2083: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2083: Unable to deserialize test step. XML Line 2101: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2101: Unable to deserialize test step. XML Line 2119: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2119: Unable to deserialize test step. XML Line 2137: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2137: Unable to deserialize test step. XML Line 2155: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2155: Unable to deserialize test step. XML Line 2173: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2173: Unable to deserialize test step. XML Line 2187: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2187: Unable to deserialize test step. XML Line 2201: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2201: Unable to deserialize test step. XML Line 2215: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2215: Unable to deserialize test step. XML Line 2231: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin? XML Line 2231: Unable to deserialize test step. XML Line 2243: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin? XML Line 2243: Unable to deserialize test step. XML Line 2255: Unable to locate type 'OpenECU.SendCAN.SendCAN'. Are you missing a plugin? XML Line 2255: Unable to deserialize test step. XML Line 2265: Unable to locate type 'OpenECU.SendCAN.SendCAN'. Are you missing a plugin? XML Line 2265: Unable to deserialize test step. XML Line 2275: Unable to locate type 'OpenECU.SendCAN.SendCAN'. Are you missing a plugin? XML Line 2275: Unable to deserialize test step. XML Line 2285: Unable to locate type 'OpenECU.SendCAN.SendCAN'. Are you missing a plugin? XML Line 2285: Unable to deserialize test step. XML Line 2323: Unable to locate type 'OpenECU.ReadCalibration.ReadCalibration'. Are you missing a plugin? XML Line 2323: Unable to deserialize test step. XML Line 2337: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin? XML Line 2337: Unable to deserialize test step. XML Line 2348: Unable to locate type 'OpenECU.ReadCalibration.ReadCalibration'. Are you missing a plugin? XML Line 2348: Unable to deserialize test step. XML Line 2362: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2362: Unable to deserialize test step. XML Line 2377: Unable to locate type 'OpenECU.ReadCalibration.ReadCalibration'. Are you missing a plugin? XML Line 2377: Unable to deserialize test step. XML Line 2391: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2391: Unable to deserialize test step. XML Line 2405: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2405: Unable to deserialize test step. XML Line 2420: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2420: Unable to deserialize test step. XML Line 2435: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2435: Unable to deserialize test step. XML Line 2450: Unable to locate type 'OpenECU.ReadMeasurement.ReadMeasurement'. Are you missing a plugin? XML Line 2450: Unable to deserialize test step. XML Line 2465: Unable to locate type 'OpenECU.IfLessThanStep.IfLessThanStep'. Are you missing a plugin? XML Line 2465: Unable to deserialize test step. XML Line 2551: Unable to locate type 'RikerTestSerial.RikerMatrixWriteByte'. Are you missing a plugin? XML Line 2551: Unable to deserialize test step. XML Line 2642: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 2642: Unable to deserialize test step. XML Line 3094: Unable to locate type 'RikerTestSerial.RikerMatrixWriteChan'. Are you missing a plugin? XML Line 3094: Unable to deserialize test step. XML Line 3574: Unable to locate type 'RikerTestSerial.RikerMatrixWriteStep'. Are you missing a plugin? XML Line 3574: Unable to deserialize test step. XML Line 3582: Unable to locate type 'RikerTestSerial.RikerMatrixReset'. Are you missing a plugin? XML Line 3582: Unable to deserialize test step. XML Line 4: Unable to locate type 'OpenTap.BooleanMixinBuilder'. Are you missing a plugin? XML Line 4: Unable to read IMixinBuilder. Cannot create instance of OpenTap.IMixinBuilder and no default value exists. XML Line 52: Unable to read element 'PlatformMajor'. The property does not exist. XML Line 53: Unable to read element 'AppSub'. The property does not exist. XML Line 54: Unable to read element 'AppMajor'. The property does not exist. XML Line 55: Unable to read element 'AppMinor'. The property does not exist. XML Line 56: Unable to read element 'OC-Check'. The property does not exist. XML Line 57: Unable to read element 'PlatformSub'. The property does not exist. XML Line 58: Unable to read element 'PlatformMinor'. The property does not exist. XML Line 3589: Unable to read element 'Parameters \ AppMinor'. The property does not exist. XML Line 3590: Unable to read element 'Parameters \ AppSub'. The property does not exist. XML Line 3591: Unable to read element 'Parameters \ OC-Check'. The property does not exist. XML Line 3592: Unable to read element 'Parameters \ Test Notes'. The property does not exist. XML Line 3593: Unable to read element 'Parameters \ AppMajor'. The property does not exist. XML Line 3594: Unable to read element 'Parameters \ Serial Number'. The property does not exist. XML Line 3595: Unable to read element 'Parameters \ PlatformSub'. The property does not exist. XML Line 3596: Unable to read element 'Parameters \ Operator Name'. The property does not exist. XML Line 3597: Unable to read element 'Parameters \ Test Name'. The property does not exist. XML Line 3598: Unable to read element 'CheckVersion'. The property does not exist. XML Line 3599: Unable to read element 'Parameters \ PlatformMajor'. The property does not exist. XML Line 3600: Unable to read element 'Parameters \ Part Number'. The property does not exist. XML Line 3601: Unable to read element 'Parameters \ PlatformMinor'. The property does not exist.
+2026-09-10 16:12:41.117088 ; Main           ; Debug       ;     at OpenTap.TestPlan.Load(Stream stream, String path, Boolean cacheXml, TapSerializer serializer, Boolean IgnoreLoadErrors)
+2026-09-10 16:12:41.117088 ; Main           ; Debug       ;     at OpenTap.Cli.RunCliAction.HandleExternalParametersAndLoadPlan(String planToLoad)
+2026-09-10 16:12:41.117089 ; Main           ; Debug       ;     at OpenTap.Cli.RunCliAction.Execute(CancellationToken cancellationToken)
+2026-09-10 16:12:41.117163 ; Main           ; Debug       ; Exception caught at:
+2026-09-10 16:12:41.117186 ; Main           ; Debug       ;     at Int32 Execute(System.Threading.CancellationToken)
+2026-09-10 16:12:41.117195 ; Main           ; Debug       ;     at Int32 PerformExecute(OpenTap.Cli.ICliAction, System.String[])
+2026-09-10 16:12:41.117197 ; Main           ; Debug       ;     at Int32 Execute(System.String[])
+2026-09-10 16:12:41.117199 ; Main           ; Debug       ;     at Void Execute()
+2026-09-10 16:12:41.117200 ; Main           ; Debug       ;     ...
+2026-09-10 16:12:41.117211 ; CLI            ; Debug       ; CLI action returned exit code: 70 [151 ms]

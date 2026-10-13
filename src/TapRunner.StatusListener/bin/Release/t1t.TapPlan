@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <Steps>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="f7ff0a8e-b4fe-4177-9226-46b5ca855011">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>TST_e_TestMode</Measurement>
+      <Filter>TST_e_TestMode</Filter>
+      <Available>
+        <String>TST_e_TestMode</String>
+      </Available>
+      <MeasurementValue>1</MeasurementValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadMeasurement (2)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadCalibration.ReadCalibration" Id="dbf64d01-aedd-4c33-a16f-604d8bc8c3ed">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>TSTc_e_TestMode</Calibration>
+      <Available>
+        <String>TSTc_e_TestMode</String>
+      </Available>
+      <Filter>TSTc_e_TestMode</Filter>
+      <CalibrationValue>1</CalibrationValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadCal TSTc_e_TestMode</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadMeasurement.ReadMeasurement" Id="b2e8f71c-7cfc-44dd-ad3b-fccf542753ac">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>AIN_V_3V3IO</Measurement>
+      <Filter>AIN_V_3V3IO</Filter>
+      <Available>
+        <String>AIN_V_3V3IO</String>
+        <String>AIN_V_3V3IORaw</String>
+      </Available>
+      <MeasurementValue>0</MeasurementValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadMeasurement</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadCalibration.ReadCalibration" Id="f4286051-3d18-40c8-995f-ab005b9dcd0d">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>AINc_V_BlpOffset</Calibration>
+      <Available>
+        <String>AINc_V_BlpOffset</String>
+      </Available>
+      <Filter>AINc_V_BlpOffset</Filter>
+      <CalibrationValue>1.5119999647140503</CalibrationValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadCalibration AINc_V_BlpOffset</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="876600e4-d67d-4a23-af4c-caf3130fb6a2">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>AINc_V_BlpOffset</Calibration>
+      <Available>
+        <String>AINc_V_BlpOffset</String>
+      </Available>
+      <Filter>AINc_V_BlpOffset</Filter>
+      <CalibrationValue>1.514</CalibrationValue>
+      <Name Metadata="Step Name">WriteCalibration AINc_V_BlpOffset</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.ReadCalibration.ReadCalibration" Id="c6876dba-45aa-4d53-b8a3-e9c3b804a9a8">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>AINc_V_BlpOffset</Calibration>
+      <Available>
+        <String>AINc_V_BlpOffset</String>
+      </Available>
+      <Filter>AINc_V_BlpOffset</Filter>
+      <CalibrationValue>1.5140000581741333</CalibrationValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadCalibration AINc_V_BlpOffset (1)</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.WriteMeasurement.WriteMeasurement" Id="48faf020-7aae-46a3-aef9-00473d0ed36f">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Measurement>AIN_V_3V3IO</Measurement>
+      <Available>
+        <String>AIN_V_3V3IO</String>
+        <String>AIN_V_3V3IORaw</String>
+      </Available>
+      <Filter>AIN_V_3V3IO</Filter>
+      <MeasurementValue>6</MeasurementValue>
+      <Name Metadata="Step Name">WriteMeasurement</Name>
+      <ChildTestSteps />
+    </TestStep>
+  </Steps>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.29.1+335b2cbe" />
+  </Package.Dependencies>
+</TestPlan>

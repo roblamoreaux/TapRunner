@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <Steps>
+    <TestStep type="can_dbc_python.can_message_rx.CanMessageRx" Id="025be4ad-cc76-470d-bed0-77fbd7913d2e">
+      <Dut Source="OpenTap.DutSettings">DBCDUT</Dut>
+      <SelectionMode>ByName</SelectionMode>
+      <AvailableModes>
+        <String>ByName</String>
+        <String>ById</String>
+      </AvailableModes>
+      <MessageName>ETCStatus</MessageName>
+      <AvailableMessageNames>
+        <String>BackgroundFD</String>
+        <String>BackgroundExtended</String>
+        <String>BackgroundLow</String>
+        <String>BackgroundMid</String>
+        <String>BackgroundHigh</String>
+        <String>ETCVulnerable</String>
+        <String>ETCPhaseSync</String>
+        <String>TesterNoWakeCmd</String>
+        <String>TesterWakeCmd</String>
+        <String>TesterModeCmd</String>
+        <String>ETCStatus</String>
+        <String>ETCResetStatus</String>
+        <String>ETCFault1</String>
+        <String>ETCCANTest6</String>
+        <String>ETCCANTest5</String>
+        <String>ETCCANTest4</String>
+        <String>ETCCANTest3</String>
+        <String>ETCCANTest2</String>
+        <String>ETCCANTest1</String>
+        <String>ETCNoisy</String>
+      </AvailableMessageNames>
+      <MessageIdHex />
+      <AvailableMessagesIds>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+        <String>ETCNoisy</String>
+      </AvailableMessagesIds>
+      <OutputSignal>ETCMode</OutputSignal>
+      <SignalNames>
+        <String>ETCMode</String>
+        <String>ETCGlobalFaultStatus</String>
+        <String>ETCSpiConfigStatus</String>
+        <String>CANBus</String>
+        <String>ETCStatusRollingCounter</String>
+        <String>ETCStatus_0xB1_Checksum</String>
+      </SignalNames>
+      <ParsedValues>0, 126, 1, 12, 0, 0</ParsedValues>
+      <ScaledValues>0, 126, 1, 12, 0, 0</ScaledValues>
+      <OutputValue>0</OutputValue>
+      <RxScaleValues>1, 1, 1, 1, 1, 1</RxScaleValues>
+      <RxOffsetValues>0, 0, 0, 0, 0, 0</RxOffsetValues>
+      <RawDataHex>00 7E 00 01 00 00 0C 00</RawDataHex>
+      <ErrorPolicy>Fail</ErrorPolicy>
+      <ErrorValues>
+        <String>Fail</String>
+        <String>Warn</String>
+      </ErrorValues>
+      <ContinueOnError>true</ContinueOnError>
+      <TimeoutMs>500</TimeoutMs>
+      <Name Metadata="Step Name">CAN Receive {Message Name}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="can_dbc_python.can_message_rx.CanMessageRx" Id="bc90af18-2277-47a5-a7c1-1002e010efc5">
+      <Dut Source="OpenTap.DutSettings">DBCDUT</Dut>
+      <SelectionMode>ByName</SelectionMode>
+      <AvailableModes>
+        <String>ByName</String>
+        <String>ById</String>
+      </AvailableModes>
+      <MessageName>ETCVulnerable</MessageName>
+      <AvailableMessageNames>
+        <String>BackgroundFD</String>
+        <String>BackgroundExtended</String>
+        <String>BackgroundLow</String>
+        <String>BackgroundMid</String>
+        <String>BackgroundHigh</String>
+        <String>ETCVulnerable</String>
+        <String>ETCPhaseSync</String>
+        <String>TesterNoWakeCmd</String>
+        <String>TesterWakeCmd</String>
+        <String>TesterModeCmd</String>
+        <String>ETCStatus</String>
+        <String>ETCResetStatus</String>
+        <String>ETCFault1</String>
+        <String>ETCCANTest6</String>
+        <String>ETCCANTest5</String>
+        <String>ETCCANTest4</String>
+        <String>ETCCANTest3</String>
+        <String>ETCCANTest2</String>
+        <String>ETCCANTest1</String>
+        <String>ETCNoisy</String>
+      </AvailableMessageNames>
+      <MessageIdHex>0x7FB</MessageIdHex>
+      <AvailableMessagesIds>
+        <String>0x4FD</String>
+        <String>0x7FDFFE</String>
+        <String>0x7EE</String>
+        <String>0x554</String>
+        <String>0x8</String>
+        <String>0x7FB</String>
+        <String>0x80</String>
+        <String>0x4FF</String>
+        <String>0x6FF</String>
+        <String>0x6FE</String>
+        <String>0x5</String>
+        <String>0x2</String>
+        <String>0x50</String>
+        <String>0x7E5</String>
+        <String>0x7E4</String>
+        <String>0x7E3</String>
+        <String>0x7E2</String>
+        <String>0x7E1</String>
+        <String>0x7E0</String>
+        <String>0x555</String>
+      </AvailableMessagesIds>
+      <OutputSignal>VulnerableValue1</OutputSignal>
+      <SignalNames>
+        <String>VulnerableValue1</String>
+        <String>VulnerableValue2</String>
+      </SignalNames>
+      <ParsedValues>1, 4294967295</ParsedValues>
+      <ScaledValues>1, 4294967295</ScaledValues>
+      <OutputValue>1</OutputValue>
+      <RxScaleValues>1, 1, 1, 1, 1, 1</RxScaleValues>
+      <RxOffsetValues>0, 0, 0, 0, 0, 0</RxOffsetValues>
+      <RawDataHex>01 00 00 00 FF FF FF FF</RawDataHex>
+      <ErrorPolicy>Fail</ErrorPolicy>
+      <ErrorValues>
+        <String>Fail</String>
+        <String>Warn</String>
+      </ErrorValues>
+      <ContinueOnError>true</ContinueOnError>
+      <TimeoutMs>500</TimeoutMs>
+      <Name Metadata="Step Name">CAN Receive {Message Name}/{Message ID (hex)}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="can_dbc_python.can_message_rx.CanMessageRx" Id="e7538fda-79df-40d5-bf3b-5463e7ff5967">
+      <Dut Source="OpenTap.DutSettings">DBCDUT</Dut>
+      <SelectionMode>ByName</SelectionMode>
+      <AvailableModes>
+        <String>ByName</String>
+        <String>ById</String>
+      </AvailableModes>
+      <MessageName>ETCVulnerable</MessageName>
+      <AvailableMessageNames>
+        <String>BackgroundFD</String>
+        <String>BackgroundExtended</String>
+        <String>BackgroundLow</String>
+        <String>BackgroundMid</String>
+        <String>BackgroundHigh</String>
+        <String>ETCVulnerable</String>
+        <String>ETCPhaseSync</String>
+        <String>TesterNoWakeCmd</String>
+        <String>TesterWakeCmd</String>
+        <String>TesterModeCmd</String>
+        <String>ETCStatus</String>
+        <String>ETCResetStatus</String>
+        <String>ETCFault1</String>
+        <String>ETCCANTest6</String>
+        <String>ETCCANTest5</String>
+        <String>ETCCANTest4</String>
+        <String>ETCCANTest3</String>
+        <String>ETCCANTest2</String>
+        <String>ETCCANTest1</String>
+        <String>ETCNoisy</String>
+      </AvailableMessageNames>
+      <MessageIdHex />
+      <AvailableMessagesIds>
+        <String>0x4FD</String>
+        <String>0x7FDFFE</String>
+        <String>0x7EE</String>
+        <String>0x554</String>
+        <String>0x8</String>
+        <String>0x7FB</String>
+        <String>0x80</String>
+        <String>0x4FF</String>
+        <String>0x6FF</String>
+        <String>0x6FE</String>
+        <String>0x5</String>
+        <String>0x2</String>
+        <String>0x50</String>
+        <String>0x7E5</String>
+        <String>0x7E4</String>
+        <String>0x7E3</String>
+        <String>0x7E2</String>
+        <String>0x7E1</String>
+        <String>0x7E0</String>
+        <String>0x555</String>
+      </AvailableMessagesIds>
+      <OutputSignal>VulnerableValue2</OutputSignal>
+      <SignalNames>
+        <String>VulnerableValue1</String>
+        <String>VulnerableValue2</String>
+      </SignalNames>
+      <ParsedValues>1, 4294967295</ParsedValues>
+      <ScaledValues>1, 4294967295</ScaledValues>
+      <OutputValue>4294967295</OutputValue>
+      <RxScaleValues>1, 1</RxScaleValues>
+      <RxOffsetValues>0, 0</RxOffsetValues>
+      <RawDataHex>01 00 00 00 FF FF FF FF</RawDataHex>
+      <ErrorPolicy>Fail</ErrorPolicy>
+      <ErrorValues>
+        <String>Fail</String>
+        <String>Warn</String>
+      </ErrorValues>
+      <ContinueOnError>true</ContinueOnError>
+      <TimeoutMs>500</TimeoutMs>
+      <Name Metadata="Step Name">CAN Receive {Message Name}/{Message ID (hex)}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="can_dbc_python.can_message_rx.CanMessageRx" Id="90ab9413-a176-4375-bf7f-8b2e5173d2b9">
+      <Dut Source="OpenTap.DutSettings">DBCDUT</Dut>
+      <SelectionMode>ByName</SelectionMode>
+      <AvailableModes>
+        <String>ByName</String>
+        <String>ById</String>
+      </AvailableModes>
+      <MessageName>ETCStatus</MessageName>
+      <AvailableMessageNames>
+        <String>BackgroundFD</String>
+        <String>BackgroundExtended</String>
+        <String>BackgroundLow</String>
+        <String>BackgroundMid</String>
+        <String>BackgroundHigh</String>
+        <String>ETCVulnerable</String>
+        <String>ETCPhaseSync</String>
+        <String>TesterNoWakeCmd</String>
+        <String>TesterWakeCmd</String>
+        <String>TesterModeCmd</String>
+        <String>ETCStatus</String>
+        <String>ETCResetStatus</String>
+        <String>ETCFault1</String>
+        <String>ETCCANTest6</String>
+        <String>ETCCANTest5</String>
+        <String>ETCCANTest4</String>
+        <String>ETCCANTest3</String>
+        <String>ETCCANTest2</String>
+        <String>ETCCANTest1</String>
+        <String>ETCNoisy</String>
+      </AvailableMessageNames>
+      <MessageIdHex />
+      <AvailableMessagesIds>
+        <String>0x4FD</String>
+        <String>0x7FDFFE</String>
+        <String>0x7EE</String>
+        <String>0x554</String>
+        <String>0x8</String>
+        <String>0x7FB</String>
+        <String>0x80</String>
+        <String>0x4FF</String>
+        <String>0x6FF</String>
+        <String>0x6FE</String>
+        <String>0x5</String>
+        <String>0x2</String>
+        <String>0x50</String>
+        <String>0x7E5</String>
+        <String>0x7E4</String>
+        <String>0x7E3</String>
+        <String>0x7E2</String>
+        <String>0x7E1</String>
+        <String>0x7E0</String>
+        <String>0x555</String>
+      </AvailableMessagesIds>
+      <OutputSignal>ETCStatusRollingCounter</OutputSignal>
+      <SignalNames>
+        <String>ETCMode</String>
+        <String>ETCGlobalFaultStatus</String>
+        <String>ETCSpiConfigStatus</String>
+        <String>CANBus</String>
+        <String>ETCStatusRollingCounter</String>
+        <String>ETCStatus_0xB1_Checksum</String>
+      </SignalNames>
+      <ParsedValues>0, 126, 1, 12, 3, 0</ParsedValues>
+      <ScaledValues>0, 126, 1, 12, 3, 0</ScaledValues>
+      <OutputValue>3</OutputValue>
+      <RxScaleValues>1, 1, 1, 1, 1, 1</RxScaleValues>
+      <RxOffsetValues>0, 0, 0, 0, 0, 0</RxOffsetValues>
+      <RawDataHex>00 7E 00 01 00 00 3C 00</RawDataHex>
+      <ErrorPolicy>Fail</ErrorPolicy>
+      <ErrorValues>
+        <String>Fail</String>
+        <String>Warn</String>
+      </ErrorValues>
+      <ContinueOnError>true</ContinueOnError>
+      <TimeoutMs>500</TimeoutMs>
+      <Name Metadata="Step Name">CAN Receive {Message Name}/{Message ID (hex)}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="can_dbc_python.can_message_tx.CanMessageTx" Id="8d7b5abf-693e-4c10-a55f-ac3199078315">
+      <Dut Source="OpenTap.DutSettings">DBCDUT</Dut>
+      <SelectionMode>ByName</SelectionMode>
+      <AvailableModes>
+        <String>ByName</String>
+        <String>ById</String>
+      </AvailableModes>
+      <MessageName>ETCPhaseSync</MessageName>
+      <AvailableMessageNames>
+        <String>BackgroundFD</String>
+        <String>BackgroundExtended</String>
+        <String>BackgroundLow</String>
+        <String>BackgroundMid</String>
+        <String>BackgroundHigh</String>
+        <String>ETCVulnerable</String>
+        <String>ETCPhaseSync</String>
+        <String>TesterNoWakeCmd</String>
+        <String>TesterWakeCmd</String>
+        <String>TesterModeCmd</String>
+        <String>ETCStatus</String>
+        <String>ETCResetStatus</String>
+        <String>ETCFault1</String>
+        <String>ETCCANTest6</String>
+        <String>ETCCANTest5</String>
+        <String>ETCCANTest4</String>
+        <String>ETCCANTest3</String>
+        <String>ETCCANTest2</String>
+        <String>ETCCANTest1</String>
+        <String>ETCNoisy</String>
+      </AvailableMessageNames>
+      <MessageIdHex />
+      <AvailableMessagesIds>
+        <String>0x4FD</String>
+        <String>0x7FDFFE</String>
+        <String>0x7EE</String>
+        <String>0x554</String>
+        <String>0x8</String>
+        <String>0x7FB</String>
+        <String>0x80</String>
+        <String>0x4FF</String>
+        <String>0x6FF</String>
+        <String>0x6FE</String>
+        <String>0x5</String>
+        <String>0x2</String>
+        <String>0x50</String>
+        <String>0x7E5</String>
+        <String>0x7E4</String>
+        <String>0x7E3</String>
+        <String>0x7E2</String>
+        <String>0x7E1</String>
+        <String>0x7E0</String>
+        <String>0x555</String>
+      </AvailableMessagesIds>
+      <SignalNames>
+        <String>ETCTestPhase</String>
+        <String>TimeInPhase</String>
+        <String>TestPhaseRollingCounter_8Bit</String>
+      </SignalNames>
+      <SignalValues>2, 0.25, 5</SignalValues>
+      <TxScale></TxScale>
+      <TxOffset></TxOffset>
+      <ErrorPolicy>Fail</ErrorPolicy>
+      <ErrorValues>
+        <String>Fail</String>
+        <String>Warn</String>
+      </ErrorValues>
+      <ContinueOnError>true</ContinueOnError>
+      <Name Metadata="Step Name">CAN Transmit {Message Name}/{Message ID (hex)}</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="3584e833-ce95-4684-b0fd-5433ca70d236" OpenTap.Visibility="Visible">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>CTXc_NU_SingleTx</Calibration>
+      <Available>
+        <String>CTXc_NU_SingleTx</String>
+      </Available>
+      <Filter>CTXc_NU_SingleTx</Filter>
+      <CalibrationValue>1</CalibrationValue>
+      <Name Metadata="Step Name">DUT Transmit Once</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="ac42a517-04ad-401d-bcf1-be783bc7f0c2">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>CTXc_NU_Enable</Calibration>
+      <Available>
+        <String>CTXc_NU_Enable</String>
+      </Available>
+      <Filter>CTXc_NU_Enable</Filter>
+      <CalibrationValue>255</CalibrationValue>
+      <Name Metadata="Step Name">Enable DUT Transmitting</Name>
+      <ChildTestSteps />
+    </TestStep>
+    <TestStep type="OpenECU.WriteCalibration.WriteCalibration" Id="c84d4ac8-6f7c-4195-8512-3a788476f3d0">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>CTXc_s_Status</Calibration>
+      <Available>
+        <String>CTXc_s_Status</String>
+      </Available>
+      <Filter>CTXc_s_Status</Filter>
+      <CalibrationValue>0.02</CalibrationValue>
+      <Name Metadata="Step Name">Set DUT Transmit rate to every 20mS</Name>
+      <ChildTestSteps />
+    </TestStep>
+  </Steps>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.29.1+335b2cbe" />
+  </Package.Dependencies>
+</TestPlan>

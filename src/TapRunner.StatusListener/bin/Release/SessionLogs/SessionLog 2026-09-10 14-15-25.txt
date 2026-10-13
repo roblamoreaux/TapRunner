@@ -1,0 +1,54 @@
+﻿2026-09-10 14:15:25.699119 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\tap 2026-09-10 14-15-25.txt'. [3.80 ms]
+2026-09-10 14:15:25.720677 ; OperatingSystem ; Debug       ; OS is windows: Path.DirectorySeparatorChar == '\'
+2026-09-10 14:15:25.735883 ; Session        ; Debug       ; Deleting log file: C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\SessionLog 2026-09-10 13-37-18.txt
+2026-09-10 14:15:25.743411 ; Session        ; Debug       ; Running '"C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\tap.dll" run "C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\Untitled.TapPlan" --list-external-parameters --non-interactive' in 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release'.
+2026-09-10 14:15:25.775030 ; AssemblyFinder ; Debug       ; Found 12/30 assembly files. [12.7 ms]
+2026-09-10 14:15:25.866538 ; Searcher       ; Debug       ; Ordered 8 assemblies according to references. [87.8 ms]
+2026-09-10 14:15:25.898553 ; PluginManager  ; Debug       ; Found 4 plugin assemblies containing 189 plugin types. [119 ms]
+2026-09-10 14:15:25.899250 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.dll
+2026-09-10 14:15:25.899303 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Package.dll
+2026-09-10 14:15:25.899326 ; PluginManager  ; Debug       ; Found version 0.0.0            of TapRunner.StatusListener.dll
+2026-09-10 14:15:25.899333 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Plugins.BasicSteps.dll
+2026-09-10 14:15:25.899372 ; PluginManager  ; Debug       ; Searched 12 Assemblies. [121 ms]
+2026-09-10 14:15:25.915915 ; Settings       ; Debug       ; No settings file exists for EngineSettings. A new instance with default values has been created. [9.69 ms]
+2026-09-10 14:15:25.929843 ; AssemblyData   ; Debug       ; Loaded OpenTap. [415 us]
+2026-09-10 14:15:25.955931 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\SessionLog 2026-09-10 14-15-25.txt'. [17.9 ms]
+2026-09-10 14:15:25.960350 ; SystemInfo     ; Debug       ; Microsoft Windows 10.0.26200X64
+2026-09-10 14:15:25.960365 ; SystemInfo     ; Debug       ; .NET 9.0.20
+2026-09-10 14:15:25.960946 ; SystemInfo     ; Debug       ; OpenTAP Engine 9.33.0+56d4c214 X64
+2026-09-10 14:15:25.962614 ; AssemblyData   ; Debug       ; Loaded OpenTap.Package. [1.61 ms]
+2026-09-10 14:15:26.000856 ; AssemblyData   ; Debug       ; Loaded OpenTap.Plugins.BasicSteps. [915 us]
+2026-09-10 14:15:26.061899 ; AssemblyData   ; Debug       ; Loaded System.Private.CoreLib. [2.29 us]
+2026-09-10 14:15:26.086736 ; CLI            ; Debug       ; Executing CLI action: run
+2026-09-10 14:15:26.175288 ; Installation   ; Debug       ; OpenTAP                     - 9.33.0+56d4c214
+2026-09-10 14:15:26.175295 ; Installation   ; Debug       ; TapRunner.StatusListener    - 1.0.0
+2026-09-10 14:15:26.175297 ; Installation   ; Debug       ; Keysight IO Libraries Suite - 18.4.30319
+2026-09-10 14:15:26.175299 ; Installation   ; Debug       ; PathWave License Manager    - 7.5.0+0128b42c
+2026-09-10 14:15:26.222916 ; Serializer     ; Error       ; XML Line 4: Unable to locate type 'can_dbc_python.can_message_rx.CanMessageRx'. Are you missing a plugin?
+2026-09-10 14:15:26.222972 ; Serializer     ; Error       ; XML Line 4: Unable to deserialize test step.
+2026-09-10 14:15:26.222976 ; Serializer     ; Error       ; XML Line 82: Unable to locate type 'can_dbc_python.can_message_rx.CanMessageRx'. Are you missing a plugin?
+2026-09-10 14:15:26.222978 ; Serializer     ; Error       ; XML Line 82: Unable to deserialize test step.
+2026-09-10 14:15:26.222980 ; Serializer     ; Error       ; XML Line 156: Unable to locate type 'can_dbc_python.can_message_rx.CanMessageRx'. Are you missing a plugin?
+2026-09-10 14:15:26.222982 ; Serializer     ; Error       ; XML Line 156: Unable to deserialize test step.
+2026-09-10 14:15:26.222985 ; Serializer     ; Error       ; XML Line 230: Unable to locate type 'can_dbc_python.can_message_rx.CanMessageRx'. Are you missing a plugin?
+2026-09-10 14:15:26.222986 ; Serializer     ; Error       ; XML Line 230: Unable to deserialize test step.
+2026-09-10 14:15:26.222989 ; Serializer     ; Error       ; XML Line 308: Unable to locate type 'can_dbc_python.can_message_tx.CanMessageTx'. Are you missing a plugin?
+2026-09-10 14:15:26.222990 ; Serializer     ; Error       ; XML Line 308: Unable to deserialize test step.
+2026-09-10 14:15:26.222991 ; Serializer     ; Error       ; XML Line 378: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin?
+2026-09-10 14:15:26.222993 ; Serializer     ; Error       ; XML Line 378: Unable to deserialize test step.
+2026-09-10 14:15:26.222994 ; Serializer     ; Error       ; XML Line 389: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin?
+2026-09-10 14:15:26.222995 ; Serializer     ; Error       ; XML Line 389: Unable to deserialize test step.
+2026-09-10 14:15:26.222997 ; Serializer     ; Error       ; XML Line 400: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin?
+2026-09-10 14:15:26.222998 ; Serializer     ; Error       ; XML Line 400: Unable to deserialize test step.
+2026-09-10 14:15:26.223874 ; Main           ; Error       ; Unable to load test plan.
+2026-09-10 14:15:26.225579 ; Main           ; Debug       ; PlanLoadException: XML Line 4: Unable to locate type 'can_dbc_python.can_message_rx.CanMessageRx'. Are you missing a plugin? XML Line 4: Unable to deserialize test step. XML Line 82: Unable to locate type 'can_dbc_python.can_message_rx.CanMessageRx'. Are you missing a plugin? XML Line 82: Unable to deserialize test step. XML Line 156: Unable to locate type 'can_dbc_python.can_message_rx.CanMessageRx'. Are you missing a plugin? XML Line 156: Unable to deserialize test step. XML Line 230: Unable to locate type 'can_dbc_python.can_message_rx.CanMessageRx'. Are you missing a plugin? XML Line 230: Unable to deserialize test step. XML Line 308: Unable to locate type 'can_dbc_python.can_message_tx.CanMessageTx'. Are you missing a plugin? XML Line 308: Unable to deserialize test step. XML Line 378: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin? XML Line 378: Unable to deserialize test step. XML Line 389: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin? XML Line 389: Unable to deserialize test step. XML Line 400: Unable to locate type 'OpenECU.WriteCalibration.WriteCalibration'. Are you missing a plugin? XML Line 400: Unable to deserialize test step.
+2026-09-10 14:15:26.231889 ; Main           ; Debug       ;     at OpenTap.TestPlan.Load(Stream stream, String path, Boolean cacheXml, TapSerializer serializer, Boolean IgnoreLoadErrors)
+2026-09-10 14:15:26.231896 ; Main           ; Debug       ;     at OpenTap.Cli.RunCliAction.HandleExternalParametersAndLoadPlan(String planToLoad)
+2026-09-10 14:15:26.231898 ; Main           ; Debug       ;     at OpenTap.Cli.RunCliAction.Execute(CancellationToken cancellationToken)
+2026-09-10 14:15:26.233524 ; Main           ; Debug       ; Exception caught at:
+2026-09-10 14:15:26.235038 ; Main           ; Debug       ;     at Int32 Execute(System.Threading.CancellationToken)
+2026-09-10 14:15:26.235071 ; Main           ; Debug       ;     at Int32 PerformExecute(OpenTap.Cli.ICliAction, System.String[])
+2026-09-10 14:15:26.235077 ; Main           ; Debug       ;     at Int32 Execute(System.String[])
+2026-09-10 14:15:26.235085 ; Main           ; Debug       ;     at Void Execute()
+2026-09-10 14:15:26.235098 ; Main           ; Debug       ;     ...
+2026-09-10 14:15:26.235118 ; CLI            ; Debug       ; CLI action returned exit code: 70 [148 ms]

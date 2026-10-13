@@ -1,0 +1,42 @@
+﻿2026-09-10 13:33:24.530319 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\tap 2026-09-10 13-33-24.txt'. [2.98 ms]
+2026-09-10 13:33:24.547570 ; OperatingSystem ; Debug       ; OS is windows: Path.DirectorySeparatorChar == '\'
+2026-09-10 13:33:24.559741 ; Session        ; Debug       ; Running '"C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\tap.dll"' in 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release'.
+2026-09-10 13:33:24.585993 ; AssemblyFinder ; Debug       ; Found 12/30 assembly files. [9.93 ms]
+2026-09-10 13:33:24.666712 ; Searcher       ; Debug       ; Ordered 8 assemblies according to references. [77.2 ms]
+2026-09-10 13:33:24.692734 ; PluginManager  ; Debug       ; Found 4 plugin assemblies containing 189 plugin types. [102 ms]
+2026-09-10 13:33:24.693526 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.dll
+2026-09-10 13:33:24.693581 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Package.dll
+2026-09-10 13:33:24.693605 ; PluginManager  ; Debug       ; Found version 0.0.0            of TapRunner.StatusListener.dll
+2026-09-10 13:33:24.693612 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Plugins.BasicSteps.dll
+2026-09-10 13:33:24.693638 ; PluginManager  ; Debug       ; Searched 12 Assemblies. [105 ms]
+2026-09-10 13:33:24.707040 ; Settings       ; Debug       ; No settings file exists for EngineSettings. A new instance with default values has been created. [7.18 ms]
+2026-09-10 13:33:24.718213 ; AssemblyData   ; Debug       ; Loaded OpenTap. [359 us]
+2026-09-10 13:33:24.737764 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\SessionLog 2026-09-10 13-33-24.txt'. [12.3 ms]
+2026-09-10 13:33:24.778218 ; SystemInfo     ; Debug       ; Microsoft Windows 10.0.26200X64
+2026-09-10 13:33:24.778233 ; SystemInfo     ; Debug       ; .NET 9.0.20
+2026-09-10 13:33:24.778634 ; SystemInfo     ; Debug       ; OpenTAP Engine 9.33.0+56d4c214 X64
+2026-09-10 13:33:24.780449 ; AssemblyData   ; Debug       ; Loaded OpenTap.Package. [1.71 ms]
+2026-09-10 13:33:24.782906 ; tap            ; Information ; OpenTAP Command Line Interface (9.33.0+56d4c214)
+2026-09-10 13:33:24.782916 ; tap            ; Information ; Usage: "tap.exe <command> [<subcommand(s)>] [<args>]" 
+2026-09-10 13:33:24.782917 ; tap            ; Information ; Valid commands are:
+2026-09-10 13:33:24.784092 ; tap            ; Information ; run                Run a test plan.
+2026-09-10 13:33:24.784193 ; tap            ; Information ; package            
+2026-09-10 13:33:24.784197 ; tap            ; Information ;    create          Create a package based on an XML description file.
+2026-09-10 13:33:24.784200 ; tap            ; Information ;    download        Download one or more packages.
+2026-09-10 13:33:24.784203 ; tap            ; Information ;    install         Install one or more packages.
+2026-09-10 13:33:24.784205 ; tap            ; Information ;    list            List locally installed packages and browse the online package repository.
+2026-09-10 13:33:24.784207 ; tap            ; Information ;    show            Show information about a package.
+2026-09-10 13:33:24.784209 ; tap            ; Information ;    test            Run tests on one or more packages.
+2026-09-10 13:33:24.784211 ; tap            ; Information ;    uninstall       Uninstall one or more packages.
+2026-09-10 13:33:24.784222 ; tap            ; Information ;    verify          Verify the integrity of one or all installed packages by checking their fingerprints.
+2026-09-10 13:33:24.784225 ; tap            ; Information ; sdk                
+2026-09-10 13:33:24.784227 ; tap            ; Information ;    gitversion      Calculate the semantic version number for a specific git commit.
+2026-09-10 13:33:24.784230 ; tap            ; Information ; image              
+2026-09-10 13:33:24.784231 ; tap            ; Information ;    install         Install the specified image, overwriting the existing installation.
+2026-09-10 13:33:24.784233 ; tap            ; Information ;  Run "tap.exe <command> [<subcommand(s)>] -h" to get additional help for a specific command. 
+2026-09-10 13:33:24.814791 ; AssemblyData   ; Debug       ; Loaded OpenTap.Plugins.BasicSteps. [1.06 ms]
+2026-09-10 13:33:24.908096 ; AssemblyData   ; Debug       ; Loaded System.Private.CoreLib. [1.90 us]
+2026-09-10 13:33:25.027453 ; Installation   ; Debug       ; OpenTAP                     - 9.33.0+56d4c214
+2026-09-10 13:33:25.027466 ; Installation   ; Debug       ; TapRunner.StatusListener    - 1.0.0
+2026-09-10 13:33:25.027467 ; Installation   ; Debug       ; Keysight IO Libraries Suite - 18.4.30319
+2026-09-10 13:33:25.027469 ; Installation   ; Debug       ; PathWave License Manager    - 7.5.0+0128b42c

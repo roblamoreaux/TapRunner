@@ -1,0 +1,55 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "TapRunner.StatusListener/1.0.0": {
+        "dependencies": {
+          "OpenTAP": "9.33.0",
+          "TapRunner.Protocol": "1.0.0"
+        },
+        "runtime": {
+          "TapRunner.StatusListener.dll": {}
+        }
+      },
+      "OpenTAP/9.33.0": {
+        "runtime": {
+          "lib/netstandard2.0/OpenTap.dll": {
+            "assemblyVersion": "9.33.0.0",
+            "fileVersion": "9.33.0.0"
+          }
+        }
+      },
+      "TapRunner.Protocol/1.0.0": {
+        "runtime": {
+          "TapRunner.Protocol.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TapRunner.StatusListener/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "OpenTAP/9.33.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2ke8u08EySBMmypW/0sBCVFB8sWx5WvbMLxcaq3X7m+/tZAhdNaQKF6xqB45cveMZlj3muUj535X6misKC94lA==",
+      "path": "opentap/9.33.0",
+      "hashPath": "opentap.9.33.0.nupkg.sha512"
+    },
+    "TapRunner.Protocol/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

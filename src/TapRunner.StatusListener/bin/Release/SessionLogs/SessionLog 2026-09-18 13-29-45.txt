@@ -1,0 +1,50 @@
+﻿2026-09-18 13:29:45.863398 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\tap 2026-09-18 13-29-45.txt'. [1.83 ms]
+2026-09-18 13:29:45.876398 ; OperatingSystem ; Debug       ; OS is windows: Path.DirectorySeparatorChar == '\'
+2026-09-18 13:29:45.888979 ; Session        ; Debug       ; Deleting log file: C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\SessionLog 2026-09-18 07-36-29.txt
+2026-09-18 13:29:45.895077 ; Session        ; Debug       ; Running '"C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\tap.dll" package create "C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\\package.xml" --install' in 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release'.
+2026-09-18 13:29:45.917108 ; AssemblyFinder ; Debug       ; Found 12/30 assembly files. [10.8 ms]
+2026-09-18 13:29:45.965966 ; Searcher       ; Debug       ; Ordered 8 assemblies according to references. [46.2 ms]
+2026-09-18 13:29:45.984236 ; PluginManager  ; Debug       ; Found 4 plugin assemblies containing 189 plugin types. [64.6 ms]
+2026-09-18 13:29:45.984569 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.dll
+2026-09-18 13:29:45.984594 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Package.dll
+2026-09-18 13:29:45.984611 ; PluginManager  ; Debug       ; Found version 0.0.0            of TapRunner.StatusListener.dll
+2026-09-18 13:29:45.984618 ; PluginManager  ; Debug       ; Found version 9.33.0+56d4c214  of OpenTap.Plugins.BasicSteps.dll
+2026-09-18 13:29:45.984636 ; PluginManager  ; Debug       ; Searched 12 Assemblies. [65.7 ms]
+2026-09-18 13:29:45.993203 ; Settings       ; Debug       ; No settings file exists for EngineSettings. A new instance with default values has been created. [5.15 ms]
+2026-09-18 13:29:46.002152 ; AssemblyData   ; Debug       ; Loaded OpenTap. [195 us]
+2026-09-18 13:29:46.023026 ; Session        ; Debug       ; Session log loaded as 'C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\SessionLogs\SessionLog 2026-09-18 13-29-45.txt'. [16.3 ms]
+2026-09-18 13:29:46.048531 ; AssemblyData   ; Debug       ; Loaded OpenTap.Package. [721 us]
+2026-09-18 13:29:46.053774 ; AssemblyData   ; Debug       ; Loaded OpenTap.Plugins.BasicSteps. [609 us]
+2026-09-18 13:29:46.089047 ; AssemblyData   ; Debug       ; Loaded System.Private.CoreLib. [1.60 us]
+2026-09-18 13:29:46.103383 ; CLI            ; Debug       ; Executing CLI action: package \ create
+2026-09-18 13:29:46.106598 ; SystemInfo     ; Debug       ; Microsoft Windows 10.0.26200X64
+2026-09-18 13:29:46.106607 ; SystemInfo     ; Debug       ; .NET 9.0.20
+2026-09-18 13:29:46.106950 ; SystemInfo     ; Debug       ; OpenTAP Engine 9.33.0+56d4c214 X64
+2026-09-18 13:29:46.119662 ; VariableExpander ; Debug       ; Initialized variable expander:
+2026-09-18 13:29:46.127815 ; Package        ; Debug       ; Package preprocessing completed. [14.6 ms]
+2026-09-18 13:29:46.161293 ; Resolver       ; Debug       ; Found match for DotNet.Glob, Version=3.0.1.0, Culture=neutral, PublicKeyToken=b68cc888b4f632d1 in C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\Dependencies\DotNet.Glob.3.0.1.0\DotNet.Glob.dll
+2026-09-18 13:29:46.188281 ; Searcher       ; Debug       ; Ordered 28 assemblies according to references. [10.8 ms]
+2026-09-18 13:29:46.190935 ; Installation   ; Debug       ; OpenTAP                     - 9.33.0+56d4c214
+2026-09-18 13:29:46.190940 ; Installation   ; Debug       ; TapRunner.StatusListener    - 1.2.0
+2026-09-18 13:29:46.190941 ; Installation   ; Debug       ; Keysight IO Libraries Suite - 18.4.30319
+2026-09-18 13:29:46.190942 ; Installation   ; Debug       ; PathWave License Manager    - 7.5.0+0128b42c
+2026-09-18 13:29:46.204297 ; AssemblyData   ; Debug       ; Loaded TapRunner.StatusListener. [590 us]
+2026-09-18 13:29:46.221855 ; Package        ; Information ; Satisfying assembly reference to OpenTap by adding dependency on package OpenTAP
+2026-09-18 13:29:46.221875 ; Package        ; Information ; Adding dependency on package 'OpenTAP' version 9.33.0+56d4c214
+2026-09-18 13:29:46.227810 ; Package        ; Debug       ; Using temporary folder at 'C:\Users\TazTransfer\AppData\Local\Temp\yik1fajr.uzx'
+2026-09-18 13:29:46.228902 ; Package        ; Debug       ; Updating version info for 'TapRunner.StatusListener.dll' [588 us]
+2026-09-18 13:29:46.231693 ; Resolver       ; Debug       ; Found match for Mono.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e in C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\Dependencies\Mono.Cecil.0.11.4.0\Mono.Cecil.dll
+2026-09-18 13:29:46.472402 ; Package        ; Information ; Updated assembly version info using Mono method. [244 ms]
+2026-09-18 13:29:46.474172 ; Package        ; Debug       ; Available custom actions for 'create' stage. (2 actions: OpenTap.Package.IncludePackageDependencies, OpenTap.Package.FileHashPackageAction)
+2026-09-18 13:29:46.476268 ; Package        ; Information ; Package action IncludePackageDependencies completed [1.25 ms]
+2026-09-18 13:29:46.530055 ; Package        ; Information ; Package action FileHashPackageAction completed [53.7 ms]
+2026-09-18 13:29:46.530198 ; Package        ; Information ; Creating OpenTAP package.
+2026-09-18 13:29:46.532120 ; OperatingSystem ; Debug       ; OS is windows: Path.DirectorySeparatorChar == '\'
+2026-09-18 13:29:46.536931 ; Package        ; Debug       ; Compressed 'C:\Users\TazTransfer\AppData\Local\Temp\yik1fajr.uzx\Versioned\TapRunner.StatusListener.dll' [5.52 ms]
+2026-09-18 13:29:46.537626 ; Package        ; Debug       ; Compressed 'TapRunner.Protocol.dll' [682 us]
+2026-09-18 13:29:46.583517 ; Package        ; Debug       ; Verifying package integrity...
+2026-09-18 13:29:46.606601 ; Package        ; Debug       ; Verified metadata integrity. [23.0 ms]
+2026-09-18 13:29:46.606829 ; Package        ; Debug       ; Verified archive integrity. [23.3 ms]
+2026-09-18 13:29:46.610279 ; PackageAction  ; Information ; OpenTAP plugin package 'TapRunner.StatusListener.1.2.0.TapPackage' containing 'TapRunner.StatusListener' successfully created.
+2026-09-18 13:29:46.611859 ; PackageAction  ; Information ; Installed 'TapRunner.StatusListener' (C:\Users\TazTransfer\OneDrive - New Eagle\Documents\Claude\TapRunner\src\TapRunner.StatusListener\bin\Release\Packages\TapRunner.StatusListener\package.xml)
+2026-09-18 13:29:46.611867 ; CLI            ; Debug       ; CLI action returned exit code: 0 [508 ms]

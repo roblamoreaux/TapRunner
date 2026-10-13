@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestPlan type="OpenTap.TestPlan">
+  <Steps>
+    <TestStep type="OpenECU.ReadCalibration.ReadCalibration" Id="dbf64d01-aedd-4c33-a16f-604d8bc8c3ed">
+      <Dut Source="OpenTap.DutSettings">OpenECU NX3</Dut>
+      <Calibration>TSTc_e_TestMode</Calibration>
+      <Available>
+        <String>TSTc_e_TestMode</String>
+      </Available>
+      <Filter>TSTc_e_TestMode</Filter>
+      <CalibrationValue>192</CalibrationValue>
+      <CheckLimits>false</CheckLimits>
+      <MinimumValue>-99999</MinimumValue>
+      <MaximumValue>99999</MaximumValue>
+      <Name Metadata="Step Name">ReadCal TSTc_e_TestMode</Name>
+      <ChildTestSteps />
+    </TestStep>
+  </Steps>
+  <Package.Dependencies>
+    <Package Name="OpenTAP" Version="^9.29.1+335b2cbe" />
+  </Package.Dependencies>
+</TestPlan>
