@@ -48,6 +48,7 @@ namespace TapRunner.App
             ClearFailureLogOnRunCheckBox.IsChecked = workingConfig.ClearFailureLogOnRun;
             PowerOnPlanText.Text = workingConfig.PowerOnPlanPath;
             PowerOffPlanText.Text = workingConfig.PowerOffPlanPath;
+            ResultsViewerPathText.Text = workingConfig.ResultsViewerPath;
             ShowHiddenGreyedOutCheckBox.IsChecked = workingConfig.ShowHiddenParametersGreyedOut;
 
             bool IsHiddenName(string name) =>
@@ -91,6 +92,20 @@ namespace TapRunner.App
                     "Applies to the next run; close the OpenTAP Editor first, or it may save its own copy over it.";
             }
             SqliteDatabaseNote.Visibility = Visibility.Visible;
+        }
+
+        void BrowseResultsViewer_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = "Select the test results viewer",
+                Filter = "Programs (*.exe)|*.exe|All files (*.*)|*.*",
+            };
+            var dir = System.IO.Path.GetDirectoryName(ResultsViewerPathText.Text.Trim());
+            if (!string.IsNullOrEmpty(dir) && System.IO.Directory.Exists(dir))
+                dialog.InitialDirectory = dir;
+            if (dialog.ShowDialog(this) == true)
+                ResultsViewerPathText.Text = dialog.FileName;
         }
 
         void BrowseSqliteDatabase_Click(object sender, RoutedEventArgs e)
@@ -341,6 +356,7 @@ namespace TapRunner.App
             workingConfig.ClearFailureLogOnRun = ClearFailureLogOnRunCheckBox.IsChecked == true;
             workingConfig.PowerOnPlanPath = PowerOnPlanText.Text.Trim();
             workingConfig.PowerOffPlanPath = PowerOffPlanText.Text.Trim();
+            workingConfig.ResultsViewerPath = ResultsViewerPathText.Text.Trim();
             workingConfig.ShowHiddenParametersGreyedOut = ShowHiddenGreyedOutCheckBox.IsChecked == true;
 
             var namedRows = defaultParameterRows
@@ -399,6 +415,7 @@ namespace TapRunner.App
                 ShowHiddenParametersGreyedOut = source.ShowHiddenParametersGreyedOut,
                 PowerOnPlanPath = source.PowerOnPlanPath,
                 PowerOffPlanPath = source.PowerOffPlanPath,
+                ResultsViewerPath = source.ResultsViewerPath,
                 StatusColors = new StatusColorsConfig
                 {
                     Ready = new StatusColorConfig { Color = source.StatusColors.Ready.Color, Flash = source.StatusColors.Ready.Flash },

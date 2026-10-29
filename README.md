@@ -74,7 +74,7 @@ extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToo
 installed, so it recognizes the `.wixproj`) and Build Solution. This produces:
 
 - `src\TapRunner.App\bin\Release\net9.0-windows\TapRunner.exe` - the app, if you just want to run it as-is.
-- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.3.TapPackage` - the plugin package.
+- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.5.TapPackage` - the plugin package.
 - `src\TapRunner.Installer\bin\x64\Release\TapRunnerSetup.msi` - the installer (see below).
 
 ## Installing with TapRunnerSetup.msi
@@ -91,6 +91,16 @@ no elevation prompt). It:
    is first on `PATH` (which is how the OpenTAP installer itself makes `tap` runnable from anywhere).
    If OpenTAP isn't installed, or `tap` isn't on `PATH`, this step silently does nothing - it never
    fails or blocks the TapRunner install itself, since machine setups vary.
+
+   It runs that install from tap.exe's own folder (from 1.3.5 on). Run from anywhere else - the
+   installer's default is `C:\Windows\System32` - tap.exe still loads the bench settings, instrument
+   plugins that read config files relative to the current folder (the Riker switch matrix's
+   `RSMDEFINE.CSV`) fail, and the install crashes without installing anything. Because plugin-install
+   errors are ignored, the MSI still reports success; that is how stations kept the 1.3.3 plugin
+   through the 1.3.4 installs. To check what OpenTAP has, look at the `Version` in
+   `C:\OpenTAP\Packages\TapRunner.StatusListener\package.xml`. To install the plugin by hand, do the
+   same - from the OpenTAP folder:
+   `cd /d C:\OpenTAP` then `tap package install "%LocalAppData%\Programs\TapRunner\Plugin\TapRunner.StatusListener.<version>.TapPackage" --overwrite`.
 
 Uninstalling TapRunner (Windows Settings → Apps, or the same .msi again) removes the app and Start
 Menu shortcut, but does **not** uninstall the plugin package from OpenTAP - a live, working
@@ -157,7 +167,12 @@ original open license with no such prompt, and has everything this installer nee
   changed, and only when it was edited; the previous file is kept as `Results.xml.bak`. The field
   is disabled with a note if `Results.xml` or a SQLite listener in it isn't found - add the listener
   in OpenTAP first. Close the OpenTAP Editor before changing it, or the Editor may save its own copy over it.
-- `DefaultParameterValues` - name → value overrides, edited via **Settings → Default parameter values**.
+- `ResultsViewerPath` - the program the main window's **View Results** button runs, with the SQLite
+  results database (from `Results.xml`, a bare name resolved to the tap.exe folder) as its first
+  argument. Edited via **Settings → Test results viewer**; defaults to
+  `C:\OpenTAP\TestRunViewer\TestRunViewerSqlite.exe`. The viewer must open a file given on its command
+  line for this to land on the database rather than its own last-used one.
+- `DefaultParameterValues` - name → value overrides, edited on the **Settings → Parameters** tab.
   A blank/missing entry falls back to the TapPlan's own default. These are only changed
   deliberately in Settings - a value typed into the dialog for one run is never silently saved
   as the new default. Use the same short name shown in the main window (e.g. `PowerOn`), not
@@ -198,9 +213,29 @@ original open license with no such prompt, and has everything this installer nee
 - **Failed** opens a separate, scrollable TapRunner window (not an external editor) showing the
   failure log - a second file saved next to the main log as `<name>.Failures.txt`, containing only
   the steps that finished with a `Fail` or `Error` verdict. Each entry is a multi-line block
-  (timestamp, verdict, step name, then every published result on its own line) rather than the
-  single compact line shown in the app's own step history. The window opens scrolled to the most
-  recent failure; **Refresh** re-reads the file for a run still in progress.
+  (timestamp, verdict, step name, the step's limits, then every published result on its own line)
+  rather than the single compact line shown in the app's own step history. The window opens scrolled
+  to the most recent failure; **Refresh** re-reads the file for a run still in progress, and
+  **Save As...** saves a copy of the whole failure log to a file you choose.
+- The `Limits:` line comes from the step's settings in its **Limits** group, as OpenTAP records them
+  with each step run (`TestStepRun.Parameters` - the same place the Failed-Only Result Logger reads
+  them), so it doesn't matter what the properties are called in code (the LabJack steps' `MinLimit`
+  and the ReadMeasurement steps' `MinimumValue` are both "Minimum Value" there). "Minimum Value" /
+  "Maximum Value" become `Min=` / `Max=`, any other setting in that group is listed as `Name=Value`,
+  and `(limit check off)` is added when its "Check Limits" setting is false. Steps without a Limits
+  group - e.g. group steps like `Check VREFs` - just have no limits line. For example:
+
+  ```
+  [2026-10-28 11:21:32] FAIL  Read QCA Voltage ON
+  ----------------------------------------------------------------------
+  Limits: Min=3.2, Max=3.4
+  Read Measurement: Measurement=AIN_V_3V3QCA
+  Value=1.99707
+  ```
+
+  Needs the 1.3.5 plugin package (or later) installed in OpenTAP; an older plugin sends no limits.
+  (The 1.3.4 plugin read them from the plan's XML instead; it never got installed on the station -
+  see the installer notes above - and was replaced by this.)
 - An `Error` step's entry also carries the error message the step threw (e.g. `Error: Simulated
   instrument error`), which is usually all an errored step has to report - it's shown in the step
   history line too. An Error that no step owns - typically a resource (instrument/DUT) failing to

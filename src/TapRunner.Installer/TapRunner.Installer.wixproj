@@ -4,7 +4,7 @@
     <OutputName>TapRunnerSetup</OutputName>
     <!-- The installer always packages Release bits, regardless of which configuration it is itself
          built in - an installer built from Debug binaries isn't something we want to hand out. -->
-    <DefineConstants>PluginPackagePath=..\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.3.TapPackage</DefineConstants>
+    <DefineConstants>PluginPackagePath=..\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.5.TapPackage</DefineConstants>
     <SuppressPdbOutput>true</SuppressPdbOutput>
     <Platform>x64</Platform>
     <!-- ICE38/ICE64/ICE91 are the classic Windows Installer validation rules that expect every

@@ -19,7 +19,8 @@
         "runtime": {
           "lib/netstandard2.0/OpenTap.dll": {
             "assemblyVersion": "9.33.0.0",
-            "fileVersion": "9.33.0.0"
+            "fileVersion": "9.33.0.0",
+            "localPath": "OpenTap.dll"
           }
         }
       },

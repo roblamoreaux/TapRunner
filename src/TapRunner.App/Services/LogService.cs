@@ -168,7 +168,7 @@ namespace TapRunner.App.Services
         /// a Fail or Error verdict. Never trimmed/capped - unlike the in-app step history, this
         /// file just keeps growing for as long as the log file itself exists. Queued - returns at once.
         /// </summary>
-        public void AppendFailure(string stepName, string verdict, string outputs, string errorText = "")
+        public void AppendFailure(string stepName, string verdict, string outputs, string errorText = "", string limits = "")
         {
             try
             {
@@ -192,7 +192,8 @@ namespace TapRunner.App.Services
 
                 bool hasError = !string.IsNullOrWhiteSpace(errorText);
                 bool hasOutputs = !string.IsNullOrWhiteSpace(outputs);
-                if (hasError || hasOutputs)
+                bool hasLimits = !string.IsNullOrWhiteSpace(limits);
+                if (hasError || hasOutputs || hasLimits)
                     sb.Append('-', 70).AppendLine();
 
                 if (hasError)
@@ -201,6 +202,10 @@ namespace TapRunner.App.Services
                     foreach (var errorLine in errorText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
                         sb.AppendLine($"Error: {errorLine.Trim()}");
                 }
+
+                // The step's own limit settings, just above the values it measured.
+                if (hasLimits)
+                    sb.AppendLine($"Limits: {limits.Trim()}");
 
                 if (hasOutputs)
                 {

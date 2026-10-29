@@ -34,6 +34,7 @@ namespace TapRunner.App
         bool receivedTerminalStatus;
         bool userInitiatedAbort;
         bool errorStepLoggedThisRun;
+        int planLoadGeneration;    // see LoadPlanAsync
         bool failResolvedThisRun;  // a step failed but its parent step cleared it
         bool errorResolvedThisRun;
         DateTime runProcessStart;
@@ -221,6 +222,10 @@ namespace TapRunner.App
 
         async Task LoadPlanAsync(string path)
         {
+            // If a second load starts while one is still reading, only the newest may fill the
+            // list - otherwise both plans' parameters end up in it.
+            var generation = ++planLoadGeneration;
+
             RunButton.IsEnabled = false;
             BrowseButton.IsEnabled = false;
             SetStatusMessage($"Reading parameters from \"{Path.GetFileName(path)}\"...");
@@ -231,6 +236,8 @@ namespace TapRunner.App
             try
             {
                 var planParameters = await tapPlanService.ReadExternalParametersAsync(path);
+                if (generation != planLoadGeneration)
+                    return; // superseded by a newer load
 
                 foreach (var p in planParameters)
                 {
@@ -252,14 +259,20 @@ namespace TapRunner.App
             }
             catch (Exception ex)
             {
+                if (generation != planLoadGeneration)
+                    return;
                 SetStatusMessage($"Failed to read parameters: {ex.Message}");
                 MessageBox.Show(this, $"Could not read external parameters from this plan:\n\n{ex.Message}",
                     "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
-                RunButton.IsEnabled = true;
-                BrowseButton.IsEnabled = true;
+                // The newer load re-enables these when it finishes.
+                if (generation == planLoadGeneration)
+                {
+                    RunButton.IsEnabled = true;
+                    BrowseButton.IsEnabled = true;
+                }
             }
         }
 
@@ -542,7 +555,7 @@ namespace TapRunner.App
                     bool isError = string.Equals(step.Verdict, "Error", StringComparison.OrdinalIgnoreCase);
                     if (isError || string.Equals(step.Verdict, "Fail", StringComparison.OrdinalIgnoreCase))
                     {
-                        logService.AppendFailure(step.Name, step.Verdict, step.Outputs, step.Error);
+                        logService.AppendFailure(step.Name, step.Verdict, step.Outputs, step.Error, step.Limits);
                         if (isError)
                             errorStepLoggedThisRun = true;
                     }
@@ -872,6 +885,51 @@ namespace TapRunner.App
             catch (Exception ex)
             {
                 MessageBox.Show(this, $"Could not open the log file:\n{path}\n\n{ex.Message}",
+                    "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// Opens the SQLite results database (from OpenTAP's Settings\Results.xml - the one results
+        /// are being stored in) in the viewer set under Settings, passed as its first argument.
+        /// </summary>
+        void ViewResultsButton_Click(object sender, RoutedEventArgs e)
+        {
+            var viewer = config.ResultsViewerPath?.Trim() ?? "";
+            if (!File.Exists(viewer))
+            {
+                MessageBox.Show(this, $"The test results viewer was not found:\n{viewer}\n\nSet it under Settings.",
+                    "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var database = OpenTapResultsSettings.ReadSqliteDatabasePath(
+                OpenTapResultsSettings.GetResultsXmlPath(config.TapExecutablePath), out var problem);
+            if (database == null)
+            {
+                MessageBox.Show(this, problem, "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // A bare name in Results.xml is in the tap.exe folder (see Settings).
+            var tapDir = Path.GetDirectoryName(config.TapExecutablePath) ?? "";
+            var fullPath = Path.IsPathRooted(database) ? database : Path.Combine(tapDir, database);
+            if (!File.Exists(fullPath))
+            {
+                MessageBox.Show(this, $"The results database doesn't exist yet:\n{fullPath}\n\nIt is created by the first run that stores results in it.",
+                    "TapRunner", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                var start = new ProcessStartInfo(viewer) { UseShellExecute = false, WorkingDirectory = Path.GetDirectoryName(viewer) };
+                start.ArgumentList.Add(fullPath);
+                Process.Start(start);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, $"Could not start the test results viewer:\n{viewer}\n\n{ex.Message}",
                     "TapRunner", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

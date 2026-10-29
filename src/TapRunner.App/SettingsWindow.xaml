@@ -29,6 +29,12 @@
                     </DockPanel>
                     <TextBlock x:Name="SqliteDatabaseNote" Foreground="Gray" FontSize="11" TextWrapping="Wrap" Margin="0,2,0,0" Visibility="Collapsed"/>
 
+                    <TextBlock Text="Test results viewer (run by the main window's &quot;View Results&quot; button with the SQLite results database above):" Margin="0,10,0,2" TextWrapping="Wrap"/>
+                    <DockPanel>
+                        <Button Content="Browse..." Width="80" DockPanel.Dock="Right" Margin="6,0,0,0" Click="BrowseResultsViewer_Click"/>
+                        <TextBox x:Name="ResultsViewerPathText" VerticalContentAlignment="Center"/>
+                    </DockPanel>
+
                     <TextBlock Text="Working directory (directory to run OpenTAP in):" Margin="0,10,0,2"/>
                     <DockPanel>
                         <Button Content="Browse..." Width="80" DockPanel.Dock="Right" Margin="6,0,0,0" Click="BrowseWorkingDirectory_Click"/>
@@ -65,14 +71,24 @@
                     <CheckBox x:Name="ClearFailureLogOnRunCheckBox" Margin="0,6,0,0">
                         <TextBlock Text="Clear the failure log at the start of each run (unchecked = keep accumulating across runs)" TextWrapping="Wrap"/>
                     </CheckBox>
+                </StackPanel>
+              </ScrollViewer>
+            </TabItem>
 
-                    <DockPanel Margin="0,14,0,4">
+            <TabItem Header="Parameters">
+                <DockPanel Margin="10">
+                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,4">
                         <Button x:Name="CopyFromCurrentPlanButton" Content="Copy From Current Plan" Padding="6,1" FontSize="11"
                                 DockPanel.Dock="Right" VerticalAlignment="Top" Margin="6,0,0,0" Click="CopyFromCurrentPlanButton_Click"
                                 ToolTip="Copy every parameter currently shown in the main window, with its current value, into the list below."/>
                         <TextBlock Text="Default parameter values (blank = use the TapPlan's own default; a value here always overrides the TapPlan's, serial number fields included):" TextWrapping="Wrap"/>
                     </DockPanel>
-                    <DataGrid x:Name="DefaultParametersGrid" Height="180" AutoGenerateColumns="False"
+                    <CheckBox x:Name="ShowHiddenGreyedOutCheckBox" DockPanel.Dock="Bottom" Margin="0,6,0,0">
+                        <TextBlock Text="Show hidden parameters greyed out (still editable) instead of hiding them" TextWrapping="Wrap"/>
+                    </CheckBox>
+                    <TextBlock DockPanel.Dock="Bottom" Margin="0,4,0,0" TextWrapping="Wrap" Foreground="DimGray"
+                               Text="Hidden parameters are kept out of the main window's parameter list, but are still passed to the test with their default value here (or the TapPlan's own if left blank)."/>
+                    <DataGrid x:Name="DefaultParametersGrid" AutoGenerateColumns="False"
                               CanUserAddRows="True" CanUserDeleteRows="True" CanUserSortColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Parameter Name" Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
@@ -80,13 +96,7 @@
                             <DataGridCheckBoxColumn Header="Hidden" Binding="{Binding IsHidden, UpdateSourceTrigger=PropertyChanged}" Width="60"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap" Foreground="DimGray"
-                               Text="Hidden parameters are kept out of the main window's parameter list, but are still passed to the test with their default value here (or the TapPlan's own if left blank)."/>
-                    <CheckBox x:Name="ShowHiddenGreyedOutCheckBox" Margin="0,6,0,0">
-                        <TextBlock Text="Show hidden parameters greyed out (still editable) instead of hiding them" TextWrapping="Wrap"/>
-                    </CheckBox>
-                </StackPanel>
-              </ScrollViewer>
+                </DockPanel>
             </TabItem>
 
             <TabItem Header="Status Colors">

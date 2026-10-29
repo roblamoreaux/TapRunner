@@ -3,7 +3,7 @@
 InfoLink: Specifies a location where additional information about the package can be found.
 Version: The version of the package. Must be in a semver 2.0 compatible format.
 -->
-<Package Name="TapRunner.StatusListener" xmlns="http://opentap.io/schemas/package" InfoLink="" Version="1.3.3" OS="Windows">
+<Package Name="TapRunner.StatusListener" xmlns="http://opentap.io/schemas/package" InfoLink="" Version="1.3.5" OS="Windows">
   <Description>Reports live TestPlan run status (Running / step failures / final verdict) from a running "tap.exe" process to the TapRunner desktop app over a named pipe, and accepts a graceful stop request back from it.</Description>
   <Files>
     <File Path="Packages/TapRunner.StatusListener/TapRunner.StatusListener.dll" SourcePath="TapRunner.StatusListener.dll">

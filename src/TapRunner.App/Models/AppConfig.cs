@@ -104,6 +104,12 @@ namespace TapRunner.App.Models
         /// <summary>Plan run by the "Power Off" button; resolved the same way as <see cref="PowerOnPlanPath"/>.</summary>
         public string PowerOffPlanPath { get; set; } = "PowerOFF.TapPlan";
 
+        /// <summary>
+        /// Program run by the main window's "View Results" button, with the SQLite results
+        /// database (from OpenTAP's Settings\Results.xml) as its first argument.
+        /// </summary>
+        public string ResultsViewerPath { get; set; } = @"C:\OpenTAP\TestRunViewer\TestRunViewerSqlite.exe";
+
         public StatusColorsConfig StatusColors { get; set; } = new();
     }
 }

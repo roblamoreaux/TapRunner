@@ -4,7 +4,7 @@
 
   <Package Name="TapRunner"
            Manufacturer="New Eagle"
-           Version="1.3.3.0"
+           Version="1.3.5.0"
            UpgradeCode="F6A46D88-35A5-4A92-B4AC-BC77526584E6"
            Scope="perUser">
 
@@ -49,9 +49,13 @@
     <!-- Best-effort install of the StatusListener plugin into OpenTAP (relies on tap.exe being on PATH,
          which the OpenTAP installer sets up). Never blocks/fails the TapRunner install if OpenTAP or
          tap.exe isn't found - the plugin is still available under <install dir>\Plugin for a manual
-         "tap package install" later. -->
+         "tap package install" later.
+         It runs from tap.exe's own folder (the "for ... %~dp$PATH:I" finds it on PATH): tap.exe
+         loads the bench settings even for a package install, and some instrument plugins read their
+         config files relative to the current directory - from the installer's default
+         C:\Windows\System32 that fails and the install crashes without installing anything. -->
     <SetProperty Id="InstallPlugin"
-                 Value="&quot;cmd.exe&quot; /c tap.exe package install &quot;[PLUGINFOLDER]TapRunner.StatusListener.1.3.3.TapPackage&quot; --non-interactive -y --overwrite"
+                 Value="&quot;cmd.exe&quot; /c for %I in (tap.exe) do @(cd /d &quot;%~dp$PATH:I&quot; &amp;&amp; tap.exe package install &quot;[PLUGINFOLDER]TapRunner.StatusListener.1.3.5.TapPackage&quot; --non-interactive -y --overwrite)"
                  Before="InstallPlugin"
                  Sequence="execute" />
     <CustomAction Id="InstallPlugin"
@@ -61,8 +65,28 @@
                   Return="ignore"
                   Impersonate="yes" />
 
+    <!-- If Test Run Viewer is installed (its own MSI records its folder under HKCU), point
+         TapRunner's View Results setting at it (runs TapRunner.exe with its set-results-viewer switch). -->
+    <Property Id="TESTRUNVIEWEREXE">
+      <RegistrySearch Id="TestRunViewerFolder" Root="HKCU" Key="Software\New Eagle\TestRunViewerSqlite"
+                      Name="InstallFolder" Type="directory">
+        <FileSearch Id="TestRunViewerExe" Name="TestRunViewerSqlite.exe" />
+      </RegistrySearch>
+    </Property>
+    <SetProperty Id="SetResultsViewer"
+                 Value="&quot;[INSTALLFOLDER]TapRunner.exe&quot; --set-results-viewer &quot;[TESTRUNVIEWEREXE]&quot;"
+                 Before="SetResultsViewer"
+                 Sequence="execute" />
+    <CustomAction Id="SetResultsViewer"
+                  DllEntry="WixQuietExec"
+                  BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)"
+                  Execute="deferred"
+                  Return="ignore"
+                  Impersonate="yes" />
+
     <InstallExecuteSequence>
       <Custom Action="InstallPlugin" After="InstallFiles" Condition="NOT Installed" />
+      <Custom Action="SetResultsViewer" After="InstallFiles" Condition="TESTRUNVIEWEREXE AND NOT Installed" />
     </InstallExecuteSequence>
 
     <Feature Id="Main" Title="TapRunner" Level="1">

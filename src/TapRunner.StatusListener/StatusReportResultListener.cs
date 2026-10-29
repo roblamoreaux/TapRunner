@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using OpenTap;
 using TapRunner.Protocol;
@@ -58,6 +59,14 @@ namespace TapRunner.StatusListener
         /// <summary>Cap on the "outputs" summary sent per step, so one chatty step can't flood the pipe/UI.</summary>
         const int MaxOutputsLength = 300;
 
+        // A step's limit settings are recorded with its run in the "Limits" parameter group, by
+        // their display names - e.g. "Minimum Value", "Maximum Value", "Check Limits" - whatever
+        // the properties are called in code (the Failed-Only Result Logger reads them the same way).
+        const string LimitsGroup = "Limits";
+        static readonly Regex MinLimitName = new Regex(@"\b(min|minimum|lower|low)\b", RegexOptions.IgnoreCase);
+        static readonly Regex MaxLimitName = new Regex(@"\b(max|maximum|upper|high)\b", RegexOptions.IgnoreCase);
+        static readonly Regex LimitCheckName = new Regex(@"\b(check|enabled?)\b", RegexOptions.IgnoreCase);
+
         public StatusReportResultListener()
         {
             Name = "TapRunner Status";
@@ -103,6 +112,34 @@ namespace TapRunner.StatusListener
                 pipe = null;
                 writer = null;
             }
+        }
+
+        /// <summary>
+        /// "Min=…, Max=…" from the step run's "Limits" parameter group (anything else in the group
+        /// as "Name=Value"), plus "(limit check off)" when its check setting is false. Empty if the
+        /// step has no limits.
+        /// </summary>
+        static string GetStepLimits(TestStepRun stepRun)
+        {
+            var limits = stepRun.Parameters?
+                .Where(p => string.Equals(p.Group, LimitsGroup, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            if (limits == null || limits.Count == 0)
+                return "";
+
+            var check = limits.FirstOrDefault(p => LimitCheckName.IsMatch(p.Name));
+            var min = limits.FirstOrDefault(p => p != check && MinLimitName.IsMatch(p.Name));
+            var max = limits.FirstOrDefault(p => p != check && MaxLimitName.IsMatch(p.Name));
+
+            var parts = new List<string>();
+            if (min != null) parts.Add($"Min={FormatValue(min.Value)}");
+            if (max != null) parts.Add($"Max={FormatValue(max.Value)}");
+            parts.AddRange(limits.Where(p => p != check && p != min && p != max).Select(p => $"{p.Name}={FormatValue(p.Value)}"));
+
+            var text = string.Join(", ", parts);
+            if (check != null && string.Equals(FormatValue(check.Value), "false", StringComparison.OrdinalIgnoreCase))
+                text += " (limit check off)";
+            return text;
         }
 
         void ListenForCommands(NamedPipeClientStream client, TestPlanRun planRun)
@@ -186,6 +223,7 @@ namespace TapRunner.StatusListener
                 Verdict = stepRun.Verdict.ToString(),
                 Outputs = outputs,
                 Error = error,
+                Limits = GetStepLimits(stepRun),
             };
             Send(stepStatus.ToLine());
 
