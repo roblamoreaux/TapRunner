@@ -296,8 +296,13 @@ namespace TapRunner.StatusListener
                 case Verdict.Aborted:
                     Send(StatusProtocol.StatusAborted);
                     break;
+                case Verdict.NotSet:
+                    // No step set a verdict (e.g. only Delay/Log Output steps ran) - nothing failed,
+                    // so report that rather than an Error.
+                    Send(StatusProtocol.StatusNotSet);
+                    break;
                 default:
-                    // NotSet / Inconclusive: surface as Error rather than silently reporting nothing,
+                    // Inconclusive: surface as Error rather than silently reporting nothing,
                     // so an unexpected verdict is never mistaken for a normal Pass on the shop floor.
                     Send(StatusProtocol.StatusError);
                     break;

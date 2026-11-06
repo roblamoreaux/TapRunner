@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Package InfoLink="" Date="10/28/2026 19:53:54" Name="TapRunner.StatusListener" Version="1.3.5" Architecture="AnyCPU" OS="Windows" xmlns="http://opentap.io/schemas/package">
-  <Hash>eRmTZ4idRipQSlyqnnNbnP0vrxc</Hash>
+<Package InfoLink="" Date="11/06/2026 21:18:10" Name="TapRunner.StatusListener" Version="1.3.6" Architecture="AnyCPU" OS="Windows" xmlns="http://opentap.io/schemas/package">
+  <Hash>adyWS2k8P4_3BiJOqCEeUyqUuQg</Hash>
   <Description>Reports live TestPlan run status (Running / step failures / final verdict) from a running "tap.exe" process to the TapRunner desktop app over a named pipe, and accepts a graceful stop request back from it.</Description>
   <Dependencies>
     <PackageDependency Package="OpenTAP" Version="^9.33.0+56d4c214" />
@@ -19,10 +19,10 @@
           </Groups>
         </Plugin>
       </Plugins>
-      <Hash>09C98BCB779EA5705BDE49BCF8D62B7447497C23</Hash>
+      <Hash>128E4353B06F29C46E50F52CCCF317B33B7E5AE0</Hash>
     </File>
     <File Path="Packages/TapRunner.StatusListener/TapRunner.Protocol.dll">
-      <Hash>69C45B8609D8B3B9734ADE765ABF786EE7F26E87</Hash>
+      <Hash>BFCCC9251E39497DED53744683633C41B9025675</Hash>
     </File>
   </Files>
 </Package>

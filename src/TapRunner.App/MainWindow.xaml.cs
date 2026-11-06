@@ -602,6 +602,9 @@ namespace TapRunner.App
                 case StatusProtocol.StatusAborted:
                     FinishRun(AbortedCircle);
                     break;
+                case StatusProtocol.StatusNotSet:
+                    FinishRun(null); // no step set a verdict, so no verdict circle to light
+                    break;
             }
         }
 
@@ -688,10 +691,11 @@ namespace TapRunner.App
                 FailedCircle.State = CircleState.Partial;
             if (errorResolvedThisRun)
                 ErrorCircle.State = CircleState.Partial;
-            verdictCircle.State = CircleState.Full;
+            if (verdictCircle != null)
+                verdictCircle.State = CircleState.Full;
 
             RunningCircle.State = CircleState.Off;
-            SetStatusMessage($"Run finished: {verdictCircle.Label}." + (errorDetail != null ? $" {errorDetail}" : ""));
+            SetStatusMessage($"Run finished: {verdictCircle?.Label ?? "Verdict not set"}." + (errorDetail != null ? $" {errorDetail}" : ""));
         }
 
         /// <summary>

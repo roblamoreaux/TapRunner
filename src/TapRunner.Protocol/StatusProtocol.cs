@@ -45,6 +45,9 @@ namespace TapRunner.Protocol
         /// <summary>The test plan run completed with an Aborted verdict.</summary>
         public const string StatusAborted = "STATUS|ABORTED";
 
+        /// <summary>The test plan run completed with no verdict set - no step set one.</summary>
+        public const string StatusNotSet = "STATUS|NOTSET";
+
         /// <summary>
         /// Prefix for a step-status line (see <see cref="StepStatusMessage"/>): reports the name,
         /// verdict and a short summary of any results published by the most recently completed step.
