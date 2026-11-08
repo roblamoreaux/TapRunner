@@ -33,12 +33,14 @@ Runtime alongside the one OpenTAP already needs.
    through `tap.exe` just to open it - never touches any instruments/DUTs the plan's steps
    reference.
 2. When **Run** is pressed, it launches `tap.exe run <plan> -e Name=Value ... --non-interactive`
-   (or `tap.exe tui <plan>` if "Run with TUI" is checked), passing a unique named pipe name to the
+   (or, if **Edit test plan** is checked, `tap.exe tui <plan>` or `tap.exe gui <plan>` - whichever
+   editor is chosen under **Settings → Test plan editor**), passing a unique named pipe name to the
    child process via the `TAPRUNNER_PIPE` environment variable.
 3. If the `TapRunner.StatusListener` plugin is installed **and enabled** in the OpenTAP bench's
    Results settings, it connects to that pipe from inside the `tap.exe` process and reports:
    `Running` → the live overall status while steps complete → the final verdict
-   (`Passed`/`Failed`/`Error`/`Aborted`, circle goes fully lit). While running, **Passed** flashes
+   (`Passed`/`Failed`/`Error`/`Aborted`, circle goes fully lit; a run in which no step set a
+   verdict ends as "Verdict not set", with no verdict circle lit). While running, **Passed** flashes
    as long as the run is passing; **Failed**/**Error** flash while a step's Fail/Error stands. If a
    parent step clears a child's failure (finishes `Pass` anyway, e.g. a retry), that circle goes
    dim instead and **Passed** flashes again; the dim circle stays after the run ends, to show the
@@ -74,7 +76,7 @@ extension](https://marketplace.visualstudio.com/items?itemName=WixToolset.WixToo
 installed, so it recognizes the `.wixproj`) and Build Solution. This produces:
 
 - `src\TapRunner.App\bin\Release\net9.0-windows\TapRunner.exe` - the app, if you just want to run it as-is.
-- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.6.TapPackage` - the plugin package.
+- `src\TapRunner.StatusListener\bin\Release\TapRunner.StatusListener.1.3.8.TapPackage` - the plugin package.
 - `src\TapRunner.Installer\bin\x64\Release\TapRunnerSetup.msi` - the installer (see below).
 
 ## Installing with TapRunnerSetup.msi
@@ -101,6 +103,12 @@ no elevation prompt). It:
    `C:\OpenTAP\Packages\TapRunner.StatusListener\package.xml`. To install the plugin by hand, do the
    same - from the OpenTAP folder:
    `cd /d C:\OpenTAP` then `tap package install "%LocalAppData%\Programs\TapRunner\Plugin\TapRunner.StatusListener.<version>.TapPackage" --overwrite`.
+4. If Test Run Viewer is installed (its own installer records its folder under
+   `HKCU\Software\New Eagle\TestRunViewerSqlite`, and `TestRunViewerSqlite.exe` is there), sets
+   `ResultsViewerPath` in `config.json` to it, by running `TapRunner.exe --set-results-viewer "<path>"`
+   (from 1.3.6 on). This saves only that setting and exits without opening a window. It runs on
+   installs and upgrades, replacing whatever viewer was set; if Test Run Viewer isn't found the
+   setting is left alone. Like the plugin step, it never fails the install.
 
 Uninstalling TapRunner (Windows Settings → Apps, or the same .msi again) removes the app and Start
 Menu shortcut, but does **not** uninstall the plugin package from OpenTAP - a live, working
@@ -148,8 +156,15 @@ original open license with no such prompt, and has everything this installer nee
   profile name can be typed in directly if it's not in the list (or doesn't exist yet). Blank (the
   default) means don't pass `--settings` at all, so OpenTAP uses its own default ("Default"). Shown
   in the main window next to Station as "Profile: &lt;name&gt;" when set. **Only applies to a
-  headless run** - like external parameters, the `tui` CLI action has no `--settings` option, so
-  TUI mode always uses whatever profile OpenTAP itself currently has selected.
+  headless run** - like external parameters, the `tui` and `gui` editor actions have no `--settings`
+  option, so editing always uses whatever profile OpenTAP itself currently has selected.
+- `EditPlan` - whether the main window's **Edit test plan** box was checked last time (remembered
+  between runs, like the operator name). While it's checked the **Run** button reads **Edit** and
+  opens the plan in the editor below instead of running it headless.
+- `PlanEditor` - `"TUI"` (OpenTAP's text-based interface, `tap.exe tui`, the default) or `"GUI"`
+  (the OpenTAP Editor, `tap.exe gui`), chosen under **Settings → Test plan editor**. The GUI editor
+  opens without tap.exe's console window behind it. (Before 1.3.7 the box was "Edit with TUI",
+  saved as `UseTui`; that old value isn't carried over, so the box starts unchecked once.)
 - `StationName`, `OperatorName` - free text; OperatorName is also editable directly in the main window.
   StationName defaults to the Windows device name the first time TapRunner runs on a machine (i.e.
   there's no `config.json` yet - typically right after installing); after that, whatever's saved is
@@ -170,7 +185,8 @@ original open license with no such prompt, and has everything this installer nee
 - `ResultsViewerPath` - the program the main window's **View Results** button runs, with the SQLite
   results database (from `Results.xml`, a bare name resolved to the tap.exe folder) as its first
   argument. Edited via **Settings → Test results viewer**; defaults to
-  `C:\OpenTAP\TestRunViewer\TestRunViewerSqlite.exe`. The viewer must open a file given on its command
+  `C:\OpenTAP\TestRunViewer\TestRunViewerSqlite.exe`, and the installer sets it to Test Run Viewer
+  when it finds it installed (see "Installing" above). The viewer must open a file given on its command
   line for this to land on the database rather than its own last-used one.
 - `DefaultParameterValues` - name → value overrides, edited on the **Settings → Parameters** tab.
   A blank/missing entry falls back to the TapPlan's own default. These are only changed
@@ -194,7 +210,7 @@ original open license with no such prompt, and has everything this installer nee
 - `PowerOnPlanPath`, `PowerOffPlanPath` - the plans run by the small **Power On** / **Power Off**
   buttons beside Settings (defaults `PowerON.TapPlan` / `PowerOFF.TapPlan`). A bare name is looked
   for in the working directory, then next to tap.exe; a full path is used as-is. They always run
-  headless regardless of the "Edit with TUI" box, through the same status circles, runtime clock and
+  headless regardless of the "Edit test plan" box, through the same status circles, runtime clock and
   logs as any run, with Settings' default parameter values overriding the plan's own. Parameters
   typed into the main window's list belong to the main plan and aren't used for them. The buttons
   are disabled while any run is in progress.
@@ -247,6 +263,11 @@ original open license with no such prompt, and has everything this installer nee
   start time in the log's file name (so an Editor open at the same time isn't mistaken for it), and
   also put in the status line. If none is found the entry says so. (The step error message needs
   the 1.3.0 plugin package; reinstall it via the MSI or `tap package install ... --overwrite`.)
+- A run in which no step set a verdict (OpenTAP's `NotSet` - e.g. a plan of only Delay, Log Output
+  and Repeat steps, which exits with code 0) isn't an Error: it ends with "Run finished: Verdict not
+  set.", no verdict circle lit and nothing in the failure log. This needs the 1.3.6 plugin package or
+  later; older plugins report such a run as Error, which shows up as a `(test plan)` entry saying
+  "The run ended with an Error verdict, but no step reported one."
 - Each run's first failure (if any) is preceded by a header block with the TapPlan's file name and
   when the run started, so it's always clear which run a given block of failures belongs to - this
   matters most when the failure log is kept across runs (see below), but is written the same way
@@ -276,11 +297,11 @@ original open license with no such prompt, and has everything this installer nee
   original choice, vs. embedding OpenTap.dll) gives names and default values as text but not their
   real type, so there's no dropdown for enum/`AvailableValues` parameters or a checkbox for
   booleans - just a text box, same as you'd type after `-e Name=`.
-- **TUI mode has no parameter or profile pass-through.** OpenTAP's `tap.exe tui` CLI action doesn't
-  accept `-e` overrides or `--settings`, so neither the parameter values entered in TapRunner's
-  dialog nor the selected OpenTAP profile are carried into a TUI session - the operator sets/
-  reviews parameters inside the TUI itself, and it runs with whatever profile OpenTAP already has
-  selected there. Live status circles still work there.
+- **Editing has no parameter or profile pass-through.** OpenTAP's `tap.exe tui` and `tap.exe gui`
+  CLI actions don't accept `-e` overrides or `--settings`, so neither the parameter values entered in
+  TapRunner's dialog nor the selected OpenTAP profile are carried into the editor - the operator sets/
+  reviews parameters inside the TUI or Editor itself, and it runs with whatever profile OpenTAP
+  already has selected there. Live status circles still work there.
 - **Live vs. final Fail/Error**: mid-run, a step's Fail/Error flashes its circle until a parent
   step clears it (then dim) or takes it on as its own Fail/Error (still flashing). Only the circle
   matching the plan's *final* verdict goes fully lit. The plugin works this out from the step tree
@@ -291,10 +312,11 @@ original open license with no such prompt, and has everything this installer nee
   It's not literally everything OpenTAP knows about the step, but it's already as complete as what
   TapRunner receives over the pipe.
 - **No status received when a run ends** (plugin not enabled/connected, a licensing error, a
-  crash, or - with TUI - the operator closing it without running anything): the app never guesses
-  Pass/Fail, but it does light the **Error** circle (and always turns Running off) with a message
-  explaining why, rather than quietly returning to Ready - a real failure should never look like
-  nothing happened.
+  crash): the app never guesses Pass/Fail, but it does light the **Error** circle (and always turns
+  Running off) with a message explaining why, rather than quietly returning to Ready - a real
+  failure should never look like nothing happened. Closing the TUI or GUI editor without running
+  the plan in it is different: that's a normal end to an edit session, so it just shows "Editor
+  closed." (plus the exit code if it wasn't 0) with no Error circle and no failure log entry.
 - Config file lives under `%ProgramData%` (shared by all operators on this station), not next to
   the .exe or under a per-user profile - easy to change if you'd rather have it per-user.
 

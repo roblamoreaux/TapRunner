@@ -75,9 +75,9 @@
             </ScrollViewer>
         </GroupBox>
 
-        <!-- TUI option -->
-        <CheckBox x:Name="UseTuiCheckBox" Grid.Row="3" Grid.Column="0" Content="Edit with TUI (text-based interface)" Margin="0,0,0,10"
-                  Checked="UseTuiCheckBox_CheckedChanged" Unchecked="UseTuiCheckBox_CheckedChanged"/>
+        <!-- Edit option (opens the TUI or GUI editor chosen under Settings) -->
+        <CheckBox x:Name="EditPlanCheckBox" Grid.Row="3" Grid.Column="0" Content="Edit test plan" Margin="0,0,0,10"
+                  Checked="EditPlanCheckBox_CheckedChanged" Unchecked="EditPlanCheckBox_CheckedChanged"/>
 
         <!-- Run / Stop / Abort / Exit / Open Log / Failed / Settings -->
         <WrapPanel Grid.Row="4" Grid.Column="0" Margin="0,0,0,6">
@@ -93,9 +93,9 @@
                     ToolTip="Open the SQLite results database in the test results viewer set under Settings."/>
             <Button x:Name="SettingsButton" Content="Settings..." Width="90" Height="32" Margin="0,0,8,6" Click="SettingsButton_Click"/>
             <Button x:Name="PowerOnButton" Content="Power On" Width="72" Height="24" FontSize="11" Margin="12,0,6,6" VerticalAlignment="Top" Click="PowerOnButton_Click"
-                    ToolTip="Run the Power On plan set under Settings (headless, whatever the TUI box says)."/>
+                    ToolTip="Run the Power On plan set under Settings (headless, whatever the Edit test plan box says)."/>
             <Button x:Name="PowerOffButton" Content="Power Off" Width="72" Height="24" FontSize="11" Margin="0,0,8,6" VerticalAlignment="Top" Click="PowerOffButton_Click"
-                    ToolTip="Run the Power Off plan set under Settings (headless, whatever the TUI box says)."/>
+                    ToolTip="Run the Power Off plan set under Settings (headless, whatever the Edit test plan box says)."/>
         </WrapPanel>
 
         <!-- Step history: last 1000 completed steps, one per line, scrollable so the operator can

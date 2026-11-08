@@ -57,7 +57,7 @@ namespace TapRunner.App.Models
         /// Name of the OpenTAP bench settings profile to run with - a subdirectory of
         /// &lt;OpenTAP install dir&gt;\Settings\Bench, passed as "tap run --settings &lt;name&gt;".
         /// Blank means don't pass --settings at all, so OpenTAP uses its own default ("Default").
-        /// Only applies to a headless run - the "tui" CLI action has no --settings option.
+        /// Only applies to a headless run - the "tui" and "gui" editor actions have no --settings option.
         /// </summary>
         public string OpenTapProfile { get; set; } = "";
 
@@ -72,8 +72,14 @@ namespace TapRunner.App.Models
         /// <summary>Operator name.</summary>
         public string OperatorName { get; set; } = "";
 
-        /// <summary>Whether to launch with the TUI (text UI) instead of headless, last time it was used.</summary>
-        public bool UseTui { get; set; }
+        /// <summary>Whether "Edit test plan" (open the plan in <see cref="PlanEditor"/> instead of running it headless) was checked last time.</summary>
+        public bool EditPlan { get; set; }
+
+        /// <summary>
+        /// Editor opened by "Edit test plan": "TUI" (OpenTAP's text-based interface, "tap tui") or
+        /// "GUI" (the OpenTAP Editor, "tap gui"). Chosen under Settings.
+        /// </summary>
+        public string PlanEditor { get; set; } = "TUI";
 
         /// <summary>
         /// Operator-chosen default values for external test plan parameters, keyed by parameter name.

@@ -46,11 +46,12 @@ namespace TapRunner.App.Services
         }
 
         /// <summary>
-        /// Launches "tap.exe" to run (or, with the TUI, view/run) the given plan with the TAPRUNNER_PIPE
+        /// Launches "tap.exe" to run (or, with <paramref name="edit"/>, open in the TUI or GUI editor
+        /// chosen in <see cref="AppConfig.PlanEditor"/>) the given plan with the TAPRUNNER_PIPE
         /// environment variable set so the TapRunner.StatusListener plugin (if enabled in Results settings)
         /// can report status back on <paramref name="pipeName"/>. Returns the started process.
         /// </summary>
-        public Process StartRun(AppConfig config, string planPath, IEnumerable<ParameterEntry> parameters, bool useTui, string pipeName)
+        public Process StartRun(AppConfig config, string planPath, IEnumerable<ParameterEntry> parameters, bool edit, string pipeName)
         {
             var psi = BuildBaseStartInfo(config);
             psi.RedirectStandardOutput = false;
@@ -58,12 +59,15 @@ namespace TapRunner.App.Services
             psi.CreateNoWindow = false;
             psi.Environment[StatusProtocol.PipeNameEnvironmentVariable] = pipeName;
 
-            if (useTui)
+            if (edit)
             {
-                // The OpenTAP "tui" CLI action does not support external-parameter overrides (-e);
-                // it opens an interactive console UI where the operator sets/reviews parameters.
-                psi.ArgumentList.Add("tui");
+                // The OpenTAP "tui"/"gui" CLI actions do not support external-parameter overrides (-e);
+                // they open an interactive editor where the operator sets/reviews parameters.
+                bool gui = string.Equals(config.PlanEditor, "GUI", StringComparison.OrdinalIgnoreCase);
+                psi.ArgumentList.Add(gui ? "gui" : "tui");
                 psi.ArgumentList.Add(planPath);
+                // The GUI editor has its own window - no need for tap.exe's console behind it.
+                psi.CreateNoWindow = gui;
             }
             else
             {

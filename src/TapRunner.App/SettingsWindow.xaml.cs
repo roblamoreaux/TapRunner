@@ -40,6 +40,7 @@ namespace TapRunner.App
             TapExecutablePathText.Text = workingConfig.TapExecutablePath;
             PopulateProfileList();
             ProfileComboBox.Text = workingConfig.OpenTapProfile;
+            PlanEditorComboBox.SelectedIndex = string.Equals(workingConfig.PlanEditor, "GUI", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
             LoadSqliteDatabaseSetting();
             WorkingDirectoryText.Text = workingConfig.WorkingDirectory;
             StationNameText.Text = workingConfig.StationName;
@@ -349,6 +350,7 @@ namespace TapRunner.App
 
             workingConfig.TapExecutablePath = TapExecutablePathText.Text.Trim();
             workingConfig.OpenTapProfile = ProfileComboBox.Text.Trim();
+            workingConfig.PlanEditor = (string)((ComboBoxItem)PlanEditorComboBox.SelectedItem).Tag;
             workingConfig.WorkingDirectory = WorkingDirectoryText.Text.Trim();
             workingConfig.StationName = StationNameText.Text.Trim();
             workingConfig.LogFilePath = LogFilePathText.Text.Trim();
@@ -409,7 +411,8 @@ namespace TapRunner.App
                 OpenTapLogPath = source.OpenTapLogPath,
                 ClearFailureLogOnRun = source.ClearFailureLogOnRun,
                 OperatorName = source.OperatorName,
-                UseTui = source.UseTui,
+                EditPlan = source.EditPlan,
+                PlanEditor = source.PlanEditor,
                 DefaultParameterValues = new Dictionary<string, string>(source.DefaultParameterValues),
                 HiddenParameters = new List<string>(source.HiddenParameters),
                 ShowHiddenParametersGreyedOut = source.ShowHiddenParametersGreyedOut,

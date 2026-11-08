@@ -33,6 +33,7 @@ namespace TapRunner.App
         StatusPipeServer pipeServer;
         bool receivedTerminalStatus;
         bool userInitiatedAbort;
+        bool editingPlan;          // the process is the TUI/GUI editor, not a headless run
         bool errorStepLoggedThisRun;
         int planLoadGeneration;    // see LoadPlanAsync
         bool failResolvedThisRun;  // a step failed but its parent step cleared it
@@ -78,7 +79,7 @@ namespace TapRunner.App
             OperatorNameText.Text = config.OperatorName;
             StationNameText.Text = string.IsNullOrWhiteSpace(config.StationName) ? "" : $"Station: {config.StationName}";
             ProfileNameText.Text = string.IsNullOrWhiteSpace(config.OpenTapProfile) ? "" : $"Profile: {config.OpenTapProfile}";
-            UseTuiCheckBox.IsChecked = config.UseTui;
+            EditPlanCheckBox.IsChecked = config.EditPlan;
 
             ApplyStatusColorsFromConfig();
             SetIdleState(clearVerdicts: true);
@@ -351,7 +352,7 @@ namespace TapRunner.App
             if (!CheckTapExecutable())
                 return;
 
-            await StartRunAsync(PlanPathText.Text, parameters, UseTuiCheckBox.IsChecked == true, runLabel: null);
+            await StartRunAsync(PlanPathText.Text, parameters, EditPlanCheckBox.IsChecked == true, runLabel: null);
         }
 
         async void PowerOnButton_Click(object sender, RoutedEventArgs e)
@@ -371,8 +372,8 @@ namespace TapRunner.App
         }
 
         /// <summary>
-        /// Runs the power on / power off plan from Settings: always headless (the TUI checkbox is
-        /// about the main plan), through the same status circles, timer and logging as any run.
+        /// Runs the power on / power off plan from Settings: always headless (the "Edit test plan"
+        /// checkbox is about the main plan), through the same status circles, timer and logging as any run.
         /// Settings' default parameter values override the plan's own values here too; whatever is
         /// typed in the main window's parameter list belongs to the main plan and is not used.
         /// </summary>
@@ -403,7 +404,7 @@ namespace TapRunner.App
             foreach (var p in planParameters)
                 p.Value = TryGetSavedDefault(p, out var saved) ? saved : p.PlanDefaultValue;
 
-            await StartRunAsync(planPath, planParameters, useTui: false, runLabel: label);
+            await StartRunAsync(planPath, planParameters, edit: false, runLabel: label);
         }
 
         /// <summary>
@@ -431,13 +432,14 @@ namespace TapRunner.App
         }
 
         /// <summary>Starts tap.exe on <paramref name="planPath"/> and puts the window into its "running" state.</summary>
-        async Task StartRunAsync(string planPath, IEnumerable<ParameterEntry> runParameters, bool useTui, string runLabel)
+        async Task StartRunAsync(string planPath, IEnumerable<ParameterEntry> runParameters, bool edit, string runLabel)
         {
             SaveCurrentSettingsToConfig();
             configService.Save(config);
 
             receivedTerminalStatus = false;
             userInitiatedAbort = false;
+            editingPlan = edit;
             errorStepLoggedThisRun = false;
             failResolvedThisRun = false;
             errorResolvedThisRun = false;
@@ -449,7 +451,7 @@ namespace TapRunner.App
 
             try
             {
-                runningProcess = tapPlanService.StartRun(config, planPath, runParameters, useTui, pipeServer.PipeName);
+                runningProcess = tapPlanService.StartRun(config, planPath, runParameters, edit, pipeServer.PipeName);
             }
             catch (Exception ex)
             {
@@ -489,11 +491,11 @@ namespace TapRunner.App
                 NativeMethods.SetForegroundWindow(hwnd);
         }
 
-        void UseTuiCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        void EditPlanCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            // TUI opens the plan in OpenTAP's interactive text UI rather than running it headless,
+            // Editing opens the plan in OpenTAP's TUI or GUI editor rather than running it headless,
             // so "Run" is misleading while it's checked - the operator is going there to edit/view it.
-            RunButton.Content = UseTuiCheckBox.IsChecked == true ? "Edit" : "Run";
+            RunButton.Content = EditPlanCheckBox.IsChecked == true ? "Edit" : "Run";
         }
 
         /// <summary>
@@ -763,7 +765,19 @@ namespace TapRunner.App
                 RunningCircle.State = CircleState.Off;
                 StopRuntimeTimer();
 
-                if (!userInitiatedAbort && !receivedTerminalStatus)
+                if (!userInitiatedAbort && !receivedTerminalStatus && editingPlan)
+                {
+                    // Closing the editor without running the plan in it is a normal end to an edit
+                    // session, not a failed run - so no Error circle and no failure log entry.
+                    PassedCircle.State = CircleState.Off;
+                    FailedCircle.State = CircleState.Off;
+                    ErrorCircle.State = CircleState.Off;
+                    AbortedCircle.State = CircleState.Off;
+
+                    var exitCode = TryGetExitCode(runningProcess);
+                    SetStatusMessage("Editor closed." + (exitCode is int code && code != 0 ? $" (exit code {code})" : ""));
+                }
+                else if (!userInitiatedAbort && !receivedTerminalStatus)
                 {
                     // The process ended without ever reporting a final verdict - e.g. a licensing
                     // error, a crash, or the "TapRunner Status" listener isn't enabled/connected.
@@ -946,11 +960,11 @@ namespace TapRunner.App
 
         void SaveCurrentSettingsToConfig()
         {
-            // Only operator name and the TUI checkbox are remembered automatically between runs.
+            // Only operator name and the "Edit test plan" checkbox are remembered automatically between runs.
             // Default parameter values are only changed deliberately, via Settings > Default Parameters -
             // a value typed for one unit's run must never silently become the new default.
             config.OperatorName = OperatorNameText.Text;
-            config.UseTui = UseTuiCheckBox.IsChecked == true;
+            config.EditPlan = EditPlanCheckBox.IsChecked == true;
         }
 
         /// <summary>Sets the status line and appends the same text to TapRunner's session log.</summary>
